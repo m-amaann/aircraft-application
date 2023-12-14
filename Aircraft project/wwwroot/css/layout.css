@@ -11,18 +11,17 @@
     }
 
         .navbar-custom .navbar-brand .logo {
-            max-height: 50px; /* Adjust if necessary */
+            max-height: 60px;
         }
 
     .navbar-custom .navbar-collapse {
-        flex-grow: 2;
+        flex-grow: 1;
     }
 
     .navbar-custom .navbar-nav {
         display: flex;
         justify-content: center;
         flex-grow: 1;
-        padding-left: 0; /* Reset padding if necessary */
     }
 
     .navbar-custom .nav-item {
@@ -30,9 +29,8 @@
     }
 
     .navbar-custom .nav-link {
-        font-size: 13px;
-        font-weight: 450;
-        padding: 8px 15px;
+        font-size: 13px; 
+        padding: 8px 15px; 
         color: #333;
         transition: color 0.2s;
     }
@@ -41,14 +39,13 @@
             color: #555;
         }
 
-    .navbar-custom .navbar-nav ~ form {
-        flex-grow: 1;
+    .navbar-custom .navbar-nav ~ div {
+        flex-grow: 0;
         text-align: right;
     }
 
     .navbar-custom .btn {
         padding: 8px 20px; 
-        font-size: 14px; 
         margin-left: 10px; 
     }
 
@@ -72,7 +69,16 @@
             border-color: #004085;
         }
 
-/* Footer styles */
+    .navbar-custom .btn .fas {
+        margin-right: 5px; 
+    }
+
+    .navbar-custom .btn .badge {
+        position: relative;
+        top: -5px; 
+        right: -5px; 
+    }
+
 .footer {
     position: absolute;
     bottom: 0;
