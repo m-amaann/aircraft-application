@@ -1,0 +1,91 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+/* General navbar styles */
+.navbar-custom {
+    background-color: #EFEFEF;
+    font-family: 'Poppins', sans-serif;
+}
+
+    /* Brand logo styles */
+    .navbar-custom .navbar-brand {
+        flex-grow: 1;
+        text-align: left;
+    }
+
+        .navbar-custom .navbar-brand .logo {
+            max-height: 50px; /* Adjust if necessary */
+        }
+
+    /* Navbar collapse styles */
+    .navbar-custom .navbar-collapse {
+        flex-grow: 2;
+    }
+
+    /* Navbar navigation styles */
+    .navbar-custom .navbar-nav {
+        display: flex;
+        justify-content: center;
+        flex-grow: 1;
+        padding-left: 0; /* Reset padding if necessary */
+    }
+
+    /* Navbar link styles */
+    .navbar-custom .nav-item {
+        padding: 0 10px;
+    }
+
+    .navbar-custom .nav-link {
+        font-size: 13px;
+        font-weight: 450;
+        padding: 8px 15px;
+        color: #333;
+        transition: color 0.2s;
+    }
+
+        .navbar-custom .nav-link:hover {
+            color: #555;
+        }
+
+    /* Form styles for alignment of buttons */
+    .navbar-custom .navbar-nav ~ form {
+        flex-grow: 1;
+        text-align: right;
+    }
+
+    /* Button styles */
+    .navbar-custom .btn {
+        padding: 8px 20px; /* Adjust padding for buttons to change their size */
+        font-size: 14px; /* Set font size for buttons */
+        margin-left: 10px; /* Space between buttons */
+    }
+
+    /* Button hover and active styles */
+    .navbar-custom .btn-outline-primary {
+        border-color: #007bff;
+        color: #007bff;
+    }
+
+        .navbar-custom .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+    .navbar-custom .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .navbar-custom .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+/* Footer styles */
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 40px; /* Adjust if necessary */
+    background-color: #f8f9fa;
+    text-align: center;
+}
