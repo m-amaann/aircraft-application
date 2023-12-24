@@ -23,9 +23,10 @@ namespace Aircraft_project.Controllers
         {
             return View("ServicesPage");
         }
-        public IActionResult AboutUs()
+
+        public IActionResult Register()
         {
-            return View("About");
+            return View("Register");
         }
     }
 }

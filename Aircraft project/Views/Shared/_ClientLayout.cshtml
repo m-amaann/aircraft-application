@@ -38,16 +38,18 @@
                         </li>
                     </ul>
                 </div>
-                <div class="ms-auto d-flex align-items-center" style="gap: 10px;">
-                    <button class="btn btn-outline-primary" type="submit" asp-controller="Client" asp-action="Orders">Orders</button>
 
+                <div class="ms-auto d-flex align-items-center" style="gap: 10px;">
+                    <button class="btn btn-outline-primary" type="button" asp-controller="Client" asp-action="Orders">Orders</button>
                     <!-- Shopping Cart Button with Indicator -->
                     <a class="btn btn-outline-primary" asp-controller="Client" asp-action="Cart">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="badge bg-primary ms-1">3</span> <!-- cart item count -->
                     </a>
-                    <button class="btn btn-primary" type="submit" asp-controller="Client" asp-action="SignUp">Sign Up</button>
+                    @*<a class="btn btn-primary" asp-controller="Client" asp-action="Register">Sign Up</a>*@
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrationModal">Sign Up</button>
                 </div>
+
             </div>
         </nav>
     </header>
@@ -56,6 +58,49 @@
             @RenderBody()
         </main>
     </div>
+
+    <!-- Registration Modal -->
+    <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registrationModalLabel">Create An Account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registrationForm">
+                        <div class="mb-4">
+                            <label for="registerName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="registerName" name="Name" required placeholder="Enter your full name">
+                        </div>
+                        <div class="mb-4">
+                            <label for="registerEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="registerEmail" name="Email" required placeholder="Enter your email">
+                        </div>
+                        <div class="mb-4">
+                            <label for="registerMobile" class="form-label">Mobile Number</label>
+                            <input type="tel" class="form-control" id="registerMobile" name="MobileNumber" required placeholder="Enter your mobile number" pattern="[+][0-9]{10,15}">
+
+                        </div>
+                        <div class="mb-4">
+                            <label for="registerPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="registerPassword" name="Password" required placeholder="Create a password">
+                        </div>
+                        <div class="mb-4">
+                            <label for="registerConfirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="registerConfirmPassword" name="ConfirmPassword" required placeholder="Confirm your password">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Register Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; @DateTime.Now.Year - Aircraft_project
