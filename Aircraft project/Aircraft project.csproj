@@ -25,4 +25,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\Images\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
+  </ItemGroup>
 </Project>
