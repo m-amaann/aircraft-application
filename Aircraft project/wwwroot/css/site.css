@@ -1,22 +1,118 @@
-html {
-  font-size: 14px;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+*, *:before, *:after {
+    box-sizing: border-box;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.maincontainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 75vh;
+    position: relative;
+    overflow: hidden;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.banner {
+    width: 100%;
+    height: 100%;
+    background-image: url('/Images/banner1.jpg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
 }
 
-body {
-  margin-bottom: 60px;
+.text-content {
+    z-index: 2;
+    color: white;
+    text-align: left;
+    padding: 0 15px;
+}
+
+.display1 {
+    font-size: 33px;
+    margin: 0;
+    line-height: 1.2;
+    color: #0F7DAD;
+    font-weight: 600;
+}
+
+p {
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+/* About Us section */
+.about-section {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: white;
+}
+
+.section-title {
+    font-size: 2rem;
+    margin: 0;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    color: #0F7DAD;
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 4px;
+        background-color: #0F7DAD;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        bottom: -10px;
+        transform: translateX(-50%);
+    }
+
+.about-content {
+    display: flex;
+    padding-top: 30px;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.text-block {
+    max-width: 600px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.image-block {
+    max-width: 600px;
+}
+
+.about-image {
+    width: 100%;
+    height: 300px;
+    display: block;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
 }

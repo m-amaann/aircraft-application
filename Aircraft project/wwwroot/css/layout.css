@@ -3,6 +3,8 @@
 .navbar-custom {
     background-color: #EFEFEF;
     font-family: 'Poppins', sans-serif;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
 }
 
     .navbar-custom .navbar-brand {
@@ -11,7 +13,7 @@
     }
 
         .navbar-custom .navbar-brand .logo {
-            max-height: 60px;
+            max-height: 40px;
         }
 
     .navbar-custom .navbar-collapse {
@@ -29,8 +31,10 @@
     }
 
     .navbar-custom .nav-link {
-        font-size: 13px; 
-        padding: 8px 15px; 
+        font-size: 13px;
+        font-weight: 500;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
         color: #333;
         transition: color 0.2s;
     }
@@ -45,13 +49,13 @@
     }
 
     .navbar-custom .btn {
-        padding: 8px 20px; 
-        margin-left: 10px; 
+        padding: 4px 12px;
     }
 
     .navbar-custom .btn-outline-primary {
         border-color: #007bff;
         color: #007bff;
+        font-size: 13px;
     }
 
         .navbar-custom .btn-outline-primary:hover {
@@ -62,6 +66,7 @@
     .navbar-custom .btn-primary {
         background-color: #007bff;
         border-color: #007bff;
+        font-size: 14px;
     }
 
         .navbar-custom .btn-primary:hover {
@@ -70,20 +75,75 @@
         }
 
     .navbar-custom .btn .fas {
-        margin-right: 5px; 
+        margin-right: 5px;
     }
 
     .navbar-custom .btn .badge {
         position: relative;
-        top: -5px; 
-        right: -5px; 
+        top: -5px;
+        right: -5px;
     }
 
 .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    line-height: 40px; 
+    line-height: 40px;
     background-color: #f8f9fa;
     text-align: center;
+}
+
+
+
+
+/* Registration Modal Styles */
+#registrationModal .modal-dialog {
+    max-width: 500px;
+}
+
+#registrationModal .modal-content {
+    border-radius: 0.3rem;
+}
+
+#registrationModal .modal-header {
+    padding: 1rem;
+}
+
+#registrationModal .modal-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+#registrationModal .btn-close {
+    padding: 0.8rem;
+    font-size: 13px;
+}
+
+#registrationModal .modal-body {
+    padding: 0.9rem;
+}
+
+#registrationModal .form-label {
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+}
+
+#registrationModal .form-control {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+}
+
+#registrationModal .form-text {
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+}
+
+#registrationModal .modal-footer {
+    padding: 1rem;
+}
+
+#registrationModal .btn {
+    font-size: 0.9rem; /* Standard font size for buttons */
+    padding: 0.4rem 0.7rem; /* Balanced padding for buttons */
 }

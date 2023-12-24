@@ -1,4 +1,22 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$('#registrationForm').on('submit', function (e) {
+    e.preventDefault();
 
-// Write your JavaScript code.
+    var data = $(this).serialize(); 
+
+    $.ajax({
+        url: '/Client/Register', 
+        type: 'POST',
+        data: data,
+        success: function (response) {
+            if (response.success) {
+                $('#registrationModal').modal('hide');
+            } else {
+                
+            }
+        },
+        error: function () {        
+        }
+    });
+});
+
+
