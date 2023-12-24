@@ -7,6 +7,8 @@
     <RootNamespace>Aircraft_project</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
     <None Include="wwwroot\Images\aircraftlogo.png" />
   </ItemGroup>
