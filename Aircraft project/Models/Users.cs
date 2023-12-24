@@ -14,19 +14,19 @@ namespace Aircraft_project.Models
 
         [Required]
         [StringLength(100)]
-        public required string Name { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(100)]
         [EmailAddress]
-        public required string Email { get; set; }
+        public required string email { get; set; }
 
         [Required]
         [Phone]
-        public required string MobileNumber { get; set; }
+        public required string mobilenumber { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        public required string Password { get; set; }
+        public required string password { get; set; }
     }
 }
