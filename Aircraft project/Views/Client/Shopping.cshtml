@@ -2,9 +2,7 @@
     ViewData["Title"] = "Shopping";
 }
 
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css" integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 
 <div id="product-carousel" class="carousel">
     <div class="carousel-track-container">
@@ -21,7 +19,7 @@
                 </div>
                 <div class="button-container">
                     <button class="order-button">Order Now</button>
-                    <button class="add-to-cart" onclick="slideIcon()">
+                    <button class="add-to-cart" onclick="addToCart('@productId')">
                         Cart
                         <i class="fas fa-shopping-cart cart-icon"></i>
                     </button>
@@ -29,23 +27,7 @@
             </div>
 
             <!-- Product Card 2 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model">
-                </div>
-                <div class="product-details">
-                    <div class="product-brand">Jet</div>
-                    <h2 class="product-title">PISTON AIRPLANES</h2>
-                    <div class="product-price">$20,000,000</div>
-                </div>
-                <div class="button-container">
-                    <button class="order-button">Order Now</button>
-                    <button class="add-to-cart" onclick="slideIcon()">
-                        Cart
-                        <i class="fas fa-shopping-cart cart-icon"></i>
-                    </button>
-                </div>
-            </div>
+            <!-- Add more product cards as needed -->
 
         </div>
     </div>
@@ -55,8 +37,29 @@
     <button class="carousel-button next" onclick="moveCarousel('next')">
         <i class='bx bx-chevron-right'></i>
     </button>
-
-
-    @*<button class="carousel-button prev" onclick="moveCarousel('prev')">&#10094;</button>
-        <button class="carousel-button next" onclick="moveCarousel('next')">&#10095;</button>*@
 </div>
+
+<script>
+    function addToCart(productId) {
+        fetch(`/Cart/AddToCart?productId=${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to add item to cart');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Item added to cart successfully:', data);
+                // Handle success, update UI or show a notification
+            })
+            .catch(error => {
+                console.error('Error adding item to cart:', error);
+                // Handle error, show an error message
+            });
+    }
+</script>

@@ -41,6 +41,9 @@ function moveCarousel(direction) {
 
     track.style.transform = 'translateX(' + (-trackMoveAmount * currentSlide) + 'px)';
 }
+
+
+
 //Add to Cart Icon for product card
 function slideIcon() {
     var icon = document.querySelector('.add-to-cart .cart-icon');
@@ -51,6 +54,9 @@ function slideIcon() {
    300); 
 }
 
+
+
+// ADD TO CART FUNCTION 
 
 
 
