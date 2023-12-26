@@ -3,23 +3,60 @@
 }
 
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css" integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<div class="product-card">
-    <div class="product-image">
-        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model">
+
+<div id="product-carousel" class="carousel">
+    <div class="carousel-track-container">
+        <div class="carousel-track">
+            <!-- Product Card 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model">
+                </div>
+                <div class="product-details">
+                    <div class="product-brand">Jet</div>
+                    <h2 class="product-title">PISTON AIRPLANES</h2>
+                    <div class="product-price">$20,000,000</div>
+                </div>
+                <div class="button-container">
+                    <button class="order-button">Order Now</button>
+                    <button class="add-to-cart" onclick="slideIcon()">
+                        Cart
+                        <i class="fas fa-shopping-cart cart-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model">
+                </div>
+                <div class="product-details">
+                    <div class="product-brand">Jet</div>
+                    <h2 class="product-title">PISTON AIRPLANES</h2>
+                    <div class="product-price">$20,000,000</div>
+                </div>
+                <div class="button-container">
+                    <button class="order-button">Order Now</button>
+                    <button class="add-to-cart" onclick="slideIcon()">
+                        Cart
+                        <i class="fas fa-shopping-cart cart-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <div class="product-details">
-        <div class="product-brand">Jet</div>
-        <h2 class="product-title">PISTON AIRPLANES</h2>
-        <div class="product-price">$20,000,000</div>
-    </div>
-    <div class="button-container">
-        <button class="order-button">Order Now</button>
-        <button class="add-to-cart" onclick="slideIcon()">
-            Cart
-            <i class="fas fa-shopping-cart cart-icon"></i>
-        </button>
-    </div>
+    <button class="carousel-button prev" onclick="moveCarousel('prev')">
+        <i class='bx bx-chevron-left'></i>
+    </button>
+    <button class="carousel-button next" onclick="moveCarousel('next')">
+        <i class='bx bx-chevron-right'></i>
+    </button>
+
+
+    @*<button class="carousel-button prev" onclick="moveCarousel('prev')">&#10094;</button>
+        <button class="carousel-button next" onclick="moveCarousel('next')">&#10095;</button>*@
 </div>
-
-
