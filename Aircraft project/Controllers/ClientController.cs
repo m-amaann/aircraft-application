@@ -28,5 +28,9 @@ namespace Aircraft_project.Controllers
         {
             return View("Register");
         }
+        public IActionResult Shopping()
+        {
+            return View("Shopping");
+        }
     }
 }

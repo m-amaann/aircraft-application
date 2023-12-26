@@ -1,4 +1,5 @@
-﻿$('#registrationForm').on('submit', function (e) {
+﻿// Register Modal
+$('#registrationForm').on('submit', function (e) {
     e.preventDefault();
 
     var data = $(this).serialize(); 
@@ -18,5 +19,21 @@
         }
     });
 });
+
+
+
+//Add to Cart Icon
+function slideIcon() {
+    var icon = document.querySelector('.add-to-cart .cart-icon');
+    icon.style.transform = 'translateX(10px)';
+    setTimeout(function () {
+        icon.style.transform = 'translateX(0px)';
+    },
+   300); 
+}
+
+
+
+
 
 
