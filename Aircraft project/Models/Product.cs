@@ -7,18 +7,13 @@ namespace Aircraft_project.Models
         [Key]
         public int AircraftId { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string ModelName { get; set; }
-
-        [DataType(DataType.ImageUrl)]
-        public string ImagePath { get; set; }
+        public required string ModelName { get; set; }
+        
+        public required string Image { get; set; }
 
         public string Description { get; set; }
 
-        [Required]
-        [DataType(DataType.Currency)]
-        public decimal Price { get; set; }
+        public required string Price { get; set; }
 
         public string specification { get; set; }
 
