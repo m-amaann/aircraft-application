@@ -32,5 +32,10 @@ namespace Aircraft_project.Controllers
         {
             return View("Shopping");
         }
+        [HttpGet]
+        public IActionResult Contact()
+        {
+            return View("Contact");
+        }
     }
 }
