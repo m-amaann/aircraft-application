@@ -20,8 +20,8 @@ namespace Aircraft_project.Models
         public required string Colors { get; set; }
 
         public required int SeatCount { get; set; }
-        public required int EngineType { get; set; }
-        public required int FanType { get; set; }
+        public required string EngineType { get; set; }
+        public required string FanType { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
