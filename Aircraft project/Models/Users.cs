@@ -18,6 +18,8 @@ namespace Aircraft_project.Models
 
         public required string mobilenumber { get; set; }
 
+        public string address { get; set; }
+
         [DataType(DataType.Password)]
         public required string password { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
