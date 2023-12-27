@@ -2,183 +2,124 @@
     ViewData["Title"] = "Shopping";
 }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css"
-    integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<div id="product-carousel" class="carousel">
-    <div class="carousel-track-container">
-        <div class="carousel-track">
-            <!-- Product Card 1 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model">
-                </div>
-                <div class="product-details">
-                    <div class="product-brand">Jet</div>
-                    <h2 class="product-title">PISTON AIRPLANES</h2>
-                    <div class="product-price">$20,000,000</div>
-                </div>
-                <div class="button-container">
-                    <button class="order-button">Order Now</button>
-                    <button class="add-to-cart" >
-                        Cart
-                        <i class="fas fa-shopping-cart cart-icon"></i>
-                    </button>
-                </div>
+
+
+<!-- Shop Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <!-- Shop Sidebar Start -->
+        <div class="col-lg-3  col-md-12 mt-5">
+
+
+            <!-- Category Start -->
+            <div class="mb-5">
+                <h5 class="font-weight-semi-bold mb-4 text-danger">Filter by Category</h5>
+                <ul class="list-group">
+                    <li class="list-group-item checkbox align-items-center">
+                        <div class="form-check">
+                            <label for="" class="">
+                                <input type="checkbox" class="common_selector brand"
+                                    value="<?= $row['category_name'] ?> " id="category"> CHOPPER
+
+                            </label>
+                            <span
+                                class="badge badge-warning px-4  py-2 border font-weight-bolder text-dark float-right">
+                            </span>
+                        </div>
+                    </li>
+                    <li class="list-group-item checkbox align-items-center">
+                        <div class="form-check">
+                            <label for="" class="">
+                                <input type="checkbox" class="common_selector brand"
+                                    value="<?= $row['category_name'] ?> " id="category"> PRIVATE JET
+                            </label>
+                            <span
+                                class="badge badge-warning px-4  py-2 border font-weight-bolder text-dark float-right">
+                            </span>
+                        </div>
+                    </li>
+                </ul>
             </div>
-
-                <div class="container-fluid pt-5">
-                    <div class="row px-xl-5">
-                        <!-- Shop Sidebar Start -->
-                        <div class="col-lg-3  col-md-12 mt-5">
-
-
-                            <!-- Category Start -->
-                            <div class="mb-5">
-                                <h5 class="font-weight-semi-bold mb-4 text-danger">Filter by Category</h5>
-                                <ul class="list-group">
-                                    <li class="list-group-item checkbox align-items-center">
-                                        <div class="form-check">
-                                            <label for="" class="">
-                                                <input type="checkbox" class="common_selector brand"
-                                                    value="<?= $row['category_name'] ?> " id="category"> CHOPPER
-
-                                            </label>
-                                            <span
-                                                class="badge badge-warning px-4  py-2 border font-weight-bolder text-dark float-right">
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item checkbox align-items-center">
-                                        <div class="form-check">
-                                            <label for="" class="">
-                                                <input type="checkbox" class="common_selector brand"
-                                                    value="<?= $row['category_name'] ?> " id="category"> PRIVATE JET
-                                            </label>
-                                            <span
-                                                class="badge badge-warning px-4  py-2 border font-weight-bolder text-dark float-right">
-                                            </span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Shop Product Start -->
-                        <div class="col-lg-9 col-md-12 ">
-
-                            <div class="row pb-3 filter_dataa" id="product-list">
-
-                                <div class="row pb-3 justify-content-end">
-                                    <div class="col-auto">
-                                        <input type="text" class="form-control" placeholder="Search">
-                                    </div>
-                                </div>
-                            @* product 1 *@
-                                <div class="product-card">
-                                    <div class="product-image">
-                                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model"
-                                            class="img-fluid w-100 col-hover">
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="product-brand">Jet</div>
-                                        <h2 class="product-title">PISTON AIRPLANES</h2>
-                                        <div class="product-price">$20,000,000</div>
-                                    </div>
-                                    <div class="button-container">
-                                        <button class="order-button">Order Now</button>
-                                        <button class="add-to-cart" onclick="slideIcon()">
-                                            Cart
-                                            <i class="fas fa-shopping-cart cart-icon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                            @* product 2 *@
-
-                                <div class="product-card">
-                                    <div class="product-image">
-                                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model"
-                                            class="img-fluid w-100 col-hover">
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="product-brand">Jet</div>
-                                        <h2 class="product-title">PISTON AIRPLANES</h2>
-                                        <div class="product-price">$20,000,000</div>
-                                    </div>
-                                    <div class="button-container">
-                                        <button class="order-button">Order Now</button>
-                                        <button class="add-to-cart" onclick="slideIcon()">
-                                            Cart
-                                            <i class="fas fa-shopping-cart cart-icon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-
-                            @* pro 3 *@
-                                <div class="product-card">
-                                    <div class="product-image">
-                                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model"
-                                            class="img-fluid w-100 col-hover">
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="product-brand">Jet</div>
-                                        <h2 class="product-title">PISTON AIRPLANES</h2>
-                                        <div class="product-price">$20,000,000</div>
-                                    </div>
-                                    <div class="button-container">
-                                        <button class="order-button">Order Now</button>
-                                        <button class="add-to-cart" onclick="slideIcon()">
-                                            Cart
-                                            <i class="fas fa-shopping-cart cart-icon"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <div class="text-center">
-                                <button class="btn btn-primary load-more">Load More &nbsp;&nbsp;&nbsp;<i
-                                        class="fa fa-arrow-down"></i></button>
-                            </div>
-                        </div>
-                        <!-- Shop Product End -->
-                        <!-- Product Card 2 -->
-                        <!-- Add more product cards as needed -->
-
-                    </div>
-                </div>
-                <button class="carousel-button prev" onclick="moveCarousel('prev')">
-                    <i class='bx bx-chevron-left'></i>
-                </button>
-                <button class="carousel-button next" onclick="moveCarousel('next')">
-                    <i class='bx bx-chevron-right'></i>
-                </button>
         </div>
 
-            <script>
-                function addToCart(productId) {
-                    fetch(`/Cart/AddToCart?productId=${productId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to add item to cart');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log('Item added to cart successfully:', data);
-                            // Handle success, update UI or show a notification
-                        })
-                        .catch(error => {
-                            console.error('Error adding item to cart:', error);
-                            // Handle error, show an error message
-                        });
-                }
-            </script>
+        <!-- Shop Product Start -->
+        <div class="col-lg-9 col-md-12 ">
+            <div class="row pb-3 filter_dataa" id="product-list">
+                <div class="row pb-3 justify-content-end">
+    <div class="col-auto">
+        <input type="text" class="form-control" placeholder="Search">
+    </div>
+</div>
+
+                @* product 1 *@
+                <div class="product-card">
+                    
+                    <div class="product-image">
+                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model" class="img-fluid w-100 col-hover">
+                    </div>
+                    <div class="product-details">
+                        <div class="product-brand">Jet</div>
+                        <h2 class="product-title">PISTON AIRPLANES</h2>
+                        <div class="product-price">$20,000,000</div>
+                    </div>
+                    <div class="button-container">
+                        <button class="order-button">Order Now</button>
+                        <button class="add-to-cart" onclick="slideIcon()">
+                            Cart
+                            <i class="fas fa-shopping-cart cart-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                @* product 2 *@
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model" class="img-fluid w-100 col-hover">
+                    </div>
+                    <div class="product-details">
+                        <div class="product-brand">Jet</div>
+                        <h2 class="product-title">PISTON AIRPLANES</h2>
+                        <div class="product-price">$20,000,000</div>
+                    </div>
+                    <div class="button-container">
+                        <button class="order-button">Order Now</button>
+                        <button class="add-to-cart" onclick="slideIcon()">
+                            Cart
+                            <i class="fas fa-shopping-cart cart-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+                @* pro 3 *@
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model" class="img-fluid w-100 col-hover">
+                    </div>
+                    <div class="product-details">
+                        <div class="product-brand">Jet</div>
+                        <h2 class="product-title">PISTON AIRPLANES</h2>
+                        <div class="product-price">$20,000,000</div>
+                    </div>
+                    <div class="button-container">
+                        <button class="order-button">Order Now</button>
+                        <button class="add-to-cart" onclick="slideIcon()">
+                            Cart
+                            <i class="fas fa-shopping-cart cart-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary load-more">Load More &nbsp;&nbsp;&nbsp;<i
+                        class="fa fa-arrow-down"></i></button>
+            </div>
+        </div>
+        <!-- Shop Product End -->
+    </div>
+</div>
+<!-- Shop End -->
