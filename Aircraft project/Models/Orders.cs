@@ -11,9 +11,18 @@ namespace Aircraft_project.Models
         [ForeignKey("Users")]
         public int UserId { get; set; }
 
+        public required string OrderStatus { get; set; }
+
+        public required int PostalCode { get; set; }
+
+        public required string Country {  get; set; }
+
+        public required string Shipment_Address { get; set; }
+
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
-        public required string OrderStatus { get; set; }
+
+
 
         public virtual Users Users { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
