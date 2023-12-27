@@ -8,5 +8,15 @@ namespace Aircraft_project.Controllers
         {
             return View("dashboard"); 
         }
+
+        public IActionResult Aircraft()
+        {
+            return View("Aircraft");
+        }
+
+        public IActionResult AddAircraft()
+        {
+            return View("AddAircraft");
+        }
     }
 }
