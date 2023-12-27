@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Aircraft_project.Models
 {
-    public class Product
+    public class AircraftProduct
     {
         [Key]
         public int AircraftId { get; set; }
@@ -11,11 +12,14 @@ namespace Aircraft_project.Models
         
         public required string Image { get; set; }
 
-        public string Description { get; set; }
+        [StringLength(500)]
+        public required string Description { get; set; }
 
         public required string Price { get; set; }
 
-        public string specification { get; set; }
+        public required string Colors { get; set; }
+
+        public required int SeatCount { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

@@ -10,23 +10,16 @@ namespace Aircraft_project.Models
 {
 	public class Users
 	{
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        [EmailAddress]
         public required string email { get; set; }
 
-        [Required]
-        [Phone]
         public required string mobilenumber { get; set; }
 
-        [Required]
         [DataType(DataType.Password)]
         public required string password { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
