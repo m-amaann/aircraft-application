@@ -37,5 +37,10 @@ namespace Aircraft_project.Controllers
         {
             return View("Contact");
         }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View("Login");
+        }
     }
 }

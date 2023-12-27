@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
+<section class="vh-100 d-flex align-items-center justify-content-center">
+    <div class="container">
+        <div class="row shadow text-secondary ">
+            <div class="col-md-6 shadow p-5 rounded">
+                <h2 class="font-weight-bold">LOGIN FORM</h2>
+                <hr class="mb-5">
+                <form id="registrationForm">
+                    <div class="mb-4">
+                        <label for="registerEmail" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="registerEmail" name="Email" required
+                            placeholder="Enter your email">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="registerPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="registerPassword" name="Password" required
+                            placeholder="Create a password">
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                    </div>
+                    <p class="mt-4 mb-4"> Are you a new member? Please <a class="" asp-controller="Client"
+                            asp-action="Register">Create an
+                            Account</a> </p>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <img src="https://www.blraerospace.com/wp-content/uploads/2016/07/H125_Products_2.png"
+                    alt="Raythos Aerospace Hangar" class="img-fluid w-100 img_transistion">
+            </div>
+        </div>
+    </div>
+</section>
