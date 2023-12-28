@@ -7,11 +7,29 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpContextAccessor();
+
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set the session timeout
+    options.Cookie.HttpOnly = true; // HTTPOnly for security
+    options.Cookie.IsEssential = true; // Make the session cookie essential
+});
+
+
 // Register the ApplicationDbContext in the DI container
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
+
+
+
+
+app.UseSession();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -43,11 +61,4 @@ app.MapControllerRoute(
 app.Run();
 
 
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options => {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set a timeout for the session
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
 
-app.UseSession();

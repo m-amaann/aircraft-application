@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,12 +24,13 @@
 </head>
 
 <body>
-    <div aria-live="polite" aria-atomic="true" class="position-relative">
-        <div class="toast-container position-fixed top-0 end-0 p-3">
-            <!-- Toasts will appear here -->
-        </div>
-    </div>
+
     <header>
+        <div aria-live="polite" aria-atomic="true" class="position-relative">
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <!-- Toasts will appear here -->
+            </div>
+        </div>
         <nav class="navbar navbar-expand-lg navbar-custom">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-controller="Client" asp-action="Index">
@@ -53,11 +59,26 @@
                 </div>
 
                 <div class="ms-auto d-flex align-items-center" style="gap: 10px;">
-                    
-
-                   <a class="nav-link btn btn-primary" asp-controller="Client" asp-action="Login">LOGIN</a>
-                   
+                     @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
+                    {
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> <!-- User icon -->
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Client" asp-action="Logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="nav-link btn btn-primary" asp-controller="Client" asp-action="Login">LOGIN</a>
+                    }
                 </div>
+
 
             </div>
         </nav>

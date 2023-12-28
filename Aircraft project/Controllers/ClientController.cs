@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+
 
 namespace Aircraft_project.Controllers
 {
@@ -49,30 +51,28 @@ namespace Aircraft_project.Controllers
 
         // User Login
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login(Users user)
         {
-            var user = _context.Users.FirstOrDefault(u => u.email == email);
-            if (user != null && VerifyHashedPassword(user.password, password))
-            {
-                // User authentication logic here
-                HttpContext.Session.SetString("UserID", user.UserId.ToString());
-                HttpContext.Session.SetString("UserName", user.name); 
+            var existingUser = _context.Users.FirstOrDefault(u => u.email == user.email);
 
-                return RedirectToAction("Index"); // Redirect after successful login
+            if (existingUser != null && VerifyHashedPassword(existingUser.password, user.password))
+            {
+                HttpContext.Session.SetString("UserID", existingUser.UserId.ToString());
+                HttpContext.Session.SetString("UserName", existingUser.name);
+                return RedirectToAction("Index");
             }
 
             ModelState.AddModelError("", "Invalid login attempt.");
             return View();
         }
 
+
         private bool VerifyHashedPassword(string hashedPassword, string inputPassword)
         {
             using (var sha256 = SHA256.Create())
             {
                 var hashedInputPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(inputPassword));
-                string hashedInputString = BitConverter.ToString(hashedInputPassword).Replace("-", "").ToLower();
-
-                return hashedPassword == hashedInputString;
+                return BitConverter.ToString(hashedInputPassword).Replace("-", "").ToLower() == hashedPassword;
             }
         }
 
