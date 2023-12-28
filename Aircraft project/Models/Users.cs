@@ -10,6 +10,7 @@ namespace Aircraft_project.Models
 {
 	public class Users
 	{
+        [Key]
         public int UserId { get; set; }
 
         public required string Name { get; set; }

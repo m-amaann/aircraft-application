@@ -70,9 +70,6 @@ namespace Aircraft_project.Controllers
 
 
 
-
-
-
         //Admin Login View
         public ActionResult AdminLogin()
         {
@@ -95,6 +92,10 @@ namespace Aircraft_project.Controllers
         }
 
         // Admin Creation View
+        public ActionResult Admin()
+        {
+            return View();
+        }
         public ActionResult CreateAdmin()
         {
             return View();
