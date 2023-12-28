@@ -30,10 +30,11 @@
   z-index: 1000;
 }
 
-.navbar-custom .navbar-brand {
-  flex-grow: 1;
-  text-align: left;
-}
+    .navbar-custom .navbar-brand {
+        flex-grow: 1;
+        text-align: left;
+        font-family: "Poppins", sans-serif;
+    }
 
 .navbar-custom .navbar-brand .logo {
   max-height: 40px;

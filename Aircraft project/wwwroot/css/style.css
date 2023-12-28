@@ -10,8 +10,8 @@
 # General
 --------------------------------------------------------------*/
 body {
-  font-family: "Open Sans", sans-serif;
-  color: #444444;
+    font-family: "Poppins", sans-serif;
+    color: #444444;
 }
 
 a {
@@ -30,7 +30,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Jost", sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
 /*--------------------------------------------------------------
@@ -136,15 +136,16 @@ h6 {
   max-height: 40px;
 }
 
-/*--------------------------------------------------------------
+
+    /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
-/**
+    /**
 * Desktop Navigation 
 */
-.navbar {
-  padding: 0;
-}
+    .navbar {
+        padding: 0;
+    }
 
 .navbar ul {
   margin: 0;
@@ -401,8 +402,8 @@ h6 {
 }
 
 #hero h1 {
-  margin: 0 0 10px 0;
-  font-size: 48px;
+  margin: 0 0;
+  font-size: 44px;
   font-weight: 700;
   line-height: 56px;
   color: #fff;
