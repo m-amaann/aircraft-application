@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
+
+
+
 
 namespace Aircraft_project.Controllers
 {
@@ -21,58 +25,68 @@ namespace Aircraft_project.Controllers
         // Admin Create Function of POST Method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateAdmin(Admin admin)
+        public ActionResult CreateAdmin(Admin admin)
         {
-            admin.Password = HashPassword(admin.Password); //Hash Password
-            _context.Admins.Add(admin);
-            _context.SaveChanges();
-            return RedirectToAction("Admin");  //Redirect to Admin Table Page
-        }
-
-
-        // This is HASH Password Method Function
-        private static string HashPassword(string password)
-        {
-            using (var sha256 = SHA256.Create())
+            if (ModelState.IsValid)
             {
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
-            }
-        }
-
-
-        // Check whether the password is hashed method
-        private static bool VerifyHashedPassword(string hashedPassword, string password)
-        {
-            return HashPassword(password) == hashedPassword;
-        }
-
-
-
-        // Admin Login into Dashboard Function
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AdminLogin(Admin admin)
-        {
-            var adminInDb = _context.Admins.FirstOrDefault(a => a.Email == admin.Email);
-
-            if (adminInDb != null && VerifyHashedPassword(adminInDb.Password, admin.Password))
-            {
-                // Logic for successful login
-                // Set session or authentication cookie here
-                return RedirectToAction("dashboard");
+                admin.Password = HashPassword(admin.Password); // Hash the password
+                _context.Admins.Add(admin);
+                _context.SaveChanges(); 
+                return RedirectToAction("Admin"); // Redirect to the admin page view
             }
 
-            ModelState.AddModelError("", "Invalid login attempt.");
             return View(admin);
         }
 
 
 
 
+        //HASH Password Function
+
+        public static string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
 
 
-        // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) FILE NAMES
+
+
+        // Admin Login Function
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AdminLogin(Admin admin)
+        {
+            var adminInDb = _context.Admins.FirstOrDefault(a => a.Email == admin.Email);
+            if (adminInDb != null)
+            {
+                string hashedPassword = HashPassword(admin.Password);
+                if (hashedPassword == adminInDb.Password)
+                {
+                    // Authentication successful
+                    // Set session or authentication cookie here
+                    return RedirectToAction("dashboard"); // Redirect to dashboard
+                }
+            }
+
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return View("AdminLogin", admin);
+        }
+
+
+
+
+
+
+        // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) 
 
         //Admin Login 
         public ActionResult AdminLogin()
@@ -95,11 +109,12 @@ namespace Aircraft_project.Controllers
             return View("AddAircraft");
         }
 
-        // Admin Creation View
-        public IActionResult Admin()
-        {
-            return View();
-        }
+        // Admin View
+ public IActionResult Admin()
+    {
+        var admins = _context.Admins.ToList();
+        return View(admins);
+    }
 
 
         public ActionResult CreateAdmin()
