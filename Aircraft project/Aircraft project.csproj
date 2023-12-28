@@ -5,19 +5,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Aircraft_project</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' "/>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' "/>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
-    <None Remove="Views\Client\"/>
-    <None Remove="Data\"/>
+    <None Remove="Views\Client\" />
+    <None Remove="Data\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\Images\aircraftlogo.png"/>
+    <None Include="wwwroot\Images\aircraftlogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Client\"/>
-    <Folder Include="wwwroot\Images\"/>
-    <Folder Include="Data\"/>
+    <Folder Include="Views\Client\" />
+    <Folder Include="wwwroot\Images\" />
+    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
@@ -26,9 +26,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <Content Remove="wwwroot\Images\"/>
+    <Content Remove="wwwroot\Images\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
   </ItemGroup>
 </Project>

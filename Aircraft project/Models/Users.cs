@@ -13,11 +13,13 @@ namespace Aircraft_project.Models
         [Key]
         public int UserId { get; set; }
 
-        public required string Name { get; set; }
+        public required string name { get; set; }
 
         public required string email { get; set; }
 
         public required string mobilenumber { get; set; }
+
+        public required string address { get; set; }
 
         [DataType(DataType.Password)]
         public required string password { get; set; }

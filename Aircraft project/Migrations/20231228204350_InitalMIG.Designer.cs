@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aircraft_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231228141942_firstMigration")]
-    partial class firstMigration
+    [Migration("20231228204350_InitalMIG")]
+    partial class InitalMIG
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -203,7 +203,7 @@ namespace Aircraft_project.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -212,6 +212,10 @@ namespace Aircraft_project.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("mobilenumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

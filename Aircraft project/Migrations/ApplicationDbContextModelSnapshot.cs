@@ -200,7 +200,7 @@ namespace Aircraft_project.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -209,6 +209,10 @@ namespace Aircraft_project.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("mobilenumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

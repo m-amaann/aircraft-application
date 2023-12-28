@@ -5,7 +5,7 @@
 namespace Aircraft_project.Migrations
 {
     /// <inheritdoc />
-    public partial class Change : Migration
+    public partial class InitalMIG : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
