@@ -5,7 +5,7 @@ namespace Aircraft_project.Models
 {
     public class Payment
     {
-        [Key] public required string PaymentId { get; set; }
+        [Key] public required int PaymentId { get; set; }
 
         [ForeignKey("Orders")]
         public int OrderId { get; set; }

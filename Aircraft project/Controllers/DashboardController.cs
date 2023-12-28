@@ -18,40 +18,19 @@ namespace Aircraft_project.Controllers
         }
 
 
-
-        // Admin Login POST Action Function
+        // Admin Create Function of POST Method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(Admin admin)
+        public IActionResult CreateAdmin(Admin admin)
         {
-            var adminInDb = _context.Admins.FirstOrDefault(a => a.Email == admin.Email);
-
-            if (adminInDb != null && VerifyHashedPassword(adminInDb.Password, admin.Password))
-            {
-                // Logic for successful login
-                // Set session or authentication cookie here
-                return RedirectToAction("Dashboard");
-            }
-
-            ModelState.AddModelError("", "Invalid login attempt.");
-            return View(admin);
-        }
-
-
-
-
-        // Admin Creation Function
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateAdmin(Admin admin)
-        {
-            admin.Password = HashPassword(admin.Password);
+            admin.Password = HashPassword(admin.Password); //Hash Password
             _context.Admins.Add(admin);
             _context.SaveChanges();
-            return RedirectToAction("AdminList"); // Redirect to a list of admins
+            return RedirectToAction("Admin");  //Redirect to Admin Table Page
         }
 
 
+        // This is HASH Password Method Function
         private static string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
@@ -61,6 +40,8 @@ namespace Aircraft_project.Controllers
             }
         }
 
+
+        // Check whether the password is hashed method
         private static bool VerifyHashedPassword(string hashedPassword, string password)
         {
             return HashPassword(password) == hashedPassword;
@@ -68,9 +49,32 @@ namespace Aircraft_project.Controllers
 
 
 
+        // Admin Login into Dashboard Function
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AdminLogin(Admin admin)
+        {
+            var adminInDb = _context.Admins.FirstOrDefault(a => a.Email == admin.Email);
+
+            if (adminInDb != null && VerifyHashedPassword(adminInDb.Password, admin.Password))
+            {
+                // Logic for successful login
+                // Set session or authentication cookie here
+                return RedirectToAction("dashboard");
+            }
+
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return View(admin);
+        }
 
 
-        //Admin Login View
+
+
+
+
+        // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) FILE NAMES
+
+        //Admin Login 
         public ActionResult AdminLogin()
         {
             return View();
@@ -92,10 +96,12 @@ namespace Aircraft_project.Controllers
         }
 
         // Admin Creation View
-        public ActionResult Admin()
+        public IActionResult Admin()
         {
             return View();
         }
+
+
         public ActionResult CreateAdmin()
         {
             return View();
