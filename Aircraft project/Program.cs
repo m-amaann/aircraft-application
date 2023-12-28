@@ -28,7 +28,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 
-// Default route to Client
+// Routing Set Up for Client & Admin
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Client}/{action=Index}/{id?}");
@@ -41,3 +41,13 @@ app.MapControllerRoute(
 
 
 app.Run();
+
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set a timeout for the session
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+app.UseSession();

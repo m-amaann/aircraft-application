@@ -1,3 +1,6 @@
+@model Aircraft_project.Models.Users
+
+
 @{
     ViewData["Title"] = "Login";
 }
@@ -8,25 +11,21 @@
             <div class="col-md-6 shadow p-5 rounded">
                 <h2 class="font-weight-bold">LOGIN FORM</h2>
                 <hr class="mb-5">
-                <form id="registrationForm">
+                <form id="registrationForm" asp-action="Login" asp-controller="Client" method="post">
                     <div class="mb-4">
-                        <label for="registerEmail" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="registerEmail" name="Email" required
-                            placeholder="Enter your email">
+                        <label for="loginEmail" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="loginEmail" name="Email" required placeholder="Enter your email">
                     </div>
 
                     <div class="mb-4">
-                        <label for="registerPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="registerPassword" name="Password" required
-                            placeholder="Create a password">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" name="Password" required placeholder="Enter your password">
                     </div>
 
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary btn-lg">Login</button>
                     </div>
-                    <p class="mt-4 mb-4"> Are you a new member? Please <a class="" asp-controller="Client"
-                            asp-action="Register">Create an
-                            Account</a> </p>
+                    <p class="mt-4 mb-4"> Are you a new member? Please <a class="" asp-controller="Client" asp-action="Register">Create an Account</a> </p>
                 </form>
             </div>
             <div class="col-md-6">
@@ -36,3 +35,14 @@
         </div>
     </div>
 </section>
+
+@if (ViewBag.LoginSuccess == true)
+{
+    <script>
+        $(document).ready(function () {
+            var toastHTML = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000"><div class="toast-header"><strong class="me-auto">Login Success</strong><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button></div><div class="toast-body">Welcome back!</div></div>';
+            $('.toast-container').append(toastHTML);
+            $('.toast').toast('show');
+        });
+    </script>
+}

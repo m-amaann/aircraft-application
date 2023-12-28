@@ -47,6 +47,41 @@ namespace Aircraft_project.Controllers
 		}
 
 
+        // User Login
+        [HttpPost]
+        public IActionResult Login(string email, string password)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.email == email);
+            if (user != null && VerifyHashedPassword(user.password, password))
+            {
+                // User authentication logic here
+                HttpContext.Session.SetString("UserID", user.UserId.ToString());
+                HttpContext.Session.SetString("UserName", user.name); 
+
+                return RedirectToAction("Index"); // Redirect after successful login
+            }
+
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return View();
+        }
+
+        private bool VerifyHashedPassword(string hashedPassword, string inputPassword)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedInputPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(inputPassword));
+                string hashedInputString = BitConverter.ToString(hashedInputPassword).Replace("-", "").ToLower();
+
+                return hashedPassword == hashedInputString;
+            }
+        }
+
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // Clear session
+            return RedirectToAction("Login");
+        }
 
 
 
@@ -58,7 +93,8 @@ namespace Aircraft_project.Controllers
 
 
 
-		public IActionResult Index()
+
+        public IActionResult Index()
         {
             return View("home");
         }
