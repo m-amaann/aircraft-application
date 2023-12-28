@@ -48,15 +48,10 @@
                 </div>
 
                 <div class="ms-auto d-flex align-items-center" style="gap: 10px;">
-                    @* <button class="btn btn-outline-primary" type="button" asp-controller="Client"
-                        asp-action="Orders">Orders</button> *@
-                    <!-- Shopping Cart Button with Indicator -->
-                    @* <a class="btn btn-outline-primary" asp-controller="Client" asp-action="Cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="badge bg-primary ms-1">3</span> <!-- cart item count -->
-                    </a>
-                     *@
+                    
+
                    <a class="nav-link btn btn-primary" asp-controller="Client" asp-action="Login">LOGIN</a>
+                   
                 </div>
 
             </div>
@@ -76,7 +71,7 @@
 
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container">	
             &copy; @DateTime.Now.Year - Aircraft_project
             <a asp-controller="Client" asp-action="Privacy">Privacy</a>
         </div>
