@@ -18,7 +18,88 @@
                     class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
         </div>
         <div class="row">
-            
+            <div class="col-md-12 mb-4">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">Aircraft</h5>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="AddAircraft" method="post">
+                            <!-- 2 column grid layout with text inputs for the aircraft name and manufacturer -->
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <input type="text" id="formAircraftName" class="form-control" />
+                                        <label class="form-label" for="formAircraftName">Aircraft Name</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <input type="text" id="formManufacturer" class="form-control" />
+                                        <label class="form-label" for="formManufacturer">Manufacturer</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Text input for aircraft color -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="formAircraftColor" class="form-control" />
+                                <label class="form-label" for="formAircraftColor">Color</label>
+                            </div>
+
+                            <!-- Number input for passenger capacity -->
+                            <div class="form-outline mb-4">
+                                <input type="number" id="formPassengerCapacity" class="form-control" />
+                                <label class="form-label" for="formPassengerCapacity">Passenger Capacity</label>
+                            </div>
+
+                            <!-- Number input for maximum speed -->
+                            <div class="form-outline mb-4">
+                                <input type="number" id="formMaxSpeed" class="form-control" />
+                                <label class="form-label" for="formMaxSpeed">Max Speed</label>
+                            </div>
+
+                            <!-- Number input for fuel capacity -->
+                            <div class="form-outline mb-4">
+                                <input type="number" id="formFuelCapacity" class="form-control" />
+                                <label class="form-label" for="formFuelCapacity">Fuel Capacity</label>
+                            </div>
+
+                            <!-- Dropdown for engine type -->
+                            <div class="form-outline mb-4">
+                                <select class="form-select form-control" id="formEngineType">
+                                    <option value="Jet">Jet</option>
+                                    <option value="Propeller">Propeller</option>
+                                    <option value="Turboprop">Turboprop</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                                <label class="form-label" for="formEngineType">Engine Type</label>
+                            </div>
+
+                            <!-- Number input for range -->
+                            <div class="form-outline mb-4">
+                                <input type="number" id="formRange" class="form-control" />
+                                <label class="form-label" for="formRange">Range</label>
+                            </div>
+
+                            <!-- Date input for manufacturing date -->
+                            <div class="form-outline mb-4">
+                                <input type="date" id="formManufacturingDate" class="form-control" />
+                                <label class="form-label" for="formManufacturingDate">Manufacturing Date</label>
+                            </div>
+
+                            <!-- Message input for additional information -->
+                            <div class="form-outline mb-4">
+                                <textarea class="form-control" id="formAdditionalInformation" rows="4"></textarea>
+                                <label class="form-label" for="formAdditionalInformation">Additional information</label>
+                            </div>
+
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- /.container-fluid -->
     </div>
