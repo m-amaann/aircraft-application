@@ -12,16 +12,16 @@ namespace Aircraft_project.Controllers
 {
     public class ClientController : Controller
     {
-		private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-		//Constructor
-		public ClientController(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+        //Constructor
+        public ClientController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
 
-		[HttpPost]
+        [HttpPost]
         public IActionResult Register(Users user, string ConfirmPassword)
         {
             if (ModelState.IsValid)
@@ -40,13 +40,13 @@ namespace Aircraft_project.Controllers
 
 
         private string HashPassword(string password)
-		{
-			using (var sha256 = SHA256.Create())
-			{
-				var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-				return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
-			}
-		}
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+            }
+        }
 
 
         // User Login

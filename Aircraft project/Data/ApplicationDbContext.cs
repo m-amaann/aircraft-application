@@ -18,6 +18,8 @@ namespace Aircraft_project.Data
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
+
+        public DbSet<Aircraft> Aircraft { get; set; }
     }
 }
 

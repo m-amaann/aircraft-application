@@ -31,7 +31,7 @@ namespace Aircraft_project.Controllers
             {
                 admin.Password = HashPassword(admin.Password); // Hash the password
                 _context.Admins.Add(admin);
-                _context.SaveChanges(); 
+                _context.SaveChanges();
                 return RedirectToAction("Admin"); // Redirect to the admin page view
             }
 
@@ -96,7 +96,7 @@ namespace Aircraft_project.Controllers
 
         public IActionResult Index()
         {
-            return View("dashboard"); 
+            return View("dashboard");
         }
 
         public IActionResult Aircraft()
@@ -110,11 +110,11 @@ namespace Aircraft_project.Controllers
         }
 
         // Admin View
- public IActionResult Admin()
-    {
-        var admins = _context.Admins.ToList();
-        return View(admins);
-    }
+        public IActionResult Admin()
+        {
+            var admins = _context.Admins.ToList();
+            return View(admins);
+        }
 
 
         public ActionResult CreateAdmin()
