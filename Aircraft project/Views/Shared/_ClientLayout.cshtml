@@ -21,6 +21,58 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.2/css/boxicons.min.css">
 
+    <style>
+        .button {  
+            align-items: center;
+            border: none;
+            font-size: 16px;
+            outline: none;
+            cursor: pointer;
+            color: #039FE2 !important;
+        }
+
+        .rounded-button-02 {
+            width: 107px;
+            height: 35;
+            border-radius: 25px;
+            background-color: #B3DDF7;
+            
+        }
+        .rounded-button-02 a{
+                color: #039FE2 !important;
+                font-weight: 500;
+        }
+
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-right: -18px;
+        }
+
+            .cart-icon img {
+                width: 26px;
+            }
+
+        .cart-count {
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 11px;
+            min-width: 20px;
+            height: 20px;
+            box-sizing: border-box;
+        }
+    </style>
 
 </head>
 
@@ -60,9 +112,13 @@
                     </ul>
                 </div>
 
-                <div class="ms-auto d-flex align-items-center" style="gap: 10px;">
+                <div class="ms-auto d-flex align-items-center" style="gap: 2px;">
                      @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
                     {
+                        <div class="cart-icon">
+                            <img src="/Images/Icons/shopping-bag.png" alt="Cart">
+                            <div class="cart-count">1</div>
+                        </div>
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class='bx bxs-user-circle' style='font-size: 24px; color: grey;'></i> @HttpContextAccessor.HttpContext.Session.GetString("UserName")
@@ -77,8 +133,14 @@
                     }
                     else
                     {
-                        <a class="nav-link btn btn-primary" asp-controller="Client" asp-action="Login">LOGIN</a>
+                        <button class="button rounded-button-02">
+                            <a class="text-decoration-none" asp-controller="Client" asp-action="Login">LOGIN</a>
+                        </button>
+
+                        
+                        
                     }
+                   
                 </div>
 
 
