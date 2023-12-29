@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -15,7 +15,6 @@
     <None Include="wwwroot\Images\aircraftlogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Client\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="Data\" />
   </ItemGroup>
@@ -30,7 +29,6 @@
     <Content Remove="wwwroot\Images\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
   </ItemGroup>
 </Project>

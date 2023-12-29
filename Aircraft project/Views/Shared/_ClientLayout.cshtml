@@ -115,10 +115,12 @@
                 <div class="ms-auto d-flex align-items-center" style="gap: 2px;">
                      @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
                     {
-                        <div class="cart-icon">
-                            <img src="/Images/Icons/shopping-bag.png" alt="Cart">
-                            <div class="cart-count">1</div>
-                        </div>
+                        <a asp-controller="Client" asp-action="Cart">
+                            <div class="cart-icon">
+                                <img src="/Images/Icons/shopping-bag.png" alt="Cart">
+                                <div class="cart-count">1</div>
+                            </div>
+                        </a>
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class='bx bxs-user-circle' style='font-size: 24px; color: grey;'></i> @HttpContextAccessor.HttpContext.Session.GetString("UserName")
@@ -135,28 +137,19 @@
                     {
                         <button class="button rounded-button-02">
                             <a class="text-decoration-none" asp-controller="Client" asp-action="Login">LOGIN</a>
-                        </button>
-
-                        
-                        
+                        </button>                    
                     }
                    
                 </div>
-
-
             </div>
         </nav>
     </header>
+
     <div class="mb-5">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
-
-
-
-
 
 
 
@@ -169,6 +162,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.3/dist/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 
     

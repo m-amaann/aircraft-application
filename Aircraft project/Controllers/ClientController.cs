@@ -132,5 +132,10 @@ namespace Aircraft_project.Controllers
         {
             return View("Login");
         }
+
+        public IActionResult Cart()
+        {
+            return View("Cart");
+        }
     }
 }
