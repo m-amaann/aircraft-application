@@ -16,13 +16,16 @@
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css" integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css"
+        integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.2/css/boxicons.min.css">
 
     <style>
-        .button {  
+        .button {
             align-items: center;
             border: none;
             font-size: 16px;
@@ -36,11 +39,12 @@
             height: 35;
             border-radius: 25px;
             background-color: #B3DDF7;
-            
+
         }
-        .rounded-button-02 a{
-                color: #039FE2 !important;
-                font-weight: 500;
+
+        .rounded-button-02 a {
+            color: #039FE2 !important;
+            font-weight: 500;
         }
 
 
@@ -52,9 +56,9 @@
             margin-right: -18px;
         }
 
-            .cart-icon img {
-                width: 26px;
-            }
+        .cart-icon img {
+            width: 26px;
+        }
 
         .cart-count {
             background-color: red;
@@ -109,24 +113,31 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Client" asp-action="Contact">CONTACT US</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Client" asp-action="DP">DP</a>
+                        </li>
                     </ul>
                 </div>
 
                 <div class="ms-auto d-flex align-items-center" style="gap: 2px;">
-                     @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
                     {
                         <div class="cart-icon">
                             <img src="/Images/Icons/shopping-bag.png" alt="Cart">
                             <div class="cart-count">1</div>
                         </div>
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class='bx bxs-user-circle' style='font-size: 24px; color: grey;'></i> @HttpContextAccessor.HttpContext.Session.GetString("UserName")
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class='bx bxs-user-circle' style='font-size: 24px; color: grey;'></i>
+                                @HttpContextAccessor.HttpContext.Session.GetString("UserName")
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#">Profile</a></li>
                                 <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li><a class="dropdown-item" asp-controller="Client" asp-action="Logout">Logout</a></li>
                             </ul>
                         </div>
@@ -137,10 +148,10 @@
                             <a class="text-decoration-none" asp-controller="Client" asp-action="Login">LOGIN</a>
                         </button>
 
-                        
-                        
+
+
                     }
-                   
+
                 </div>
 
 
@@ -161,7 +172,7 @@
 
 
     <footer class="border-top footer text-muted">
-        <div class="container">	
+        <div class="container">
             &copy; @DateTime.Now.Year - Aircraft_project
             <a asp-controller="Client" asp-action="Privacy">Privacy</a>
         </div>
@@ -171,7 +182,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 
-    
+
 </body>
 
 </html>
