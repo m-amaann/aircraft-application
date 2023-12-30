@@ -46,7 +46,6 @@ namespace Aircraft_project.Controllers
                         {
                             Directory.CreateDirectory(imageDirectory);
                         }
-
                         var filePath = Path.Combine(imageDirectory, fileNameToStore);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
@@ -56,9 +55,6 @@ namespace Aircraft_project.Controllers
 
                         user.ImagePath = Path.Combine("Images", "Customers", fileNameToStore); // Save the path
                     }
-
-                    // Hash the password and other user-saving logic
-                    // ...
 
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
