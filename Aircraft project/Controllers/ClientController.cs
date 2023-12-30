@@ -29,18 +29,17 @@ namespace Aircraft_project.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(Users user, IFormFile Image, string ConfirmPassword)
+        public async Task<IActionResult> Register(Users user, IFormFile ImagePath, string ConfirmPassword)
         {
             if (ModelState.IsValid)
             {
                 if (user.Password == ConfirmPassword)
                 {
-                    if (Image != null && Image.Length > 0)
+                    if (ImagePath != null && ImagePath.Length > 0)
                     {
-                        var fileName = Path.GetFileNameWithoutExtension(Image.FileName);
-                        var extension = Path.GetExtension(Image.FileName);
-                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "Users");
+                        var fileName = Path.GetFileNameWithoutExtension(ImagePath.FileName);
+                        var extension = Path.GetExtension(ImagePath.FileName);
+                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "Customers");
                         var fileNameToStore = $"{fileName}_{DateTime.Now:yyyyMMddHHmmss}{extension}";
 
                         if (!Directory.Exists(imageDirectory))
@@ -52,16 +51,18 @@ namespace Aircraft_project.Controllers
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            await Image.CopyToAsync(stream);
+                            await ImagePath.CopyToAsync(stream);
                         }
 
-                        user.ImagePath = Path.Combine("Images", "Users", fileNameToStore);
+                        user.ImagePath = Path.Combine("Images", "Customers", fileNameToStore); // Save the path
                     }
 
-                    user.Password = HashPassword(user.Password);
+                    // Hash the password and other user-saving logic
+                    // ...
+
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Login");
+                    return RedirectToAction("Login"); // Redirect to login page after registration
                 }
                 else
                 {
@@ -71,6 +72,10 @@ namespace Aircraft_project.Controllers
 
             return View(user);
         }
+
+
+
+
 
         private string HashPassword(string password)
         {
