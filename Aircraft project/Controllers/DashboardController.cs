@@ -32,7 +32,7 @@ namespace Aircraft_project.Controllers
                 admin.Password = HashPassword(admin.Password); // Hash the password
                 _context.Admins.Add(admin);
                 _context.SaveChanges();
-                return RedirectToAction("Admin"); // Redirect to the admin page view
+                return RedirectToAction("Admin");
             }
 
             return View(admin);
@@ -42,7 +42,6 @@ namespace Aircraft_project.Controllers
 
 
         //HASH Password Function
-
         public static string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -86,7 +85,7 @@ namespace Aircraft_project.Controllers
 
 
 
-        // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) 
+        // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) PAGES
 
         //Admin Login 
         public ActionResult AdminLogin()

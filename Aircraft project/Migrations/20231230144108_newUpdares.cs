@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Aircraft_project.Migrations
 {
     /// <inheritdoc />
-    public partial class initalMigrations : Migration
+    public partial class newUpdares : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,24 +28,25 @@ namespace Aircraft_project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AircraftProducts",
+                name: "Aircraft",
                 columns: table => new
                 {
                     AircraftId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ModelName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Price = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Colors = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SeatCount = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PassengerCapacity = table.Column<int>(type: "int", nullable: false),
+                    MaxSpeed = table.Column<int>(type: "int", nullable: false),
+                    FuelCapacity = table.Column<double>(type: "float", nullable: false),
                     EngineType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FanType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Range = table.Column<double>(type: "float", nullable: false),
+                    ManufacturingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AircraftProducts", x => x.AircraftId);
+                    table.PrimaryKey("PK_Aircraft", x => x.AircraftId);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,11 +55,12 @@ namespace Aircraft_project.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    mobilenumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MobileNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -105,9 +107,9 @@ namespace Aircraft_project.Migrations
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.OrderItemId);
                     table.ForeignKey(
-                        name: "FK_OrderItems_AircraftProducts_AircraftId",
+                        name: "FK_OrderItems_Aircraft_AircraftId",
                         column: x => x.AircraftId,
-                        principalTable: "AircraftProducts",
+                        principalTable: "Aircraft",
                         principalColumn: "AircraftId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -173,7 +175,7 @@ namespace Aircraft_project.Migrations
                 name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "AircraftProducts");
+                name: "Aircraft");
 
             migrationBuilder.DropTable(
                 name: "Orders");

@@ -11,7 +11,7 @@ namespace Aircraft_project.Models
         [ForeignKey("Orders")]
         public int OrderId { get; set; }
 
-        [ForeignKey("AircraftProduct")]
+        [ForeignKey("Aircrafts")]
         public int AircraftId { get; set; }
 
         public int Quantity { get; set; }
@@ -19,7 +19,7 @@ namespace Aircraft_project.Models
         public string Price { get; set; }
 
         public virtual Orders Orders { get; set; }
-        public virtual AircraftProduct AircraftProduct { get; set; }
+        public virtual Aircraft Aircraft { get; set; }
 
     }
 }

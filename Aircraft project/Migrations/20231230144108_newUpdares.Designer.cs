@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aircraft_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231229031429_InitialCreate1")]
-    partial class InitialCreate1
+    [Migration("20231230144108_newUpdares")]
+    partial class newUpdares
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,11 +55,11 @@ namespace Aircraft_project.Migrations
 
             modelBuilder.Entity("Aircraft_project.Models.Aircraft", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AircraftId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AircraftId"));
 
                     b.Property<string>("AdditionalInformation")
                         .IsRequired()
@@ -73,8 +73,8 @@ namespace Aircraft_project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("FuelCapacity")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("FuelCapacity")
+                        .HasColumnType("float");
 
                     b.Property<string>("Manufacturer")
                         .IsRequired()
@@ -83,8 +83,8 @@ namespace Aircraft_project.Migrations
                     b.Property<DateTime>("ManufacturingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("MaxSpeed")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("MaxSpeed")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -93,60 +93,12 @@ namespace Aircraft_project.Migrations
                     b.Property<int>("PassengerCapacity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Range")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Aircraft");
-                });
-
-            modelBuilder.Entity("Aircraft_project.Models.AircraftProduct", b =>
-                {
-                    b.Property<int>("AircraftId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AircraftId"));
-
-                    b.Property<string>("Colors")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("EngineType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FanType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModelName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Price")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SeatCount")
-                        .HasColumnType("int");
+                    b.Property<double>("Range")
+                        .HasColumnType("float");
 
                     b.HasKey("AircraftId");
 
-                    b.ToTable("AircraftProducts");
+                    b.ToTable("Aircraft");
                 });
 
             modelBuilder.Entity("Aircraft_project.Models.OrderItem", b =>
@@ -248,26 +200,30 @@ namespace Aircraft_project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("address")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("email")
+                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("mobilenumber")
+                    b.Property<string>("MobileNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -278,7 +234,7 @@ namespace Aircraft_project.Migrations
 
             modelBuilder.Entity("Aircraft_project.Models.OrderItem", b =>
                 {
-                    b.HasOne("Aircraft_project.Models.AircraftProduct", "AircraftProduct")
+                    b.HasOne("Aircraft_project.Models.Aircraft", "Aircraft")
                         .WithMany()
                         .HasForeignKey("AircraftId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -290,7 +246,7 @@ namespace Aircraft_project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AircraftProduct");
+                    b.Navigation("Aircraft");
 
                     b.Navigation("Orders");
                 });

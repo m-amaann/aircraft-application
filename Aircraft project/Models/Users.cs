@@ -13,16 +13,24 @@ namespace Aircraft_project.Models
         [Key]
         public int UserId { get; set; }
 
-        public required string name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-        public required string email { get; set; }
+        [Required]
+        public string Email { get; set; }
 
-        public required string mobilenumber { get; set; }
+        [Required]
+        public string MobileNumber { get; set; }
 
-        public required string address { get; set; }
+        [Required]
+        public string Address { get; set; }
+
+        public string ImagePath { get; set; }
 
         [DataType(DataType.Password)]
-        public required string password { get; set; }
+        [Required]
+        public string Password { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

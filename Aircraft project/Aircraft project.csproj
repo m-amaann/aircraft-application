@@ -15,8 +15,8 @@
     <None Include="wwwroot\Images\aircraftlogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\Images\" />
     <Folder Include="Data\" />
+    <Folder Include="wwwroot\Images\Users\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.1.1" />
