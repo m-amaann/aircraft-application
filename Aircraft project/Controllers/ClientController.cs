@@ -82,11 +82,11 @@ namespace Aircraft_project.Controllers
                 return hash;
             }
         }
-    
 
 
-    // User Login
-    [HttpPost]
+
+        // User Login
+        [HttpPost]
         public IActionResult Login(Users user)
         {
             var existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
@@ -177,6 +177,10 @@ namespace Aircraft_project.Controllers
         public IActionResult Cart()
         {
             return View("Cart");
+        }
+        public IActionResult DP()
+        {
+            return View("DetailedPage");
         }
 
     }
