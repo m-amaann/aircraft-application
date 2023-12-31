@@ -182,6 +182,11 @@ namespace Aircraft_project.Controllers
         {
             return View("DetailedPage");
         }
+        public IActionResult Checkout()
+        {
+            return View("Checkout");
+        }
+
 
     }
 }
