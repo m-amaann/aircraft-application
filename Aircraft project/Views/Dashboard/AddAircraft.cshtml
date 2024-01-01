@@ -1,11 +1,8 @@
 @model Aircraft_project.Models.Aircraft
 
-
-
 @{
     ViewData["Title"] = "AddAircraft";
 }
-
 
 <!-- Main Content -->
 <div id="content">
@@ -18,81 +15,127 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Add Aircraft</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i>Generate Report</a>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
         </div>
-
         <div class="row">
             <div class="col-md-12 mb-4">
                 <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">Aircraft</h5>
+                    </div>
                     <div class="card-body">
+                        <form asp-action="CreateAircraft" method="post">
+                            <!-- 2 column grid layout with text inputs for the aircraft name and manufacturer -->
+                            @* <input type="hidden" id="Id" name="Id" asp-for="Id" /> *@
 
-                        <form asp-action="AddAircraft" method="post">
-                            @Html.AntiForgeryToken()
-                            <div class="form-group">
-                                <label asp-for="Name" class="control-label">Aircraft Name</label>
-                                <input asp-for="Name" class="form-control" />
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <input type="text" id="Name" class="form-control" asp-for="Name" />
+                                        <label class="form-label" for="Name">Aircraft Name</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <input type="text" id="Manufacturer" class="form-control"
+                                            asp-for="Manufacturer" />
+                                        <label class="form-label" for="Manufacturer">Manufacturer</label>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="Manufacturer" class="control-label">Manufacturer</label>
-                                <input asp-for="Manufacturer" class="form-control" />
+                            <!-- Text input for aircraft color -->
+                            <div class="form-outline mb-4">
+                                <input type="text" id="Color" class="form-control" asp-for="Color" />
+                                <label class="form-label" for="Color">Color</label>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="Color" class="control-label">Color</label>
-                                <input asp-for="Color" class="form-control" />
+                            <!-- Number input for passenger capacity -->
+                            <div class="form-outline mb-4">
+                                <input type="number" id="PassengerCapacity" class="form-control"
+                                    asp-for="PassengerCapacity" />
+                                <label class="form-label" for="PassengerCapacity">Passenger Capacity</label>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="PassengerCapacity" class="control-label">Passenger Capacity</label>
-                                <input asp-for="PassengerCapacity" class="form-control" />
+                            <!-- Number input for maximum speed -->
+                            <div class="form-outline mb-4">
+                                <input type="number" id="formMaxSpeed" class="form-control" asp-for="MaxSpeed" />
+                                <label class="form-label" for="formMaxSpeed">Max Speed</label>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="MaxSpeed" class="control-label">Max Speed</label>
-                                <input asp-for="MaxSpeed" class="form-control" />
+                            <!-- Number input for fuel capacity -->
+                            <div class="form-outline mb-4">
+                                <input type="number" id="formFuelCapacity" class="form-control"
+                                    asp-for="FuelCapacity" />
+                                <label class="form-label" for="formFuelCapacity">Fuel Capacity</label>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="FuelCapacity" class="control-label">Fuel Capacity</label>
-                                <input asp-for="FuelCapacity" class="form-control" />
+                            <!-- Number input for range -->
+                            <div class="form-outline mb-4">
+                                <input type="number" id="formRange" class="form-control" asp-for="Range" />
+                                <label class="form-label" for="formRange">Range</label>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="EngineType" class="control-label">Engine Type</label>
-                                <select asp-for="EngineType" class="form-control">
+                            <!-- Dropdown for engine type -->
+                            <div class="form-outline mb-4">
+                                <select class="form-select form-control" id="EngineType" asp-for="EngineType">
                                     <option value="Jet">Jet</option>
                                     <option value="Propeller">Propeller</option>
                                     <option value="Turboprop">Turboprop</option>
+                                    <!-- Add more options as needed -->
                                 </select>
+                                <label class="form-label" for="EngineType">Engine Type</label>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for="Range" class="control-label">Range</label>
-                                <input asp-for="Range" class="form-control" />
-                                <span asp-validation-for="Range" class="text-danger"></span>
+                            <!-- Date input for manufacturing date -->
+                            <div class="form-outline mb-4">
+                                <input type="date" id="ManufacturingDate" class="form-control"
+                                    asp-for="ManufacturingDate" />
+                                <label class="form-label" for="ManufacturingDate">Manufacturing Date</label>
                             </div>
 
-                            <div class="form-group">
-                                <label asp-for ="ManufacturingDate" class="control-label">Manufactured Date</label>
-                                <input asp-for="ManufacturingDate" type="date" class="form-control" />
+                            <!-- Dropdown for aircraft category -->
+                            <div class="form-outline mb-4">
+                                <select class="form-select form-control" id="Category" asp-for="Category">
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Military">Military</option>
+                                    <option value="Private">Private</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                                <label class="form-label" for="Category">Aircraft Category</label>
                             </div>
 
-                            <div class="form-group">
-                                <label for="additionalInformation" class="control-label">Additional Information</label>
-                                <textarea for="AdditionalInformation" typeof="text" id="additionalInformation" class="form-control" rows="4"></textarea>
+                            <!-- Message input for additional information -->
+                            <div class="form-outline mb-4">
+                                <textarea class="form-control" id="AdditionalInformation"
+                                    asp-for="AdditionalInformation" rows="4"></textarea>
+                                <label class="form-label" for="AdditionalInformation">Additional information</label>
+                            </div>
+
+                            <!-- File input for aircraft image -->
+                            @* <div class="form-outline mb-4">
+                            <input type="file" id="imageFile" class="form-control" name="imageFile" />
+                            <label class="form-label" for="imageFile">Aircraft Image</label>
+                            </div> *@
+                            <div class="form-outline mb-4">
+                                <input type="text" id="ImagePath" class="form-control" asp-for="ImagePath" />
+                                <label class="form-label" for="ImagePath">Image Url</label>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" id="Price" class="form-control" asp-for="Price" />
+                                <label class="form-label" for="Price">Price</label>
                             </div>
 
                             <!-- Submit button -->
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Add Aircraft</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
+
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- /.container-fluid -->
     </div>
     <!-- End of Main Content -->

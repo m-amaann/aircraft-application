@@ -5,20 +5,23 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
-
-
-
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
 
 namespace Aircraft_project.Controllers
 {
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        //Constructor
-        public DashboardController(ApplicationDbContext context)
+        // Constructor
+        public DashboardController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -32,14 +35,11 @@ namespace Aircraft_project.Controllers
                 admin.Password = HashPassword(admin.Password); // Hash the password
                 _context.Admins.Add(admin);
                 _context.SaveChanges();
-                return RedirectToAction("Admin");
+                return RedirectToAction("Admin"); // Redirect to the admin page view
             }
 
             return View(admin);
         }
-
-
-
 
         //HASH Password Function
         public static string HashPassword(string password)
@@ -55,9 +55,6 @@ namespace Aircraft_project.Controllers
                 return builder.ToString();
             }
         }
-
-
-
 
         // Admin Login Function
         [HttpPost]
@@ -80,12 +77,7 @@ namespace Aircraft_project.Controllers
             return View("AdminLogin", admin);
         }
 
-
-
-
-
-
-        // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) PAGES
+        // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) 
 
         //Admin Login 
         public ActionResult AdminLogin()
@@ -100,7 +92,9 @@ namespace Aircraft_project.Controllers
 
         public IActionResult Aircraft()
         {
-            return View("Aircraft");
+            // return View("Aircraft");
+            var aircraft = _context.Aircraft.ToList();
+            return View(aircraft);
         }
 
         public IActionResult AddAircraft()
@@ -108,13 +102,49 @@ namespace Aircraft_project.Controllers
             return View("AddAircraft");
         }
 
+        [HttpPost]
+        public IActionResult CreateAircraft(Aircraft aircraft)
+        {
+            if (ModelState.IsValid)
+            {
+                // if (imageFile != null && imageFile.Length > 0)
+                // {
+                //     aircraft.ImagePath = UploadImage(imageFile);
+                // }
+
+                _context.Aircraft.Add(aircraft);
+                _context.SaveChanges();
+                return RedirectToAction("AddAircraft");
+            }
+
+            return View("AddAircraft", aircraft);
+        }
+
+        // private string UploadImage(IFormFile file)
+        // {
+        //     if (file != null && file.Length > 0)
+        //     {
+        //         string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+        //         string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
+        //         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        //         using (var stream = new FileStream(filePath, FileMode.Create))
+        //         {
+        //             file.CopyTo(stream);
+        //         }
+
+        //         return "/uploads/" + uniqueFileName;
+        //     }
+
+        //     return null;
+        // }
+
         // Admin View
         public IActionResult Admin()
         {
             var admins = _context.Admins.ToList();
             return View(admins);
         }
-
 
         public ActionResult CreateAdmin()
         {

@@ -52,13 +52,17 @@ namespace Aircraft_project.Migrations
 
             modelBuilder.Entity("Aircraft_project.Models.Aircraft", b =>
                 {
-                    b.Property<int>("AircraftId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AircraftId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AdditionalInformation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -70,10 +74,10 @@ namespace Aircraft_project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("FuelCapacity")
-                        .HasColumnType("float");
+                    b.Property<int>("FuelCapacity")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -94,10 +98,14 @@ namespace Aircraft_project.Migrations
                     b.Property<int>("PassengerCapacity")
                         .HasColumnType("int");
 
-                    b.Property<double>("Range")
-                        .HasColumnType("float");
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AircraftId");
+                    b.Property<int>("Range")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Aircraft");
                 });

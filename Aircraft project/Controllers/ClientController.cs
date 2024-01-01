@@ -1,4 +1,5 @@
-﻿using Aircraft_project.Models;
+﻿using Aircraft_project.Data;
+using Aircraft_project.Models;
 using Aircraft_project.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -16,13 +17,14 @@ namespace Aircraft_project.Controllers
     public class ClientController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ApplicationDbContext _context;
 
 
         //Constructor
-        public ClientController( IUserService userService)
+        public ClientController(ApplicationDbContext context, IUserService userService)
         {
+            _context = context;
             _userService = userService;
-
         }
 
         // Register Method
@@ -105,11 +107,6 @@ namespace Aircraft_project.Controllers
 
 
 
-
-
-
-
-
         public IActionResult Index()
         {
             return View("home");
@@ -139,7 +136,9 @@ namespace Aircraft_project.Controllers
 
         public IActionResult Shopping()
         {
-            return View("Shopping");
+            // return View("Shopping");
+            var aircraft = _context.Aircraft.ToList();
+            return View(aircraft);
         }
 
         [HttpGet]

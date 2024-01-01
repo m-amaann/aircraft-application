@@ -1,9 +1,8 @@
-﻿@{
+﻿@model IEnumerable<Aircraft_project.Models.Aircraft>
+
+@{
     ViewData["Title"] = "Shopping";
 }
-
-
-
 
 <!-- Shop Start -->
 <div class="container-fluid pt-5">
@@ -47,71 +46,38 @@
         <div class="col-lg-9 col-md-12 ">
             <div class="row pb-3 filter_dataa" id="product-list">
                 <div class="row pb-3 justify-content-end">
-    <div class="col-auto">
-        <input type="text" class="form-control" placeholder="Search">
-    </div>
-</div>
-
-                @* product 1 *@
-                <div class="product-card">
-                    
-                    <div class="product-image">
-                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model" class="img-fluid w-100 col-hover">
-                    </div>
-                    <div class="product-details">
-                        <div class="product-brand">Jet</div>
-                        <h2 class="product-title">PISTON AIRPLANES</h2>
-                        <div class="product-price">$20,000,000</div>
-                    </div>
-                    <div class="button-container">
-                        <button class="order-button">Order Now</button>
-                        <button class="add-to-cart" onclick="slideIcon()">
-                            Cart
-                            <i class="fas fa-shopping-cart cart-icon"></i>
-                        </button>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="Search">
                     </div>
                 </div>
 
-                @* product 2 *@
+                        @if (Model != null)
+                        {
+                            @foreach (var aircraft in Model)
+                            {
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model" class="img-fluid w-100 col-hover">
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-brand">@aircraft.Name</div>
+                                        <h2 class="product-title">@aircraft.AdditionalInformation</h2>
+                                        <div class="product-price">$@aircraft.Price</div>
+                                    </div>
+                                    <div class="button-container">
+                                        <button class="order-button">View More</button>
+                                        <button class="add-to-cart" onclick="slideIcon()">
+                                            Cart
+                                            <i class="fas fa-shopping-cart cart-icon"></i>
+                                        </button>
+                                    </div>
+                                </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model" class="img-fluid w-100 col-hover">
-                    </div>
-                    <div class="product-details">
-                        <div class="product-brand">Jet</div>
-                        <h2 class="product-title">PISTON AIRPLANES</h2>
-                        <div class="product-price">$20,000,000</div>
-                    </div>
-                    <div class="button-container">
-                        <button class="order-button">Order Now</button>
-                        <button class="add-to-cart" onclick="">
-                            Cart
-                            <i class="fas fa-shopping-cart cart-icon"></i>
-                        </button>
-                    </div>
-                </div>
-
-
-                @* pro 3 *@
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model" class="img-fluid w-100 col-hover">
-                    </div>
-                    <div class="product-details">
-                        <div class="product-brand">Jet</div>
-                        <h2 class="product-title">PISTON AIRPLANES</h2>
-                        <div class="product-price">$20,000,000</div>
-                    </div>
-                    <div class="button-container">
-                        <button class="order-button">Order Now</button>
-                        <button class="add-to-cart" onclick="">
-                            Cart
-                            <i class="fas fa-shopping-cart cart-icon"></i>
-                        </button>
-                    </div>
-                </div>
-
+                        }}
+                        else
+                        {
+                            <p>No aircraft data available.</p>
+                        }
 
             </div>
             <div class="text-center">
