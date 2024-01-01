@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 
 
 
@@ -17,62 +18,51 @@ namespace Aircraft_project.Controllers
     public class ClientController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
 
         //Constructor
-        public ClientController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public ClientController(ApplicationDbContext context)
         {
             _context = context;
-            _webHostEnvironment = webHostEnvironment;
 
         }
 
+        // Register Method
         [HttpPost]
-        public async Task<IActionResult> Register(Users user, IFormFile ImagePath, string ConfirmPassword)
+        public async Task<IActionResult> Register(Users user, string ConfirmPassword)
         {
             if (ModelState.IsValid)
             {
                 if (user.Password == ConfirmPassword)
                 {
-                    if (ImagePath != null && ImagePath.Length > 0)
+                    try
                     {
-                        var fileName = Path.GetFileNameWithoutExtension(ImagePath.FileName);
-                        var extension = Path.GetExtension(ImagePath.FileName);
-                        var imageDirectory = Path.Combine(_webHostEnvironment.WebRootPath, "Images", "Customers");
-                        var fileNameToStore = $"{fileName}_{DateTime.Now:yyyyMMddHHmmss}{extension}";
+                       
+                        user.Password = HashPassword(user.Password); //Hashing
 
-                        if (!Directory.Exists(imageDirectory))
-                        {
-                            Directory.CreateDirectory(imageDirectory);
-                        }
-                        var filePath = Path.Combine(imageDirectory, fileNameToStore);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await ImagePath.CopyToAsync(stream);
-                        }
-
-                        user.ImagePath = Path.Combine("Images", "Customers", fileNameToStore); // Save the path
+                        // Add the user to the context and save changes
+                        _context.Users.Add(user);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction("Login"); // Redirect to login page after registration
                     }
-
-                    _context.Users.Add(user);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Login"); // Redirect to login page after registration
+                    catch (Exception ex)
+                    {
+                        
+                        ModelState.AddModelError("", $"An unexpected error occurred: {ex.Message}");
+                    }
                 }
                 else
                 {
                     ModelState.AddModelError("ConfirmPassword", "Passwords do not match.");
                 }
             }
-
-            return View(user);
+   
+            return View(user);  // If we get here, redisplay form
         }
 
 
 
-
-
+        //Hashing  method
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
@@ -153,7 +143,7 @@ namespace Aircraft_project.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            return View("Register");
+            return View();
         }
 
 

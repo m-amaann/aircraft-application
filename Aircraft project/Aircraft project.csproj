@@ -17,6 +17,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="wwwroot\Images\Customers\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.1.1" />
