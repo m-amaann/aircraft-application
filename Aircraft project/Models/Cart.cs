@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace Aircraft_project.Models
 {
     public class Cart
@@ -18,11 +19,7 @@ namespace Aircraft_project.Models
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-
-
         public virtual Aircraft Aircraft { get; set; }
         public virtual Users Users { get; set; }
-
-
     }
 }
