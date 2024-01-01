@@ -10,35 +10,25 @@
         <!-- Shop Sidebar Start -->
         <div class="col-lg-3  col-md-12 mt-5">
 
-
             <!-- Category Start -->
             <div class="mb-5">
                 <h5 class="font-weight-semi-bold mb-4 text-danger">Filter by Category</h5>
-                <ul class="list-group">
-                    <li class="list-group-item checkbox align-items-center">
-                        <div class="form-check">
-                            <label for="" class="">
-                                <input type="checkbox" class="common_selector brand"
-                                    value="<?= $row['category_name'] ?> " id="category"> CHOPPER
 
-                            </label>
-                            <span
-                                class="badge badge-warning px-4  py-2 border font-weight-bolder text-dark float-right">
-                            </span>
-                        </div>
-                    </li>
-                    <li class="list-group-item checkbox align-items-center">
-                        <div class="form-check">
-                            <label for="" class="">
-                                <input type="checkbox" class="common_selector brand"
-                                    value="<?= $row['category_name'] ?> " id="category"> PRIVATE JET
-                            </label>
-                            <span
-                                class="badge badge-warning px-4  py-2 border font-weight-bolder text-dark float-right">
-                            </span>
-                        </div>
-                    </li>
-                </ul>
+                <form action="/Client/FilterProducts" method="get">
+                    <div class="mb-3">
+                        <select class="form-select" name="category">
+                            <option value="">All</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Military">Military</option>
+                            <option value="Private">Private</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Search" name="search">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
             </div>
         </div>
 
@@ -47,38 +37,39 @@
             <div class="row pb-3 filter_dataa" id="product-list">
                 <div class="row pb-3 justify-content-end">
                     <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="Search">
+                        @* <input type="text" class="form-control" placeholder="Search"> *@
                     </div>
                 </div>
-
-                        @if (Model != null)
+                <div class="row" id="product-list">
+                    @if (Model != null)
+                    {
+                        @foreach (var filteredProducts in Model)
                         {
-                            @foreach (var aircraft in Model)
-                            {
-                                <div class="product-card">
-                                    <div class="product-image">
-                                        <img src="~/Images/PISTON-AIRPLANES.jpg" alt="Aircraft Model" class="img-fluid w-100 col-hover">
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="product-brand">@aircraft.Name</div>
-                                        <h2 class="product-title">@aircraft.AdditionalInformation</h2>
-                                        <div class="product-price">$@aircraft.Price</div>
-                                    </div>
-                                    <div class="button-container">
-                                        <button class="order-button">View More</button>
-                                        <button class="add-to-cart" onclick="slideIcon()">
-                                            Cart
-                                            <i class="fas fa-shopping-cart cart-icon"></i>
-                                        </button>
-                                    </div>
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="@filteredProducts.ImagePath" alt="Aircraft Model"
+                                        class="img-fluid w-100 col-hover">
                                 </div>
+                                <div class="product-details">
+                                    <div class="product-brand">@filteredProducts.Name</div>
+                                    <h2 class="product-title">@filteredProducts.AdditionalInformation</h2>
+                                    <div class="product-price">$@filteredProducts.Price</div>
+                                </div>
+                                <div class="button-container">
+                                    <button class="order-button">View More</button>
+                                    @* <button class="add-to-cart" onclick="slideIcon()">
+                                        Cart
+                                        <i class="fas fa-shopping-cart cart-icon"></i>
+                                    </button> *@
+                                </div>
+                            </div>
 
                         }}
-                        else
-                        {
-                            <p>No aircraft data available.</p>
-                        }
-
+                    else
+                    {
+                        <p>No aircraft data available.</p>
+                    }
+                </div>
             </div>
             <div class="text-center">
                 <button class="btn btn-primary load-more">Load More &nbsp;&nbsp;&nbsp;<i

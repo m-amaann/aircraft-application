@@ -166,6 +166,26 @@ namespace Aircraft_project.Controllers
             return View("Checkout");
         }
 
+        [HttpGet]
+        public IActionResult FilterProducts(string category, string search)
+        {
+            try
+            {
+                // Your logic to filter products based on the category and search
+                var filteredProducts = _context.Aircraft
+                    .Where(a => (string.IsNullOrEmpty(category) || a.Category == category) &&
+                                (string.IsNullOrEmpty(search) || a.Name.Contains(search)))
+                    .ToList();
 
+                // Return the view with the filtered products
+                return View("Shopping", filteredProducts);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.Error.WriteLine($"Exception in FilterProducts: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }
