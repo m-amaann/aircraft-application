@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
 using System.Linq;
+using Aircraft_project.Services;
 
 
 
@@ -18,12 +19,14 @@ namespace Aircraft_project.Controllers
     public class ClientController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUserService _userService;
 
 
         //Constructor
-        public ClientController(ApplicationDbContext context)
+        public ClientController(ApplicationDbContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
 
         }
 
@@ -31,38 +34,27 @@ namespace Aircraft_project.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(Users user, string ConfirmPassword)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (user.Password == ConfirmPassword)
-                {
-                    try
-                    {
-                       
-                        user.Password = HashPassword(user.Password); //Hashing
-
-                        // Add the user to the context and save changes
-                        _context.Users.Add(user);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction("Login"); // Redirect to login page after registration
-                    }
-                    catch (Exception ex)
-                    {
-                        
-                        ModelState.AddModelError("", $"An unexpected error occurred: {ex.Message}");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("ConfirmPassword", "Passwords do not match.");
-                }
+                return View(user);
             }
-   
-            return View(user);  // If we get here, redisplay form
+
+            var result = await _userService.RegisterUserAsync(user, ConfirmPassword);
+            if (result.Success)
+            {
+                return RedirectToAction("Login");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+            return View(user);
         }
 
 
 
-        //Hashing  method
+/*        //Hashing  method
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
@@ -71,7 +63,8 @@ namespace Aircraft_project.Controllers
                 var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLowerInvariant();
                 return hash;
             }
-        }
+        }*/
+
 
 
 

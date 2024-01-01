@@ -1,4 +1,5 @@
 using Aircraft_project.Data;
+using Aircraft_project.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,11 +19,21 @@ builder.Services.AddSession(options =>
 });
 
 
-// Register the ApplicationDbContext in the DI container
+//  ApplicationDbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+
 var app = builder.Build();
+
+
+
+
+
 
 
 
