@@ -2,25 +2,20 @@
     ViewData["Title"] = "Checkout page";
 }
 
-<div class="container ">
-    <form id="checkoutForm" method="POST" class="">
+<div class="container">
+    <form id="checkoutForm" method="POST">
         <div class="row align-text-center mt-3 mb-3">
             <div class="col-md-7 bg-light">
-                <h5 class="  text-muted p-2 mt-3">Checkout Details</h5>
+                <h5 class="text-muted p-2 mt-3">Checkout Details</h5>
                 <hr>
                 <div class="container">
-                    <!-- 2 column grid layout with text inputs for the first and last names -->
                     <div class="row mb-4">
-
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="name">Name
-
-                                </label>
+                                <label class="form-label" for="name">Name</label>
                                 <input type="text" name="name" id="name" value="" class="form-control" />
                             </div>
                         </div>
-
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="email">Email address</label>
@@ -28,7 +23,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <div class="row mb-4">
                         <div class="col">
@@ -38,27 +32,6 @@
                             </div>
                         </div>
                     </div>
-
-                    @*
-                    <div class="row mb-4">
-                    <div class="col-md-6">
-                    <div class="form-outline">
-                    <label class="form-label" for="districtSelect">District</label>
-                    <select name="district" id="districtSelect" class="form-control">
-
-
-                    </select>
-                    </div>
-                    </div>
-
-                    <div class="col-md-6">
-                    <div class="form-outline">
-                    <label class="form-label" for="address1"> + Charge</label>
-                    <input type="text" name="del_charge" value="" readonly id="del_charge"
-                    class="form-control">
-                    </div>
-                    </div>
-                    </div> *@
 
                     <div class="row mb-4">
                         <div class="col">
@@ -72,128 +45,56 @@
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <div class="form-outline">
-                                <label class="form-label" for="form3Example3">Address</label> <br>
-                                <textarea name="address" name="address" id="address" cols="50" class="form-control"
+                                <label class="form-label" for="address">Address</label>
+                                <textarea name="address" id="address" cols="50" class="form-control"
                                     rows="5"></textarea>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <!-- 2nd column  -->
-
+            <!-- 2nd column -->
             <div class="col-md-5 shadow text-muted">
                 <h5 class="text-center text-muted p-2 mt-3">Ordered Details</h5>
                 <hr>
 
                 <div class="product_data">
-
-                    <div class="row p-3 product_data  align-items-center  border ">
-                        <!-- image section  -->
+                    <!-- Product details section (example) -->
+                    <div class="row p-3 product_data align-items-center border">
+                        <!-- image section -->
                         <div class="col-sm-3 mt-2 mb-2">
                             <img src="~/Images/jet2.jpg" alt="" width="" class="img-fluid rounded">
                         </div>
-                        <!-- name  -->
+                        <!-- name -->
                         <div class="col-sm-3">
-                            <h6>
-                                Dassault Falcon 900
-                            </h6>
+                            <h6>Dassault Falcon 900</h6>
                         </div>
-                        <!-- name  -->
+                        <!-- price -->
                         <div class="col-sm-4">
-                            <h6>$ 20,000,000
-                            </h6>
+                            <h6>$20,000,000</h6>
                         </div>
-
-                        <!-- qty  -->
+                        <!-- qty -->
                         <div class="col-sm-2">
-                            <h6>x &nbsp;&nbsp;
-                                2
-                            </h6>
+                            <h6>x 2</h6>
                         </div>
-
-                    </div>
-                </div>
-                <div class="product_data">
-
-                    <div class="row p-3 product_data  align-items-center  border ">
-                        <!-- image section  -->
-                        <div class="col-sm-3 mt-2 mb-2">
-                            <img src="~/Images/jet2.jpg" alt="" width="" class="img-fluid rounded">
-                        </div>
-                        <!-- name  -->
-                        <div class="col-sm-3">
-                            <h6>
-                                Dassault Falcon 900
-                            </h6>
-                        </div>
-                        <!-- name  -->
-                        <div class="col-sm-4">
-                            <h6>$ 20,000,000
-                            </h6>
-                        </div>
-
-                        <!-- qty  -->
-                        <div class="col-sm-2">
-                            <h6>x &nbsp;&nbsp;
-                                2
-                            </h6>
-                        </div>
-
                     </div>
                 </div>
 
                 <hr>
 
-
-                <!-- promo code section  -->
-
-                @* <div class="p-3">
-                <input type="text" name="enter_promocode" id="enter_promocode" placeholder="Enter promo code here"
-                class="form-control" />
-                <button type="button" id="applyPromoCodeBtn" class="btn btn-outline-primary mt-2">Apply Promo
-                Code</button>
-                </div> *@
-                @* <hr> *@
-
+                <!-- Total Price section -->
                 <div class="p-3 text-muted">
-                    <h5> Total Price : <span class="float-right font-weight-bolder" id="totalPrice">$
-                            20,000,000
-                        </span></h5>
+                    <h5>Total Price: <span class="float-right font-weight-bolder" id="totalPrice">$20,000,000</span>
+                    </h5>
                 </div>
 
+                <!-- Stripe button section -->
                 <div class="p-3">
-                    <button type="button" id="placeOrderCardBtn" class="btn btn-outline-primary w-100">
-                        Stripe Here
-                    </button>
+                    <button type="button" id="placeOrderCardBtn" class="btn btn-outline-primary w-100">Stripe
+                        Here</button>
                 </div>
-
-                @* <div class="mb-3 mt-3">
-                <br />
-                <input type="radio" name="payment_mode" id="cod" value="cod"> Cash on Delivery
-                <br />
-                <input type="radio" name="payment_mode" id="wallet" value="wallet"> wallet
-                <br />
-                <input type="radio" name="payment_mode" id="card" value="card"> Debit Card
-                <br />
-                <br />
-
-                <div id="placeCodBtn">
-                <button type="submit" id="placeOrderBtn" name="placeOrderBtn"
-                class="btn btn-outline-primary w-100">
-                Place Order
-                </button>
-                </div>
-
-                <div id="placeCardBtn">
-                <button type="button" id="placeOrderCardBtn" class="btn btn-outline-primary w-100">
-                Place Order Card
-                </button>
-                </div> *@
             </div>
         </div>
-</div>
-</form>
+    </form>
 </div>
