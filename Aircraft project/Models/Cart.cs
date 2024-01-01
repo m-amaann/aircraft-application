@@ -8,17 +8,21 @@ namespace Aircraft_project.Models
         [Key]
         public int CartId { get; set; }
 
+        [ForeignKey("Aircraft")]
+        public int AircraftId { get; set; }
+
         [ForeignKey("Users")]
         public int UserId { get; set; }
 
-        public virtual Users Users { get; set; }
-
-/*        public List<CartItem> Items { get; set; } = new List<CartItem>();
-*/
-        public int TotalAmount { get; set; }
-
-        public int ShippingFee { get; set; }
+        public int Quantity { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+
+
+        public virtual Aircraft Aircraft { get; set; }
+        public virtual Users Users { get; set; }
+
+
     }
 }

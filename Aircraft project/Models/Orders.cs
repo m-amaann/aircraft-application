@@ -11,16 +11,30 @@ namespace Aircraft_project.Models
         [ForeignKey("Users")]
         public int UserId { get; set; }
 
-        public required string OrderStatus { get; set; }
+        public string Name { get; set; }
 
-        public required int PostalCode { get; set; }
+        [Required]
+        public string PaymentType { get; set; }
 
-        public required string Country {  get; set; }
+        [Required]
+        public string OrderStatus { get; set; }
 
-        public required string Shipment_Address { get; set; }
+        [Required]
+        public int PostalCode { get; set; }
+
+        [Required]
+        public string Country {  get; set; }
+
+        [Required]
+        public string ShipmentAddress { get; set; }
+
+        [Required]
+        public int TotalPrice { get; set; }
+
+        [Required]
+        public string OrderTracking_No { get; set; }
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
-
 
 
 

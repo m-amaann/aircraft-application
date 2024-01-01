@@ -13,12 +13,19 @@ namespace Aircraft_project.Data
         }
 
         public DbSet<Users> Users { get; set; }
+
         public DbSet<Admin> Admins { get; set; }
+
         public DbSet<Orders> Orders { get; set; }
+
         public DbSet<OrderItem> OrderItems { get; set; }
+
         public DbSet<Payment> Payments { get; set; }
 
         public DbSet<Aircraft> Aircraft { get; set; }
+
+        public DbSet<Cart> Cart { get; set; }
+
     }
 }
 

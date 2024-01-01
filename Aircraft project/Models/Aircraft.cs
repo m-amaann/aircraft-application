@@ -16,6 +16,9 @@ namespace Aircraft_project.Models
         [Required]
         public string Name { get; set; }
 
+        [Required] 
+        public string Image { get; set; }
+
         [Required]
         public string Manufacturer { get; set; }
 

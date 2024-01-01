@@ -51,8 +51,6 @@ namespace Aircraft_project.Services
             var user = await _context.Users
                .FirstOrDefaultAsync(u => u.Email == email && u.Password == HashPassword(password));
 
-           
-
             var hashedPassword = HashPassword(password);
             return user;
         }

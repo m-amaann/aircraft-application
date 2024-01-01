@@ -14,9 +14,15 @@ namespace Aircraft_project.Models
         [ForeignKey("Aircrafts")]
         public int AircraftId { get; set; }
 
+        [Required]
         public int Quantity { get; set; }
 
-        public string Price { get; set; }
+        [Required]
+        public int Price { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+
 
         public virtual Orders Orders { get; set; }
         public virtual Aircraft Aircraft { get; set; }
