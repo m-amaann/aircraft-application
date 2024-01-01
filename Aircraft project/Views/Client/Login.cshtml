@@ -35,14 +35,3 @@
         </div>
     </div>
 </section>
-
-@if (ViewBag.LoginSuccess == true)
-{
-    <script>
-        $(document).ready(function () {
-            var toastHTML = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000"><div class="toast-header"><strong class="me-auto">Login Success</strong><button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button></div><div class="toast-body">Welcome back!</div></div>';
-            $('.toast-container').append(toastHTML);
-            $('.toast').toast('show');
-        });
-    </script>
-}

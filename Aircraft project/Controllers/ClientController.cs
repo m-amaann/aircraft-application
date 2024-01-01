@@ -1,15 +1,12 @@
-﻿using Aircraft_project.Data;
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using Aircraft_project.Models;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using System.Text;
-using System.Linq;
+﻿using Aircraft_project.Models;
 using Aircraft_project.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 
 
@@ -18,14 +15,12 @@ namespace Aircraft_project.Controllers
 {
     public class ClientController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IUserService _userService;
 
 
         //Constructor
-        public ClientController(ApplicationDbContext context, IUserService userService)
+        public ClientController( IUserService userService)
         {
-            _context = context;
             _userService = userService;
 
         }
@@ -54,57 +49,59 @@ namespace Aircraft_project.Controllers
 
 
 
-/*        //Hashing  method
-        private string HashPassword(string password)
-        {
-            using (var sha256 = SHA256.Create())
-            {
-                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLowerInvariant();
-                return hash;
-            }
-        }*/
 
-
-
-
-        // User Login
+        // User Login Method
         [HttpPost]
-        public IActionResult Login(Users user)
+        public async Task<IActionResult> Login(string email, string password)
         {
-            var existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
+            var user = await _userService.AuthenticateUserAsync(email, password);
 
-            if (existingUser != null && VerifyHashedPassword(existingUser.Password, user.Password))
+            if (user != null)
             {
-                HttpContext.Session.SetString("UserID", existingUser.UserId.ToString());
-                HttpContext.Session.SetString("UserName", existingUser.Name);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Email, email)
+                    // Add additional claims as needed
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30)
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                // Set session values
+                HttpContext.Session.SetString("UserID", user.UserId.ToString());
+                HttpContext.Session.SetString("UserName", user.Name);
+
+                TempData["SuccessMessage"] = "You are logged in successfully!";
                 return RedirectToAction("Index");
             }
-
-            ModelState.AddModelError("", "Invalid login attempt.");
-            return View();
-        }
-
-
-        private bool VerifyHashedPassword(string hashedPassword, string inputPassword)
-        {
-            using (var sha256 = SHA256.Create())
+            else
             {
-                var hashedInputPassword = sha256.ComputeHash(Encoding.UTF8.GetBytes(inputPassword));
-                return BitConverter.ToString(hashedInputPassword).Replace("-", "").ToLower() == hashedPassword;
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View();
             }
         }
 
 
-        public IActionResult Logout()
+
+
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear(); // Clear session
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
-
-
-
-
 
 
 

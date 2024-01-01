@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Aircraft_project.Data;
 using Aircraft_project.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,18 +15,30 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
 
+// Add session services
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set the session timeout
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true; //cookies
+    options.Cookie.IsEssential = true;
 });
+
+
+// Configure authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromDays(30);
+        options.LoginPath = "/Client/Login"; 
+        options.LogoutPath = "/Client/Logout"; 
+        options.SlidingExpiration = true;
+    });
 
 
 //  ApplicationDbContext configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -33,12 +49,7 @@ var app = builder.Build();
 
 
 
-
-
-
-
-
-app.UseSession();
+app.UseSession(); // session middleware
 
 
 
@@ -53,6 +64,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+
+app.UseAuthentication();  // Use authorization middleware
 
 app.UseAuthorization();
 

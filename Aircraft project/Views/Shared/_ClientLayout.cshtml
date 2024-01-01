@@ -9,20 +9,23 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
     <title>@ViewData["Title"] - Client</title>
+    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css"
-        integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css" integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.2/css/boxicons.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.2/css/boxicons.min.css"> 
 
     <style>
         .button {
@@ -84,11 +87,6 @@
 <body>
 
     <header>
-        <div aria-live="polite" aria-atomic="true" class="position-relative">
-            <div class="toast-container position-fixed top-0 end-0 p-3">
-                <!-- Toasts will appear here -->
-            </div>
-        </div>
         <nav class="navbar navbar-expand-lg navbar-custom">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-controller="Client" asp-action="Index">
@@ -128,9 +126,11 @@
                 <div class="ms-auto d-flex align-items-center" style="gap: 2px;">
                     @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
                     {
+                        <!-- User is logged in -->
                         <a asp-controller="Client" asp-action="Cart">
                             <div class="cart-icon">
                                 <img src="/Images/Icons/shopping-bag.png" alt="Cart">
+                                <!-- Dynamic cart count can be implemented here -->
                                 <div class="cart-count">1</div>
                             </div>
                         </a>
@@ -152,6 +152,7 @@
                     }
                     else
                     {
+                        <!-- User is not logged in -->
                         <button class="button rounded-button-02">
                             <a class="text-decoration-none" asp-controller="Client" asp-action="Login">LOGIN</a>
                         </button>
@@ -168,25 +169,39 @@
         </main>
     </div>
 
-
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; @DateTime.Now.Year - Aircraft_project
             <a asp-controller="Client" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.3/dist/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                toastr.options.onHidden = function () { window.location.href = '@Url.Action("Index")'; };
+                toastr.success('@TempData["SuccessMessage"]', 'Success', {
+                    positionClass: 'toast-top-center',
+                    timeOut: 5000 
+                });
+            });
+        </script>
+    }
+
     @RenderSection("Scripts", required: false)
 
-
 </body>
-
 </html>
