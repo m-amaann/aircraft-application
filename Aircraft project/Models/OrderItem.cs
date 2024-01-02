@@ -11,7 +11,7 @@ namespace Aircraft_project.Models
         [ForeignKey("Orders")]
         public int OrderId { get; set; }
 
-        [ForeignKey("Aircrafts")]
+        [ForeignKey("Aircraft")]
         public int AircraftId { get; set; }
 
         [Required]

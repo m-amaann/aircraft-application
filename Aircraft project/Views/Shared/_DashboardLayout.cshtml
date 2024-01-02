@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool showLayout = !ViewContext.RouteData.Values["action"].ToString().Equals("AdminLogin");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -24,17 +28,25 @@
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        @Html.Partial("~/Views/Shared/_DashboardNavbar.cshtml")
+        @if (showLayout)
+        {
+            @Html.Partial("~/Views/Shared/_DashboardNavbar.cshtml")
+        }
+
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div>
                 @RenderBody()
             </div>
 
-            @Html.Partial("~/Views/Shared/_DashboardFooter.cshtml")
+            @if (showLayout)
+            {
+                @Html.Partial("~/Views/Shared/_DashboardFooter.cshtml")
+
+            }
         </div>
     </div>
-    <!-- End of Page Wrapper -->
+
 
 
     <!-- Bootstrap core JavaScript-->
