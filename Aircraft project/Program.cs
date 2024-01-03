@@ -30,8 +30,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.HttpOnly = true;
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
-        options.LoginPath = "/Client/Login"; 
-        options.LogoutPath = "/Client/Logout"; 
+        options.LoginPath = "/Client/Login";
+        options.LogoutPath = "/Client/Logout";
         options.SlidingExpiration = true;
     });
 
@@ -77,7 +77,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Client}/{action=Index}/{id?}");
-    
+
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "dashboard/{action=Index}/{id?}",

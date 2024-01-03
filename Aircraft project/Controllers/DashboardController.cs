@@ -59,7 +59,7 @@ namespace Aircraft_project.Controllers
                 admin.Password = HashPassword(admin.Password); // Hash the password
                 _context.Admins.Add(admin);
                 _context.SaveChanges();
-                return RedirectToAction("Admin"); // Redirect to the admin page view
+                return RedirectToAction("Admin");
             }
 
             return View(admin);
@@ -94,6 +94,7 @@ namespace Aircraft_project.Controllers
                 // You may want to set a session or authentication cookie here
                 HttpContext.Session.SetString("AdminEmail", adminInDb.Email);
                 HttpContext.Session.SetString("AdminName", adminInDb.Name);
+
                 return RedirectToAction("Indexes");
             }
 
@@ -108,9 +109,6 @@ namespace Aircraft_project.Controllers
             // Compare the entered password with the stored hashed password
             return HashPassword(enteredPassword) == storedHashedPassword;
         }
-
-
-
 
 
         // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) 
