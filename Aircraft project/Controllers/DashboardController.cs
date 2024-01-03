@@ -94,7 +94,7 @@ namespace Aircraft_project.Controllers
                 // You may want to set a session or authentication cookie here
                 HttpContext.Session.SetString("AdminEmail", adminInDb.Email);
                 HttpContext.Session.SetString("AdminName", adminInDb.Name);
-                return RedirectToAction("Indexes"); 
+                return RedirectToAction("Indexes");
             }
 
             // Authentication failed
