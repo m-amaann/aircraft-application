@@ -71,17 +71,18 @@ app.UseAuthentication();  // Use authorization middleware
 app.UseAuthorization();
 
 
-// Routing Set Up for Client & Admin
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Client}/{action=Index}/{id?}");
-
-
-app.MapControllerRoute(
-    name: "dashboard",
-    pattern: "dashboard/{action=Index}/{id?}",
-    defaults: new { controller = "Dashboard" });
-
+// Routing for Client & Dashboard
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Client}/{action=Index}/{id?}");
+    
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "dashboard/{action=Index}/{id?}",
+        defaults: new { controller = "Dashboard", action = "Index" });
+});
 
 app.Run();
 
