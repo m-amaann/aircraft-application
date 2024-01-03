@@ -14,18 +14,21 @@
                 <form asp-action="Login" asp-controller="Client" method="post">
                     <div class="mb-4">
                         <label for="loginEmail" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="loginEmail" name="Email" required placeholder="Enter your email">
+                        <input type="email" class="form-control" id="loginEmail" name="Email" required
+                            placeholder="Enter your email">
                     </div>
 
                     <div class="mb-4">
                         <label for="loginPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="loginPassword" name="Password" required placeholder="Enter your password">
+                        <input type="password" class="form-control" id="loginPassword" name="Password" required
+                            placeholder="Enter your password">
                     </div>
 
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary btn-lg">Login</button>
                     </div>
-                    <p class="mt-4 mb-4"> Are you a new member? Please <a class="" asp-controller="Client" asp-action="Register">Create an Account</a> </p>
+                    <p class="mt-4 mb-4"> Are you a new member? Please <a class="" asp-controller="Client"
+                            asp-action="Register">Create an Account</a> </p>
                 </form>
             </div>
             <div class="col-md-6">

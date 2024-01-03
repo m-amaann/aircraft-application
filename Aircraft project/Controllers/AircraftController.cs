@@ -12,7 +12,7 @@ namespace Aircraft_project.Controllers
 
 
         //Constructor
-        public AircraftController(ApplicationDbContext context) 
+        public AircraftController(ApplicationDbContext context)
         {
             _context = context;
         }
