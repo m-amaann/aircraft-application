@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Aircraft_project.Controllers
 {
@@ -24,6 +26,20 @@ namespace Aircraft_project.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        public IActionResult Index()
+        {
+            // Check if the user is authenticated
+            if (!User.Identity.IsAuthenticated)
+            {
+                // Redirect to AdminLogin 
+                return RedirectToAction("AdminLogin");
+            }
+
+            // User is authenticated, display the dashboard
+            return View("dashboard");
+        }
+
+
 
         // Admin Create Function of POST Method
         [HttpPost]
@@ -32,16 +48,24 @@ namespace Aircraft_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                admin.Password = HashPassword(admin.Password); // Hash the password
+                // Check if an admin with the same email already exists
+                if (_context.Admins.Any(a => a.Email == admin.Email))
+                {
+                    ModelState.AddModelError("Email", "An admin with this email already exists.");
+                    return View(admin);
+                }
+
+                admin.Password = HashPassword(admin.Password);
                 _context.Admins.Add(admin);
                 _context.SaveChanges();
-                return RedirectToAction("Admin"); // Redirect to the admin page view
+                return RedirectToAction("Admin");
             }
 
             return View(admin);
         }
 
-        //HASH Password Function
+
+        // HASH Password Function
         public static string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -62,20 +86,29 @@ namespace Aircraft_project.Controllers
         public ActionResult AdminLogin(Admin admin)
         {
             var adminInDb = _context.Admins.FirstOrDefault(a => a.Email == admin.Email);
-            if (adminInDb != null)
+
+            if (adminInDb != null && IsPasswordValid(admin.Password, adminInDb.Password))
             {
-                string hashedPassword = HashPassword(admin.Password);
-                if (hashedPassword == adminInDb.Password)
-                {
-                    // Authentication successful
-                    // Set session or authentication cookie here
-                    return RedirectToAction("dashboard"); // Redirect to dashboard
-                }
+                // Authentication successful
+                // You may want to set a session or authentication cookie here
+                HttpContext.Session.SetString("AdminEmail", adminInDb.Email);
+                HttpContext.Session.SetString("AdminName", adminInDb.Name);
+
+                return RedirectToAction("Indexes");
             }
 
+            // Authentication failed
             ModelState.AddModelError("", "Invalid login attempt.");
             return View("AdminLogin", admin);
         }
+
+
+        private bool IsPasswordValid(string enteredPassword, string storedHashedPassword)
+        {
+            // Compare the entered password with the stored hashed password
+            return HashPassword(enteredPassword) == storedHashedPassword;
+        }
+
 
         // IN BELOW WE HAVE PROVIDED CODES FOR  THE (VIEWS) 
 
@@ -85,10 +118,12 @@ namespace Aircraft_project.Controllers
             return View();
         }
 
-        public IActionResult Index()
+        public IActionResult Indexes()
         {
             return View("dashboard");
         }
+
+
 
         public IActionResult Aircraft()
         {
@@ -120,24 +155,7 @@ namespace Aircraft_project.Controllers
             return View("AddAircraft", aircraft);
         }
 
-        // private string UploadImage(IFormFile file)
-        // {
-        //     if (file != null && file.Length > 0)
-        //     {
-        //         string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-        //         string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(file.FileName);
-        //         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-        //         using (var stream = new FileStream(filePath, FileMode.Create))
-        //         {
-        //             file.CopyTo(stream);
-        //         }
-
-        //         return "/uploads/" + uniqueFileName;
-        //     }
-
-        //     return null;
-        // }
 
         // Admin View
         public IActionResult Admin()
@@ -149,6 +167,12 @@ namespace Aircraft_project.Controllers
         public ActionResult CreateAdmin()
         {
             return View();
+        }
+
+        public IActionResult Users()
+        {
+            var users = _context.Users.ToList();
+            return View(users);
         }
     }
 }

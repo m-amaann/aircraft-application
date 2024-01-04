@@ -8,8 +8,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Aircraft_project.Models
 {
-	public class Users
-	{
+    public class Users
+    {
         [Key]
         public int UserId { get; set; }
 

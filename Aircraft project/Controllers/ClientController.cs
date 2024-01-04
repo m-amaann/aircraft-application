@@ -151,6 +151,8 @@ namespace Aircraft_project.Controllers
             return View("Login");
         }
 
+        // -----------------------------------------------------------------------
+
         public IActionResult Cart()
         {
             // return View("Cart");
@@ -179,6 +181,11 @@ namespace Aircraft_project.Controllers
             // return View("Checkout");
             var cartItems = _context.Cart.Include(c => c.Aircraft).ToList();
             return View(cartItems);
+        }
+        // -----------------------------------------------------------------------
+        public IActionResult userProfile()
+        {
+            return View("userProfile");
         }
 
         [HttpGet]

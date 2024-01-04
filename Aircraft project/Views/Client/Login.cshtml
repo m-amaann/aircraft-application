@@ -4,28 +4,40 @@
 @{
     ViewData["Title"] = "Login";
 }
+<style>
+    .bgg {
+        background-image: url("https://miro.medium.com/v2/resize:fit:1400/1*hS59XJEpKW3vx_pVsFuk-g.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    @*height:100vh;*@
+    }
+</style>
 
-<section class="vh-100 d-flex align-items-center justify-content-center">
+<section class="vh-100 d-flex align-items-center justify-content-center bgg">
     <div class="container">
         <div class="row shadow text-secondary ">
-            <div class="col-md-6 shadow p-5 rounded">
+            <div class="col-md-6 shadow p-5 rounded bg-light">
                 <h2 class="font-weight-bold">LOGIN FORM</h2>
                 <hr class="mb-5">
                 <form asp-action="Login" asp-controller="Client" method="post">
                     <div class="mb-4">
                         <label for="loginEmail" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="loginEmail" name="Email" required placeholder="Enter your email">
+                        <input type="email" class="form-control" id="loginEmail" name="Email" required
+                            placeholder="Enter your email">
                     </div>
 
                     <div class="mb-4">
                         <label for="loginPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="loginPassword" name="Password" required placeholder="Enter your password">
+                        <input type="password" class="form-control" id="loginPassword" name="Password" required
+                            placeholder="Enter your password">
                     </div>
 
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary btn-lg">Login</button>
                     </div>
-                    <p class="mt-4 mb-4"> Are you a new member? Please <a class="" asp-controller="Client" asp-action="Register">Create an Account</a> </p>
+                    <p class="mt-4 mb-4"> Are you a new member? Please <a class="" asp-controller="Client"
+                            asp-action="Register">Create an Account</a> </p>
                 </form>
             </div>
             <div class="col-md-6">

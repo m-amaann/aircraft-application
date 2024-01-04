@@ -5,14 +5,22 @@ using Aircraft_project.Data;
 using Aircraft_project.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using DinkToPdf.Contracts;
+using DinkToPdf;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+/*builder.Services.AddSingleton<IPdfGenerator, PdfGenerator>();
+builder.Services.AddScoped<IUserService, UserService>();*/
 
 
 // Add session services
@@ -30,8 +38,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.HttpOnly = true;
         options.ExpireTimeSpan = TimeSpan.FromDays(30);
-        options.LoginPath = "/Client/Login"; 
-        options.LogoutPath = "/Client/Logout"; 
+        options.LoginPath = "/Client/Login";
+        options.LogoutPath = "/Client/Logout";
         options.SlidingExpiration = true;
     });
 
@@ -41,7 +49,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.Services.AddScoped<IUserService, UserService>();
+
 
 
 var app = builder.Build();
@@ -71,16 +79,17 @@ app.UseAuthentication();  // Use authorization middleware
 app.UseAuthorization();
 
 
-// Routing Set Up for Client & Admin
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Client}/{action=Index}/{id?}");
+// Routing for Client & Dashboard
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Client}/{action=Index}/{id?}");
 
-
-app.MapControllerRoute(
-    name: "dashboard",
-    pattern: "dashboard/{action=Index}/{id?}",
-    defaults: new { controller = "Dashboard" });
-
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "dashboard/{action=Index}/{id?}",
+        defaults: new { controller = "Dashboard", action = "Index" });
+});
 
 app.Run();
