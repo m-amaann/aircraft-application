@@ -17,5 +17,6 @@ namespace Aircraft_project.Models
         public string ImagePath { get; set; }
         public string Category { get; set; }
         public string Price { get; set; }
+
     }
 }
