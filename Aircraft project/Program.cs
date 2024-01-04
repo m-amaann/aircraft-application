@@ -5,14 +5,22 @@ using Aircraft_project.Data;
 using Aircraft_project.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using DinkToPdf.Contracts;
+using DinkToPdf;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+/*builder.Services.AddSingleton<IPdfGenerator, PdfGenerator>();
+builder.Services.AddScoped<IUserService, UserService>();*/
 
 
 // Add session services
@@ -41,7 +49,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.Services.AddScoped<IUserService, UserService>();
+
 
 
 var app = builder.Build();
