@@ -4,9 +4,12 @@ using Aircraft_project.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 
@@ -95,17 +98,12 @@ namespace Aircraft_project.Controllers
             }
         }
 
-
-
-
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
-
-
 
         public IActionResult Index()
         {
@@ -155,15 +153,32 @@ namespace Aircraft_project.Controllers
 
         public IActionResult Cart()
         {
-            return View("Cart");
+            // return View("Cart");
+            var cartItems = _context.Cart.Include(c => c.Aircraft).ToList();
+            return View(cartItems);
         }
-        public IActionResult DP()
+        [HttpGet]
+        public IActionResult DetailedPage(int id)
         {
-            return View("DetailedPage");
+            // Fetch the aircraft details using the id
+            var aircraft = _context.Aircraft.FirstOrDefault(a => a.Id == id);
+
+            if (aircraft != null)
+            {
+                return View(aircraft);
+            }
+            else
+            {
+                // Handle the case where the aircraft with the given id is not found
+                return NotFound();
+            }
         }
+
         public IActionResult Checkout()
         {
-            return View("Checkout");
+            // return View("Checkout");
+            var cartItems = _context.Cart.Include(c => c.Aircraft).ToList();
+            return View(cartItems);
         }
 
         [HttpGet]
@@ -184,6 +199,66 @@ namespace Aircraft_project.Controllers
             {
                 // Log the exception
                 Console.Error.WriteLine($"Exception in FilterProducts: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AddToCart(Cart model)
+        {
+            try
+            {
+                Console.WriteLine($"Received Cart Model: {Newtonsoft.Json.JsonConvert.SerializeObject(model)}");
+
+                var cartItem = new Cart
+                {
+                    UserId = 1,  // You need to implement a method to get the user ID
+                    AircraftId = model.AircraftId,
+                    Quantity = model.Quantity,
+                    Color = model.Color,
+                    Engine = model.Engine,
+                    SeatsSize = model.SeatsSize,
+                    FanType = model.FanType
+                    // Add other properties as needed
+                };
+
+                _context.Cart.Add(cartItem);
+                _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Item added to the cart successfully!";
+                return RedirectToAction("Shopping");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.Error.WriteLine($"Exception in AddToCart: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult RemoveFromCart(int cartItemId)
+        {
+            try
+            {
+                var cartItem = _context.Cart.FirstOrDefault(c => c.CartId == cartItemId);
+
+                if (cartItem == null)
+                {
+                    TempData["ErrorMessage"] = "Cart item not found.";
+                    return RedirectToAction("Cart");
+                }
+
+                _context.Cart.Remove(cartItem);
+                _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Item removed from the cart successfully!";
+                return RedirectToAction("Cart");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.Error.WriteLine($"Exception in RemoveFromCart: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }

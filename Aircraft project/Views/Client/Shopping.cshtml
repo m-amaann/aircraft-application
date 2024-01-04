@@ -9,7 +9,6 @@
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->
         <div class="col-lg-3  col-md-12 mt-5">
-
             <!-- Category Start -->
             <div class="mb-5">
                 <h5 class="font-weight-semi-bold mb-4 text-danger">Filter by Category</h5>
@@ -33,47 +32,41 @@
         </div>
 
         <!-- Shop Product Start -->
-        <div class="col-lg-9 col-md-12 ">
+        <div class="col-lg-9 col-md-12 mt-5">
             <div class="row pb-3 filter_dataa" id="product-list">
-                <div class="row pb-3 justify-content-end">
-                    <div class="col-auto">
-                        @* <input type="text" class="form-control" placeholder="Search"> *@
-                    </div>
-                </div>
-                <div class="row" id="product-list">
-                    @if (Model != null)
+                @if (Model != null)
+                {
+                    @foreach (var filteredProducts in Model)
                     {
-                        @foreach (var filteredProducts in Model)
-                        {
-                            <div class="product-card">
-                                <div class="product-image">
-                                    <img src="@filteredProducts.ImagePath" alt="Aircraft Model"
-                                        class="img-fluid w-100 col-hover">
-                                </div>
-                                <div class="product-details">
-                                    <div class="product-brand">@filteredProducts.Name</div>
-                                    <h2 class="product-title">@filteredProducts.AdditionalInformation</h2>
-                                    <div class="product-price">$@filteredProducts.Price</div>
-                                </div>
-                                <div class="button-container">
-                                    <button class="order-button">View More</button>
-                                    @* <button class="add-to-cart" onclick="slideIcon()">
-                                        Cart
-                                        <i class="fas fa-shopping-cart cart-icon"></i>
-                                    </button> *@
-                                </div>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="@filteredProducts.ImagePath" alt="Aircraft Model" class="img-fluid w-100 col-hover">
                             </div>
+                            <div class="product-details">
+                                <div class="product-brand">@filteredProducts.Name</div>
+                                <h2 class="product-title">@filteredProducts.AdditionalInformation</h2>
+                                <div class="product-price">$@filteredProducts.Price</div>
+                            </div>
+                            <div class="button-container">
+                                <a href="/Client/DetailedPage?id=@filteredProducts.Id" class="order-button">View More</a>
+                                @* <button class="add-to-cart" onclick="slideIcon()">
+                        Cart
+                        <i class="fas fa-shopping-cart cart-icon"></i>
+                        </button> *@
+                            </div>
+                        </div>
 
-                        }}
-                    else
-                    {
-                        <p>No aircraft data available.</p>
-                    }
-                </div>
+                    }}
+                else
+                {
+                    <p>No aircraft data available.</p>
+                }
             </div>
             <div class="text-center">
-                <button class="btn btn-primary load-more">Load More &nbsp;&nbsp;&nbsp;<i
-                        class="fa fa-arrow-down"></i></button>
+                <button class="btn btn-primary load-more">
+                    Load More
+                    <i class="fa fa-arrow-down"></i>
+                </button>
             </div>
         </div>
         <!-- Shop Product End -->

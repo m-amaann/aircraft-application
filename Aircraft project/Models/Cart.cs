@@ -17,6 +17,11 @@ namespace Aircraft_project.Models
 
         public int Quantity { get; set; }
 
+        public string Color { get; set; }
+        public string Engine { get; set; }
+        public int SeatsSize { get; set; }
+        public string FanType { get; set; }
+
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         public virtual Aircraft Aircraft { get; set; }

@@ -1,3 +1,5 @@
+@model IEnumerable<Aircraft_project.Models.Cart>
+
 @{
     ViewData["Title"] = "Checkout page";
 }
@@ -61,28 +63,30 @@
 
                 <div class="product_data">
                     <!-- Product details section (example) -->
-                    <div class="row p-3 product_data align-items-center border">
-                        <!-- image section -->
-                        <div class="col-sm-3 mt-2 mb-2">
-                            <img src="~/Images/jet2.jpg" alt="" width="" class="img-fluid rounded">
+                    @foreach (var cartItem in Model)
+                    {
+                        <div class="row p-3 product_data align-items-center border">
+                            <!-- image section -->
+                            <div class="col-sm-3 mt-2 mb-2">
+                                <img src="@cartItem.Aircraft.ImagePath" alt="@cartItem.Aircraft.Name" width=""
+                                    class="img-fluid rounded">
+                            </div>
+                            <!-- name -->
+                            <div class="col-sm-3">
+                                <h6>@cartItem.Aircraft.Name</h6>
+                            </div>
+                            <!-- price -->
+                            <div class="col-sm-4">
+                                <h6>@cartItem.Aircraft.Price</h6>
+                            </div>
+                            <!-- qty -->
+                            <div class="col-sm-2">
+                                <h6>x @cartItem.Quantity</h6>
+                            </div>
                         </div>
-                        <!-- name -->
-                        <div class="col-sm-3">
-                            <h6>Dassault Falcon 900</h6>
-                        </div>
-                        <!-- price -->
-                        <div class="col-sm-4">
-                            <h6>$20,000,000</h6>
-                        </div>
-                        <!-- qty -->
-                        <div class="col-sm-2">
-                            <h6>x 2</h6>
-                        </div>
-                    </div>
+                    }
                 </div>
-
                 <hr>
-
                 <!-- Total Price section -->
                 <div class="p-3 text-muted">
                     <h5>Total Price: <span class="float-right font-weight-bolder" id="totalPrice">$20,000,000</span>
@@ -91,7 +95,8 @@
 
                 <!-- Stripe button section -->
                 <div class="p-3">
-                    <button type="button" id="placeOrderCardBtn" class="btn btn-outline-primary w-100">Stripe
+                    <button type="button" id="placeOrderCardBtn" class="btn btn-outline-primary w-100"
+                        onclick="openPayHereModal()">Stripe
                         Here</button>
                 </div>
             </div>

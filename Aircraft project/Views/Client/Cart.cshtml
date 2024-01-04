@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Aircraft_project.Models.Cart>
+
+@{
     ViewData["Title"] = "Cart";
 }
 
@@ -9,75 +11,45 @@
                 <div class="container h-100 py-5">
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col-10">
-
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h3 class="fw-normal mb-0 text-muted font-weight-bold">Shopping Cart</h3>
                             </div>
-
-
-
-                            <div class="card rounded-3 mb-4">
-                                <div class="card-body p-4">
-                                    <div class="row text-muted d-flex justify-content-between align-items-center">
-
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <img src="~/Images/jet2.jpg" alt="" width="" class="img-fluid rounded-3">
+                            @foreach (var cartItem in Model)
+                            {
+                                <div class="card rounded-3 mb-4">
+                                    <div class="card-body p-4">
+                                        <div class="row text-muted d-flex justify-content-between align-items-center">
+                                            <div class="col-md-3 col-lg-2 col-xl-2">
+                                                <img src="@cartItem.Aircraft.ImagePath" alt="@cartItem.Aircraft.Name"
+                                                    width="" class="img-fluid rounded-3">
+                                            </div>
+                                            <div class="col-md-4 col-lg-2 col-xl-2">
+                                                <h5 class="font-weight-bold">@cartItem.Aircraft.Name</h5>
+                                            </div>
+                                            <div class="col-md-3 col-lg-2 col-xl-2">
+                                                <p>Color: @cartItem.Color</p>
+                                                <p>Qty: @cartItem.Quantity</p>
+                                                <p>Engine: @cartItem.Engine</p>
+                                                <p>Fan Type: @cartItem.FanType</p>
+                                                <p>Seat Size: @cartItem.SeatsSize</p>
+                                            </div>
+                                            <div class="col-md-2 col-lg-2 col-xl-2">
+                                                <form method="post" action="/Client/RemoveFromCart">
+                                                    <input type="hidden" name="cartItemId" value="@cartItem.CartId" />
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash btn-sm fa-lg"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4 col-lg-2 col-xl-2">
-                                            <h5 class="font-weight-bold">Dassault Falcon 900</h5>
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <p>Color: Grey</p>
-                                            <p>Count: 2</p>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                            <button class="btn btn-danger btn-sm"> <i
-                                                    class="fa fa-trash btn-sm fa-lg"></i></button>
-                                        </div>
-
                                     </div>
                                 </div>
+                            }
+                            <div class=" float-right py-3 ">
+                                <a class="btn btn-outline-primary" asp-controller="Client" asp-action="Checkout">Proceed
+                                    to checkout</a>
+
                             </div>
-
-
-
-                            <div class="card rounded-3 mb-4">
-                                                            <div class="card-body p-4">
-                                    <div class="row text-muted d-flex justify-content-between align-items-center">
-
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <img src="~/Images/jet2.jpg" alt="" width="" class="img-fluid rounded-3">
-                                        </div>
-                                        <div class="col-md-4 col-lg-2 col-xl-2">
-                                            <h5 class="font-weight-bold">Dassault Falcon 900</h5>
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2">
-                                            <p>Color: Grey</p>
-                                            <p>Count: 2</p>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                            <button class="btn btn-danger btn-sm"> <i
-                                                    class="fa fa-trash btn-sm fa-lg"></i></button>
-                                        </div>
-                                        
-
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                             <div class=" float-right py-3 ">
-                            <a class="btn btn-outline-primary"asp-controller="Client" asp-action="Checkout">Proceed to checkout</a>
-
-                                </div>
-
-
-
-
-
-
-
-
-
                         </div>
                     </div>
                 </div>

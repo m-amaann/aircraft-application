@@ -5,27 +5,16 @@ namespace Aircraft_project.Models
 {
     public class OrderItem
     {
-        [Key] 
+        [Key]
         public int OrderItemId { get; set; }
 
         [ForeignKey("Orders")]
         public int OrderId { get; set; }
 
-        [ForeignKey("Aircrafts")]
-        public int AircraftId { get; set; }
-
-        [Required]
+        public string ProductName { get; set; }
+        public decimal Price { get; set; }
         public int Quantity { get; set; }
 
-        [Required]
-        public int Price { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-
-
         public virtual Orders Orders { get; set; }
-        public virtual Aircraft Aircraft { get; set; }
-
     }
 }

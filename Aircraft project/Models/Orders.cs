@@ -5,43 +5,23 @@ namespace Aircraft_project.Models
 {
     public class Orders
     {
-        [Key] 
+        [Key]
         public int OrderId { get; set; }
 
         [ForeignKey("Users")]
         public int UserId { get; set; }
 
         public string Name { get; set; }
-
-        [Required]
-        public string PaymentType { get; set; }
-
-        [Required]
-        public string OrderStatus { get; set; }
-
-        [Required]
-        public int PostalCode { get; set; }
-
-        [Required]
-        public string Country {  get; set; }
-
-        [Required]
-        public string ShipmentAddress { get; set; }
-
-        [Required]
-        public int TotalPrice { get; set; }
-
-        [Required]
-        public string OrderTracking_No { get; set; }
-
-        public DateTime OrderDate { get; set; } = DateTime.Now;
-
-
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public int Pincode { get; set; }
+        public string Address { get; set; }
+        public decimal TotalPrice { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public virtual Users Users { get; set; }
+
         public virtual ICollection<OrderItem> OrderItems { get; set; }
-
-
-
+        public string PaymentStatus { get; internal set; }
     }
 }
