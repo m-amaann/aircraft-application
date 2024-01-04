@@ -56,7 +56,7 @@ namespace Aircraft_project.Controllers
                     return View(admin);
                 }
 
-                admin.Password = HashPassword(admin.Password); // Hash the password
+                admin.Password = HashPassword(admin.Password);
                 _context.Admins.Add(admin);
                 _context.SaveChanges();
                 return RedirectToAction("Admin");

@@ -9,23 +9,26 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <title>@ViewData["Title"] - Client</title>
-    
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css" integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css"
+        integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.2/css/boxicons.min.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.2/css/boxicons.min.css">
 
     <style>
         .button {
@@ -141,8 +144,8 @@
                                 @HttpContextAccessor.HttpContext.Session.GetString("UserName")
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="nav-link" asp-controller="Client" asp-action="userProfile">User Dashboards</a>
+                                </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -195,7 +198,7 @@
                 toastr.options.onHidden = function () { window.location.href = '@Url.Action("Index")'; };
                 toastr.success('@TempData["SuccessMessage"]', 'Success', {
                     positionClass: 'toast-top-center',
-                    timeOut: 5000 
+                    timeOut: 5000
                 });
             });
         </script>
@@ -204,4 +207,5 @@
     @RenderSection("Scripts", required: false)
 
 </body>
+
 </html>

@@ -153,6 +153,8 @@ namespace Aircraft_project.Controllers
             return View("Login");
         }
 
+        // -----------------------------------------------------------------------
+
         public IActionResult Cart()
         {
             return View("Cart");
@@ -164,6 +166,11 @@ namespace Aircraft_project.Controllers
         public IActionResult Checkout()
         {
             return View("Checkout");
+        }
+        // -----------------------------------------------------------------------
+        public IActionResult userProfile()
+        {
+            return View("userProfile");
         }
 
         [HttpGet]
