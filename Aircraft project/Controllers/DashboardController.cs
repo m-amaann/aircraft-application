@@ -26,13 +26,12 @@ namespace Aircraft_project.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // Index action to display the dashboard or redirect to AdminLogin
         public IActionResult Index()
         {
-            // Check if the user is authenticated (you can customize this check based on your authentication logic)
+            // Check if the user is authenticated
             if (!User.Identity.IsAuthenticated)
             {
-                // Redirect to AdminLogin if not authenticated
+                // Redirect to AdminLogin 
                 return RedirectToAction("AdminLogin");
             }
 
@@ -168,6 +167,12 @@ namespace Aircraft_project.Controllers
         public ActionResult CreateAdmin()
         {
             return View();
+        }
+
+        public IActionResult Users()
+        {
+            var users = _context.Users.ToList();
+            return View(users);
         }
     }
 }

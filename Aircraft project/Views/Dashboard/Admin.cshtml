@@ -17,9 +17,11 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Create Admin</h1>
             <div>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-3">
-                    <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
-                </a>
+                <a href="@Url.Action("GenerateAdminReport", "Report")" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Generate Report
+               </a>
+
+
                 <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal" data-target="#newAdminModal">
                     <i class="fas fa-user-plus fa-sm text-white-50"></i> New Admin
                 </button>
