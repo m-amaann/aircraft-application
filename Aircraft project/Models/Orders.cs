@@ -8,7 +8,7 @@ namespace Aircraft_project.Models
         [Key]
         public int OrderId { get; set; }
 
-        [ForeignKey("Users")]
+        // [ForeignKey("Users")]
         public int UserId { get; set; }
 
         public string Name { get; set; }
@@ -18,10 +18,10 @@ namespace Aircraft_project.Models
         public string Address { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string PaymentStatus { get; set; }
 
-        public virtual Users Users { get; set; }
+        // public virtual Users Users { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
-        public string PaymentStatus { get; internal set; }
     }
 }

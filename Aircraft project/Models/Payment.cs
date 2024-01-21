@@ -7,13 +7,13 @@ namespace Aircraft_project.Models
     {
         [Key] public required int PaymentId { get; set; }
 
-        [ForeignKey("Orders")]
+        // [ForeignKey("Orders")]
         public int OrderId { get; set; }
 
         public required string Amount { get; set; }
         public DateTime PaymentDate { get; set; } = DateTime.Now;
 
 
-        public virtual Orders Orders { get; set; }
+        // public virtual Orders Orders { get; set; }
     }
 }

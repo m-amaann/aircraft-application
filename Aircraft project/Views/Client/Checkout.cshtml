@@ -5,7 +5,7 @@
 }
 
 <div class="container">
-    <form id="checkoutForm" method="POST">
+    <form id="checkoutForm">
         <div class="row align-text-center mt-3 mb-3">
             <div class="col-md-7 bg-light">
                 <h5 class="text-muted p-2 mt-3">Checkout Details</h5>
@@ -89,74 +89,177 @@
                 <hr>
                 <!-- Total Price section -->
                 <div class="p-3 text-muted">
-                    <h5>Total Price: <span class="float-right font-weight-bolder" id="totalPrice">$20,000,000</span>
-                    </h5>
+                    <h5>Total Price: <span class="float-right font-weight-bolder" id="totalPrice">$0.00</span></h5>
                 </div>
+
 
                 <!-- Stripe button section -->
                 <div class="p-3">
-                    <button type="button" id="placeOrderCardBtn" class="btn btn-outline-primary w-100"
-                        data-toggle="modal" data-target="#staticBackdrop">Stripe
-                        Here</button>
+                    <button type="button" id="payhere-payment" class="btn btn-outline-primary w-100">PayHere
+                        Pay</button>
                 </div>
             </div>
         </div>
     </form>
-
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
-                    <div class="tabs mt-3">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation"> <a class="nav-link active" id="visa-tab"
-                                    data-toggle="tab" href="#visa" role="tab" aria-controls="visa" aria-selected="true">
-                                    <img src="https://i.imgur.com/sB4jftM.png" width="80"> </a> </li>
-                            <li class="nav-item" role="presentation"> <a class="nav-link" id="paypal-tab"
-                                    data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal"
-                                    aria-selected="false"> <img src="https://i.imgur.com/yK7EDD1.png" width="80"> </a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="visa" role="tabpanel" aria-labelledby="visa-tab">
-                                <div class="mt-4 mx-4">
-                                    <div class="text-center">
-                                        <h5>Credit card</h5>
-                                    </div>
-                                    <div class="form mt-3">
-                                        <div class="inputbox"> <input type="text" name="name" class="form-control"
-                                                required="required"> <span>Cardholder Name</span> </div>
-                                        <div class="inputbox"> <input type="text" name="name" min="1" max="999"
-                                                class="form-control" required="required"> <span>Card Number</span> <i
-                                                class="fa fa-eye"></i> </div>
-                                        <div class="d-flex flex-row">
-                                            <div class="inputbox"> <input type="date" name="name" min="1" max="999"
-                                                    class="form-control" required="required"> <span>Expiration
-                                                    Date</span> </div>
-                                                    &nbsp;
-                                            <div class="inputbox"> <input type="text" name="name" min="1" max="999"
-                                                    class="form-control" required="required"> <span>CVV</span> </div>
-                                        </div>
-                                        <div class="px-5 pay"> <button class="btn btn-success btn-block">Add
-                                                card</button> </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
-                                <div class="px-5 mt-5">
-                                    <div class="inputbox"> <input type="text" name="name" class="form-control"
-                                            required="required"> <span>Paypal Email Address</span> </div>
-                                    <div class="pay px-5"> <button class="btn btn-primary btn-block">Add paypal</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Function to calculate the total price based on cart items
+        function calculateTotalPrice() {
+            // Replace this with your logic to calculate the total based on cart items
+            var cartItems = @Html.Raw(Json.Serialize(Model)); // Assuming you're using Razor syntax
+        @* console.log(cartItems); *@
+            var totalPrice = 0;
+
+            for (var i = 0; i < cartItems.length; i++) {
+                // Check if the 'aircraft' property is available
+                if (cartItems[i].aircraft && cartItems[i].aircraft.price) {
+                    totalPrice += cartItems[i].aircraft.price * cartItems[i].quantity;
+                }
+            }
+
+        @* console.log(totalPrice) *@
+            return totalPrice;
+        }
+
+        // Function to update the total price in the HTML element
+        function updateTotalPrice() {
+            var totalPrice = calculateTotalPrice();
+        @* console.log(totalPrice); *@
+                document.getElementById('totalPrice').textContent = "$" + totalPrice.toLocaleString("en-us", { minimumFractionDigits: 2 });
+            return totalPrice;
+        }
+
+        // Calculate and update the total price when the page loads
+        window.onload = updateTotalPrice;
+
+        const totalPrice = calculateTotalPrice();
+
+        console.log(totalPrice)
+
+        const merchantSecret =
+            "NDIyMjA5MjQ3ODM3MDU5MzU3NDIyMzM5MTY5OTk2MTU4NTY4NDU1Ng==";
+        const orderId =
+            Date.now().toString() + Math.random().toString(36).substr(2, 9);
+        const currency = "LKR";
+        const merchantId = "1222723";
+        const hashedSecret = md5(merchantSecret).toString().toUpperCase();
+        let amountFormated = parseFloat(totalPrice)
+            .toLocaleString("en-us", { minimumFractionDigits: 2 })
+            .replaceAll(",", "");
+        const hash = md5(
+            merchantId + orderId + amountFormated + currency + hashedSecret
+        )
+            .toString()
+            .toUpperCase();
+        console.log(hash);
+
+        // Payment completed. It can be a successful failure.
+        payhere.onCompleted = function onCompleted(orderId) {
+            console.log("Payment completed. OrderID:" + orderId);
+
+            // Collect necessary data for the order
+            var orderDetails = {
+                UserId: 1, // Replace with the actual user ID
+                Name: document.getElementById('name').value,
+                Email: document.getElementById('email').value,
+                Phone: document.getElementById('phone').value,
+                Pincode: document.getElementById('pincode').value,
+                Address: document.getElementById('address').value,
+                TotalPrice: calculateTotalPrice(),
+                PaymentStatus: "Completed",
+                OrderItems: [] // Update this with the actual structure of your order items
+            };
+
+            // Assuming you have the product name and quantity available in your HTML
+            var productRows = document.querySelectorAll('.product_data');
+            productRows.forEach(function (row) {
+                var productName = row.querySelector('.col-sm-3 h6').innerText;
+                var quantity = parseInt(row.querySelector('.col-sm-2 h6').innerText.split(' ')[1]);
+
+                orderDetails.OrderItems.push({
+                    ProductName: productName,
+                    Price: parseFloat(row.querySelector('.col-sm-4 h6').innerText),
+                    Quantity: quantity
+                });
+            });
+
+            console.log("Sending AJAX request...");
+
+            // Send an AJAX request to place the order
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:5205/api/order/PlaceOrder',
+                contentType: 'application/json',
+                data: JSON.stringify(orderDetails),
+                success: function (response) {
+                    console.log('Order placed successfully. OrderID:', response.orderId);
+                    // Redirect or show a success message to the user
+                },
+                error: function (error) {
+                    console.error('Failed to place the order:', error.responseJSON.error);
+                    // Handle the error and show a relevant message to the user
+                }
+            });
+        };
+
+        // Payment window closed
+        payhere.onDismissed = function onDismissed() {
+            // Note: Prompt user to pay again or show an error page
+            console.log("Payment dismissed");
+        };
+
+        // Error occurred
+        payhere.onError = function onError(error) {
+            // Note: show an error page
+            console.log("Error:" + error);
+        };
+
+        // Put the payment variables here
+        var payment = {
+            "sandbox": true,
+            "merchant_id": "1222723",    // Replace your Merchant ID
+            "return_url": "http://sample.com/return_url",     // Important
+            "cancel_url": "http://sample.com/cancel_url",     // Important
+            "notify_url": "http://sample.com/notify",
+            "order_id": orderId,
+            "items": "Door bell wireles",
+            "amount": totalPrice,
+            "currency": "LKR",
+            "hash": hash, // *Replace with generated hash retrieved from backend
+            "first_name": "Saman",
+            "last_name": "Perera",
+            "email": "samanp@gmail.com",
+            "phone": "0771234567",
+            "address": "No.1, Galle Road",
+            "city": "Colombo",
+            "country": "Sri Lanka",
+            "delivery_address": "No. 46, Galle road, Kalutara South",
+            "delivery_city": "Kalutara",
+            "delivery_country": "Sri Lanka",
+            "custom_1": "",
+            "custom_2": ""
+        };
+
+        // Show the payhere.js popup, when "PayHere Pay" is clicked
+        document.getElementById('payhere-payment').onclick = function (e) {
+            var form = document.getElementById("checkoutForm");
+
+            // Check if any required fields are empty
+            var fields = ['name', 'email', 'phone', 'pincode', 'address'];
+
+            for (var i = 0; i < fields.length; i++) {
+                var field = fields[i];
+                var input = form.elements[field];
+
+                if (!input.value.trim()) {
+                    alert("Please fill in all required fields.");
+                    return;
+                }
+            }
+
+            payhere.startPayment(payment);
+        };
+    </script>
+}

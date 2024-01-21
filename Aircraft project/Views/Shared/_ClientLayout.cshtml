@@ -18,9 +18,9 @@
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css"
-        integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css"
+    integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" /> *@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
@@ -28,7 +28,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.2/css/boxicons.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.2/css/boxicons.min.css">
 
     <style>
         .button {
@@ -51,6 +51,10 @@
         .rounded-button-02 a {
             color: #039FE2 !important;
             font-weight: 500;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
 
@@ -59,7 +63,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            margin-right: -18px;
+        @*margin-right:-18px;*@
         }
 
         .cart-icon img {
@@ -81,6 +85,14 @@
             min-width: 20px;
             height: 20px;
             box-sizing: border-box;
+        }
+
+        .cart-icon-href {
+            padding: 0 !important;
+        }
+
+        #navbarDropdown {
+            padding: 0 !important;
         }
     </style>
 
@@ -130,17 +142,19 @@
                     @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
                     {
                         <!-- User is logged in -->
-                        <a asp-controller="Client" asp-action="Cart">
-                            <div class="cart-icon">
-                                <img src="/Images/Icons/shopping-bag.png" alt="Cart">
-                                <!-- Dynamic cart count can be implemented here -->
-                                <div class="cart-count">1</div>
-                            </div>
-                        </a>
+                        <div>
+                            <a asp-controller="Client" asp-action="Cart" class="cart-icon-href">
+                                <div class="cart-icon">
+                                    <img src="/Images/Icons/shopping-bag.png" alt="Cart">
+                                    <!-- Dynamic cart count can be implemented here -->
+                                    <div class="cart-count">1</div>
+                                </div>
+                            </a>
+                        </div>
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class='bx bxs-user-circle' style='font-size: 24px; color: grey;'></i>
+                                <i class='bx bxs-user-circle' style='font-size: 24px; color: grey;'></i>&nbsp;
                                 @HttpContextAccessor.HttpContext.Session.GetString("UserName")
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -179,17 +193,24 @@
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    @* <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> *@
     <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.3/dist/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+    
+    <!-- Add this script reference to include CryptoJS -->
+    <script src="https://cdn.jsdelivr.net/npm/js-md5@0.8.3/src/md5.min.js"></script>
 
 
     @if (TempData["SuccessMessage"] != null)

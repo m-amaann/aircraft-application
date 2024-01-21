@@ -5,15 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-
-
 
 namespace Aircraft_project.Controllers
 {
@@ -185,7 +177,12 @@ namespace Aircraft_project.Controllers
         // -----------------------------------------------------------------------
         public IActionResult userProfile()
         {
-            return View("userProfile");
+
+            // Assuming you have a method to get the user's orders based on UserId
+            var orders = _context.Orders.Where(o => o.UserId == 1).ToList(); 
+            // var orders = _context.Orders.ToList();
+            return View(orders);
+
         }
 
         [HttpGet]
@@ -215,6 +212,15 @@ namespace Aircraft_project.Controllers
         {
             try
             {
+                // Check if any required fields are empty
+                if (model.AircraftId == 0 || model.Quantity <= 0 || string.IsNullOrEmpty(model.Color)
+            || string.IsNullOrEmpty(model.Engine)
+            || string.IsNullOrEmpty(model.FanType))
+                {
+                    TempData["ErrorMessage"] = "Aircraft, Quantity, Color, Engine, SeatsSize, and FanType are required fields.";
+                    return RedirectToAction("Shopping");
+                }
+
                 Console.WriteLine($"Received Cart Model: {Newtonsoft.Json.JsonConvert.SerializeObject(model)}");
 
                 var cartItem = new Cart
