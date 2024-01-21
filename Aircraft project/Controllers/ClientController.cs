@@ -179,12 +179,31 @@ namespace Aircraft_project.Controllers
         // -----------------------------------------------------------------------
         public IActionResult userProfile()
         {
+            // Retrieve user ID from local storage
+            var localStorageUserId = HttpContext.Session.GetString("UserID");
 
-            // Assuming you have a method to get the user's orders based on UserId
-            var orders = _context.Orders.Where(o => o.UserId == 1).ToList();
-            // var orders = _context.Orders.ToList();
-            return View(orders);
+            if (localStorageUserId != null)
+            {
+                // Convert the user ID to an integer
+                if (int.TryParse(localStorageUserId, out int userId))
+                {
+                    // Assuming you have a method to get user details based on UserId
+                    var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
 
+                    if (user != null)
+                    {
+                        // Assuming you have a method to get the user's orders based on UserId
+                        var orders = _context.Orders.Where(o => o.UserId == userId).ToList();
+
+                        // Pass user and orders to the view
+                        ViewData["UserDetails"] = user;
+                        return View(orders);
+                    }
+                }
+            }
+
+            // Redirect to login if user ID is not found or invalid
+            return RedirectToAction("Login");
         }
 
         [HttpGet]

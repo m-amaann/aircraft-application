@@ -1,9 +1,12 @@
 @model Aircraft_project.Models.Users
 
-
 @{
     ViewData["Title"] = "Login";
+
+    // Check if login was successful
+    bool loginSuccess = TempData["SuccessMessage"] != null;
 }
+
 <style>
     .bgg {
         background-image: url("https://miro.medium.com/v2/resize:fit:1400/1*hS59XJEpKW3vx_pVsFuk-g.jpeg");
@@ -48,21 +51,51 @@
     </div>
 </section>
 
-@section Scripts {
-    <script>
-        // Function to set items in local storage with expiration time
-        function setLocalStorageItem(key, value, expirationDays) {
-            const expirationDate = new Date();
-            expirationDate.setDate(expirationDate.getDate() + expirationDays);
-            const item = {
-                value: value,
-                expirationDate: expirationDate.toISOString()
-            };
-            localStorage.setItem(key, JSON.stringify(item));
-        }
+@* @section Scripts {
+<script>
+// Function to set items in local storage with expiration time
+function setLocalStorageItem(key, value, expirationDays) {
+const expirationDate = new Date();
+expirationDate.setDate(expirationDate.getDate() + expirationDays);
+const item = {
+value: value,
+expirationDate: expirationDate.toISOString()
+};
+localStorage.setItem(key, JSON.stringify(item));
+}
 
-        // Set user ID and username in local storage
-        setLocalStorageItem('UserID', '@ViewData["UserID"]', 14);
-        setLocalStorageItem('UserName', '@ViewData["UserName"]', 14);
-    </script>
+// Set user ID and username in local storage
+setLocalStorageItem('UserID', '@ViewData["UserID"]', 14);
+setLocalStorageItem('UserName', '@ViewData["UserName"]', 14);
+</script>
+} *@
+
+@section Scripts {
+    @if (loginSuccess)
+    {
+        <script>
+            // Function to set items in local storage with expiration time
+            function setLocalStorageItem(key, value, expirationDays) {
+                const expirationDate = new Date();
+                expirationDate.setDate(expirationDate.getDate() + expirationDays);
+                const item = {
+                    value: value,
+                    expirationDate: expirationDate.toISOString()
+                };
+                localStorage.setItem(key, JSON.stringify(item));
+            }
+
+            // Get user ID and username from ViewData
+            const userID = '@ViewData["UserID"]';
+            const userName = '@ViewData["UserName"]';
+
+            // Debugging: Log the values to the console
+            console.log('UserID:', userID);
+            console.log('UserName:', userName);
+
+            // Set user ID and username in local storage
+            setLocalStorageItem('UserID', userID, 14);
+            setLocalStorageItem('UserName', userName, 14);
+        </script>
+    }
 }
