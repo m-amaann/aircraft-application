@@ -47,3 +47,22 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script>
+        // Function to set items in local storage with expiration time
+        function setLocalStorageItem(key, value, expirationDays) {
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + expirationDays);
+            const item = {
+                value: value,
+                expirationDate: expirationDate.toISOString()
+            };
+            localStorage.setItem(key, JSON.stringify(item));
+        }
+
+        // Set user ID and username in local storage
+        setLocalStorageItem('UserID', '@ViewData["UserID"]', 14);
+        setLocalStorageItem('UserName', '@ViewData["UserName"]', 14);
+    </script>
+}

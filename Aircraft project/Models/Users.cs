@@ -25,7 +25,6 @@ namespace Aircraft_project.Models
         [Required]
         public string Address { get; set; }
 
-
         [DataType(DataType.Password)]
         [Required]
         public string Password { get; set; }

@@ -44,9 +44,6 @@ namespace Aircraft_project.Controllers
             return View(user);
         }
 
-
-
-
         // User Login Method
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
@@ -56,19 +53,19 @@ namespace Aircraft_project.Controllers
             if (user != null)
             {
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Email, email)
-                    // Add additional claims as needed
-                };
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim(ClaimTypes.Email, email)
+            // Add additional claims as needed
+        };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
                 {
                     IsPersistent = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30)
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(14) // Set the expiration time to 14 days
                 };
 
                 await HttpContext.SignInAsync(
@@ -81,7 +78,12 @@ namespace Aircraft_project.Controllers
                 HttpContext.Session.SetString("UserName", user.Name);
 
                 TempData["SuccessMessage"] = "You are logged in successfully!";
-                return RedirectToAction("Index");
+
+                // Directly set user ID and username in local storage using ViewData
+                ViewData["UserID"] = user.UserId.ToString();
+                ViewData["UserName"] = user.Name;
+
+                return View(); // Ensure that you are returning the Login view
             }
             else
             {
@@ -179,7 +181,7 @@ namespace Aircraft_project.Controllers
         {
 
             // Assuming you have a method to get the user's orders based on UserId
-            var orders = _context.Orders.Where(o => o.UserId == 1).ToList(); 
+            var orders = _context.Orders.Where(o => o.UserId == 1).ToList();
             // var orders = _context.Orders.ToList();
             return View(orders);
 
