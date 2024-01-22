@@ -29,6 +29,8 @@ namespace Aircraft_project.Models
         [Required]
         public string Password { get; set; }
 
+        // public string Image { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

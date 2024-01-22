@@ -123,8 +123,6 @@ namespace Aircraft_project.Controllers
             return View("dashboard");
         }
 
-
-
         public IActionResult Aircraft()
         {
             // return View("Aircraft");
@@ -173,6 +171,48 @@ namespace Aircraft_project.Controllers
         {
             var users = _context.Users.ToList();
             return View(users);
+        }
+
+        public IActionResult Orders()
+        {
+            try
+            {
+                // Fetch all orders from the database
+                var orders = _context.Orders.ToList();
+
+                // Pass the orders to the view
+                return View(orders);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately
+                Console.Error.WriteLine($"Exception in OrdersController: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        public ActionResult Reports()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult GetReportData(string modelType, DateTime fromDate, DateTime toDate)
+        {
+            // Fetch data based on the selected model and date range
+            var entityType = _context.Model.FindEntityType(modelType);
+
+            // Use reflection to dynamically invoke the Set method
+            var setMethod = typeof(DbContext).GetMethod("Set").MakeGenericMethod(entityType.ClrType);
+            var reportData = setMethod.Invoke(_context, null) as IQueryable<object>;
+
+            // You may need to project the data based on the required columns
+            var filteredData = reportData
+                .Where(e => (DateTime)e.GetType().GetProperty("CreatedAt").GetValue(e) >= fromDate &&
+                            (DateTime)e.GetType().GetProperty("CreatedAt").GetValue(e) <= toDate)
+                .ToList();
+
+            return Json(filteredData);
         }
     }
 }

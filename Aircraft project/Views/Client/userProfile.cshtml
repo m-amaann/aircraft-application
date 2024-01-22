@@ -1,3 +1,5 @@
+@model Aircraft_project.Models.Users
+
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
@@ -17,7 +19,8 @@
         if (!userId2) {
             // User is not logged in, redirect to the login page
             window.location.href = '/Client/Login';
-        } else {
+        }
+        else {
             // Update the local storage with the session values if not already set
             const storedUserId = getLocalStorageItem('UserID');
             const storedUserName = getLocalStorageItem('UserName');
@@ -32,10 +35,10 @@
 
 <section>
     <div class='container'>
-        <div class='row py-4 shadow mb-2'>
+        <div class='row shadow mb-2'>
             <!-- left side bar section  -->
             <div class='col-md-3 py-4 shadow'>
-                @if (ViewData["UserDetails"] is Users user)
+                @if (ViewData["UserDetails"] is Aircraft_project.Models.Users user)
                 {
                     <!-- Display user details as needed -->
                     <div class='col-md-12 rounded d-flex justify-content-center flex-column align-items-center'>
@@ -51,7 +54,7 @@
                         <!-- Display other user details as needed -->
                     </div>
                 }
-                <ul class='nav flex-column ' id='myTab' role='tablist'>
+                <ul class='nav flex-column' id='myTab' role='tablist'>
                     <li class='nav-item py-1' role='presentation'>
                         <a class='nav-link active btn btn-outline-primary ' id='home-tab' data-bs-toggle='tab'
                             data-bs-target='#home-tab-pane' type='button' role='tab' aria-controls='home-tab-pane'
@@ -69,7 +72,7 @@
             <!-- right side bar section  -->
             <!-- ----------------------------------------------------------------------------------------------------- -->
             <div class='col-md-9'>
-                <div class='tab-content' id='myTabContent'>
+                <div class='tab-content py-4' id='myTabContent'>
                     <!-- ----------------------------------------------------------------------------------------------------- -->
 
                     <!-- Order Sections -->
@@ -93,41 +96,69 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var order in Model)
+                                    @* @foreach (var order in Model)
                                     {
-                                        <tr>
-                                            <td>
-                                                @order.OrderId
-                                            </td>
-                                            <td>
-                                                @order.Name
-                                            </td>
-                                            <td>
-                                                $ @order.TotalPrice
-                                            </td>
-                                            <td>
-                                                @order.CreatedDate.ToString("MM/dd/yyyy")
-                                            </td>
-                                            <td>
-                                                <p class="badge badge-info px-3 py-2">@order.PaymentStatus</p>
-                                            </td>
-                                            <td>
-                                                <a href="" class='btn btn-primary btn-sm px-4'>View</a>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                    <td>
+                                    @order.OrderId
+                                    </td>
+                                    <td>
+                                    @order.Name
+                                    </td>
+                                    <td>
+                                    $ @order.TotalPrice
+                                    </td>
+                                    <td>
+                                    @order.CreatedDate.ToString("MM/dd/yyyy")
+                                    </td>
+                                    <td>
+                                    <p class="badge badge-info px-3 py-2">@order.PaymentStatus</p>
+                                    </td>
+                                    <td>
+                                    <a href="" class='btn btn-primary btn-sm px-4'>View</a>
+                                    </td>
+                                    </tr>
                                     }
 
                                     @if (Model.Count == 0)
                                     {
+                                    <tr>
+                                    <td colspan='6'>
+                                    <p> if order is nothing </p>
+                                    <h4 class='text-center p-3 text-danger font-weight-bolder'>No Orders Here
+                                    </h4>
+                                    <a href='../shop.php'
+                                    class='float-right btn btn-warning p-3 text-dark font-weight-bolder'>Continue
+                                    to
+                                    Shopping</a>
+                                    </td>
+                                    </tr>
+                                    } *@
+
+                                    @foreach (var order in ViewBag.Orders as List<Aircraft_project.Models.Orders>)
+                                    {
+                                        <tr>
+                                            <td>@order.OrderId</td>
+                                            <td>@order.Name</td>
+                                            <td>$ @order.TotalPrice</td>
+                                            <td>@order.CreatedDate.ToString("MM/dd/yyyy")</td>
+                                            <td>
+                                                <p class="badge badge-info px-3 py-2">@order.PaymentStatus</p>
+                                            </td>
+                                            <td><a href="" class='btn btn-primary btn-sm px-4'>View</a></td>
+                                        </tr>
+                                    }
+
+                                    @if (ViewBag.Orders.Count == 0)
+                                    {
                                         <tr>
                                             <td colspan='6'>
-                                                <p> if order is nothing </p>
+                                                <p>if order is nothing</p>
                                                 <h4 class='text-center p-3 text-danger font-weight-bolder'>No Orders Here
                                                 </h4>
                                                 <a href='../shop.php'
                                                     class='float-right btn btn-warning p-3 text-dark font-weight-bolder'>Continue
-                                                    to
-                                                    Shopping</a>
+                                                    to Shopping</a>
                                             </td>
                                         </tr>
                                     }
@@ -139,57 +170,50 @@
 
                     <!-- ----------------------------------------------------------------------------------------------------- -->
                     <!-- Edit account sections  -->
-                    <div class='tab-pane fade' id='profile-tab-pane' role='tabpanel' aria-labelledby='profile-tab'
+                    <div class='tab-pane fade py-4' id='profile-tab-pane' role='tabpanel' aria-labelledby='profile-tab'
                         tabindex='0'>
                         <div class='mb-5'>
-                            <h4 class='text-center'> Edit Your Account</h4>
+                            <h4 class='text-center'>Edit Your Account</h4>
                         </div>
                         <div class='container'>
-                            <form action='' method='POST' enctype='multipart/form-data'>
-                                <div class='row mb-4'>
-                                    <div class='col'>
-                                        <div class='form-outline'>
-                                            <label class='form-label' for='form3Example1'>
-                                                Name</label>
-                                            <input type='text' name='firstname' id='form3Example1'
-                                                class='form-control' />
-                                        </div>
-                                    </div>
-                                    <div class='col'>
-                                        <div class='form-outline'>
-                                            <label class='form-label' for='form3Example3'>Email address</label>
-                                            <input type='email' name='email' id='form3Example3' class='form-control' />
-                                        </div>
-                                    </div>
+                            <form asp-action="UpdateProfile" asp-controller="Client" method="post">
+                                <input type="hidden" asp-for="UserId" />
+
+                                <div class="mb-4">
+                                    <label asp-for="Name" class="form-label">Name</label>
+                                    <input asp-for="Name" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.Name)" />
                                 </div>
 
-                                <!-- Email input -->
-                                <div class='form-outline mb-4'>
-                                    <label class='form-label' for='form3Example3'>Address</label>
-                                    <textarea class="form-control" name="" id="" cols="30" rows="4"></textarea>
+                                <div class="mb-4">
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                    <input asp-for="Email" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.Email)"
+                                        disabled />
                                 </div>
 
-                                <div class='row mb-4'>
-                                    <div class='col'>
-                                        <div class='form-outline'>
-                                            <label class='form-label' for='form3Example4'>Phone Number</label>
-                                            <input type='number' id='contactNo' name="contactNo" class='form-control' />
-                                        </div>
-                                    </div>
-                                    <div class='col'>
-                                        <div class='form-outline'>
-                                            <label class='form-label' for='formFile'>Upload Image</label>
-                                            <input class='form-control' type='file' id='formFile' name='image'
-                                                accept='image/*'>
-                                        </div>
-                                    </div>
+                                <div class="mb-4">
+                                    <label asp-for="MobileNumber" class="form-label">Mobile Number</label>
+                                    <input asp-for="MobileNumber" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.MobileNumber)" />
                                 </div>
 
+                                <div class="mb-4">
+                                    <label asp-for="Address" class="form-label">Address</label>
+                                    <input asp-for="Address" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.Address)"
+                                        style="height: 100px;"></input>
+                                </div>
 
-                                <!-- Submit button -->
-                                <button type='submit' name='btn-userDetails-update'
-                                    class='btn btn-primary btn-block mb-4'>Update Profiles</button>
+                                <div class="mb-4">
+                                    <label asp-for="Address" class="form-label">Image</label>
+                                    <input asp-for="Address" class="form-control" value=""></input>
+                                </div>
+                                <!-- Add more fields as needed -->
+
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
                             </form>
+
                         </div>
 
                     </div>

@@ -177,6 +177,41 @@ namespace Aircraft_project.Controllers
             return View(cartItems);
         }
         // -----------------------------------------------------------------------
+        // public IActionResult userProfile()
+        // {
+        //     // Retrieve user ID from local storage
+        //     var localStorageUserId = HttpContext.Session.GetString("UserID");
+
+        //     if (localStorageUserId != null)
+        //     {
+        //         // Convert the user ID to an integer
+        //         if (int.TryParse(localStorageUserId, out int userId))
+        //         {
+        //             // Assuming you have a method to get user details based on UserId
+        //             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+
+        //             if (user != null)
+        //             {
+        //                 // Assuming you have a method to get the user's orders based on UserId
+        //                 var orders = _context.Orders.Where(o => o.UserId == userId).ToList();
+
+        //                 // Pass user and orders to the view
+        //                 ViewData["UserDetails"] = user;
+        //                 return View(orders);
+        //             }
+        //         }
+        //     }
+
+        //     // Redirect to login if user ID is not found or invalid
+        //     return RedirectToAction("Login");
+        // }
+
+        // Fetch orders for the current user
+        private List<Orders> GetUserOrders(int userId)
+        {
+            return _context.Orders.Where(o => o.UserId == userId).ToList();
+        }
+
         public IActionResult userProfile()
         {
             // Retrieve user ID from local storage
@@ -193,11 +228,12 @@ namespace Aircraft_project.Controllers
                     if (user != null)
                     {
                         // Assuming you have a method to get the user's orders based on UserId
-                        var orders = _context.Orders.Where(o => o.UserId == userId).ToList();
+                        var orders = GetUserOrders(userId);
 
                         // Pass user and orders to the view
                         ViewData["UserDetails"] = user;
-                        return View(orders);
+                        ViewBag.Orders = orders;
+                        return View();
                     }
                 }
             }
@@ -295,6 +331,35 @@ namespace Aircraft_project.Controllers
                 Console.Error.WriteLine($"Exception in RemoveFromCart: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProfile(Users updatedUser)
+        {
+            // Check if the model is valid
+            if (!ModelState.IsValid)
+            {
+                return View("EditProfile", updatedUser);
+            }
+
+            // Get the existing user details
+            var existingUser = _context.Users.Find(updatedUser.UserId);
+
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            // Update the user details
+            existingUser.Name = updatedUser.Name;
+            existingUser.MobileNumber = updatedUser.MobileNumber;
+            existingUser.Address = updatedUser.Address;
+
+            // Save changes to the database
+            _context.SaveChanges();
+
+            // Redirect to the user profile page
+            return RedirectToAction("userProfile");
         }
     }
 }
