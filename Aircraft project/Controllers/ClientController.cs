@@ -390,5 +390,30 @@ namespace Aircraft_project.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult ContactForm(Contact contact)
+        {
+            if (ModelState.IsValid)
+            {
+                // Save the contact information to the database
+                var newContact = new Contact
+                {
+                    Name = contact.Name,
+                    Email = contact.Email,
+                    Subject = contact.Subject,
+                    Message = contact.Message
+                };
+
+                _context.Contact.Add(newContact);
+                _context.SaveChanges();
+
+                // Optionally, you can redirect to a thank-you page or return a success message
+                TempData["SuccessMessage"] = "Your message has been sent. Thank you!";
+                return RedirectToAction("Index"); // Replace with the appropriate action
+            }
+
+            // If ModelState is not valid, return to the contact page with validation errors
+            return View("Contact"); // Assuming you have a view named "Contact"
+        }
     }
 }

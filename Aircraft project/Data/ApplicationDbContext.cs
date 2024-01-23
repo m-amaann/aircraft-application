@@ -25,6 +25,8 @@ namespace Aircraft_project.Data
         public DbSet<Aircraft> Aircraft { get; set; }
 
         public DbSet<Cart> Cart { get; set; }
+
+        public DbSet<Contact> Contact { get; set; }
         public object ShoppingCartItems { get; internal set; }
     }
 }
