@@ -62,14 +62,14 @@
                                         <td>@order.PaymentStatus</td>
                                         <td>
                                             <select class="form-control" id="trackingStatus_@order.OrderId">
-                                                <option value="Pending" @(order.TrackingStatus == "Pending" ? "selected" :
+                                                @* <option value="Pending" @(order.TrackingStatus == "Pending" ? "selected" :
                                                 "")>Pending</option>
                                                 <option value="Shipped" @(order.TrackingStatus == "Shipped" ? "selected" :
                                                 "")>Shipped</option>
                                                 <option value="Delivered" @(order.TrackingStatus == "Delivered" ? "selected"
                                                 : "")>Delivered</option>
                                                 <option value="Returned" @(order.TrackingStatus == "Returned" ? "selected" :
-                                                "")>Returned</option>
+                                                "")>Returned</option> *@
                                             </select>
                                             <button class="btn btn-primary"
                                                 onclick="updateTrackingStatus(@order.OrderId)">Update</button>

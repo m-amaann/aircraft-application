@@ -20,6 +20,8 @@ namespace Aircraft_project.Models
         public DateTime CreatedDate { get; set; }
         public string PaymentStatus { get; set; }
 
+        public string TrackingStatus { get; set; }
+
         // public virtual Users Users { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
