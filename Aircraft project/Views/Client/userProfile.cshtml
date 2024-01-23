@@ -93,45 +93,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @* @foreach (var order in Model)
-                                    {
-                                    <tr>
-                                    <td>
-                                    @order.OrderId
-                                    </td>
-                                    <td>
-                                    @order.Name
-                                    </td>
-                                    <td>
-                                    $ @order.TotalPrice
-                                    </td>
-                                    <td>
-                                    @order.CreatedDate.ToString("MM/dd/yyyy")
-                                    </td>
-                                    <td>
-                                    <p class="badge badge-info px-3 py-2">@order.PaymentStatus</p>
-                                    </td>
-                                    <td>
-                                    <a href="" class='btn btn-primary btn-sm px-4'>View</a>
-                                    </td>
-                                    </tr>
-                                    }
-
-                                    @if (Model.Count == 0)
-                                    {
-                                    <tr>
-                                    <td colspan='6'>
-                                    <p> if order is nothing </p>
-                                    <h4 class='text-center p-3 text-danger font-weight-bolder'>No Orders Here
-                                    </h4>
-                                    <a href='../shop.php'
-                                    class='float-right btn btn-warning p-3 text-dark font-weight-bolder'>Continue
-                                    to
-                                    Shopping</a>
-                                    </td>
-                                    </tr>
-                                    } *@
-
                                     @if (ViewBag.Orders != null)
                                     {
                                         foreach (var order in ViewBag.Orders as List<Aircraft_project.Models.Orders>)
@@ -144,7 +105,12 @@
                                                 <td>
                                                     <p class="badge badge-info px-3 py-2">@order.PaymentStatus</p>
                                                 </td>
-                                                <td><a href="" class='btn btn-primary btn-sm px-4'>View</a></td>
+                                                <td>
+                                                    <button class='btn btn-primary btn-sm px-4' data-toggle='modal'
+                                                        data-target='#orderModal' data-order-id='@order.OrderId'>
+                                                        View
+                                                    </button>
+                                                </td>
                                             </tr>
                                         }
                                     }
@@ -161,23 +127,31 @@
                                             </td>
                                         </tr>
                                     }
-
-                                    @* @if (ViewBag.Orders.Count == 0)
-                                    {
-                                    <tr>
-                                    <td colspan='6'>
-                                    <p>if order is nothing</p>
-                                    <h4 class='text-center p-3 text-danger font-weight-bolder'>No Orders Here
-                                    </h4>
-                                    <a href='../shop.php'
-                                    class='float-right btn btn-warning p-3 text-dark font-weight-bolder'>Continue
-                                    to Shopping</a>
-                                    </td>
-                                    </tr>
-                                    } *@
                                 </tbody>
                             </table>
 
+                        </div>
+
+                        <div class='modal fade' id='orderModal' tabindex='-1' aria-labelledby='orderModalLabel'
+                            aria-hidden='true'>
+                            <div class='modal-dialog modal-lg'>
+                                <div class='modal-content'>
+                                    <div class='modal-header'>
+                                        <h5 class='modal-title' id='orderModalLabel'>Order Details</h5>
+                                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                            <span aria-hidden='true'>&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class='modal-body'>
+                                        <!-- Content of the modal body goes here -->
+                                        <!-- You may display order items, quantity, etc. -->
+                                    </div>
+                                    <div class='modal-footer'>
+                                        <button type='button' class='btn btn-secondary'
+                                            data-dismiss='modal'>Close</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -253,3 +227,29 @@
         </div>
     </div>
 </section>
+@* 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#orderModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var orderId = button.data('order-id'); // Extract order ID from data-* attributes
+
+                // Make an AJAX request to fetch order details based on orderId
+                $.ajax({
+                    url: '/Client/GetOrderDetails', // Replace with your controller action URL
+                    type: 'GET',
+                    data: { orderId: orderId },
+                    success: function (data) {
+                        // Update the modal body content with the fetched order details
+                        $('.modal-body').html(data);
+                    },
+                    error: function () {
+                        // Handle error if needed
+                        console.error('Error fetching order details.');
+                    }
+                });
+            });
+        });
+    </script>
+} *@
