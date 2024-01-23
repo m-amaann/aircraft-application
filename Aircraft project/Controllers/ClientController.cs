@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace Aircraft_project.Controllers
@@ -217,28 +218,22 @@ namespace Aircraft_project.Controllers
             // Retrieve user ID from local storage
             var localStorageUserId = HttpContext.Session.GetString("UserID");
 
-            if (localStorageUserId != null)
+            if (localStorageUserId != null && int.TryParse(localStorageUserId, out int userId))
             {
-                // Convert the user ID to an integer
-                if (int.TryParse(localStorageUserId, out int userId))
+                var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+
+                if (user != null)
                 {
-                    // Assuming you have a method to get user details based on UserId
-                    var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+                    var orders = GetUserOrders(userId);
 
-                    if (user != null)
-                    {
-                        // Assuming you have a method to get the user's orders based on UserId
-                        var orders = GetUserOrders(userId);
+                    ViewData["UserDetails"] = user;
+                    ViewData["UserId"] = userId;
+                    ViewBag.Orders = orders;
 
-                        // Pass user and orders to the view
-                        ViewData["UserDetails"] = user;
-                        ViewBag.Orders = orders;
-                        return View();
-                    }
+                    return View();
                 }
             }
 
-            // Redirect to login if user ID is not found or invalid
             return RedirectToAction("Login");
         }
 
@@ -336,30 +331,64 @@ namespace Aircraft_project.Controllers
         [HttpPost]
         public IActionResult UpdateProfile(Users updatedUser)
         {
-            // Check if the model is valid
-            if (!ModelState.IsValid)
+            try
             {
-                return View("EditProfile", updatedUser);
+                // Check if the model is valid
+                // if (!ModelState.IsValid)
+                // {
+                //     Console.WriteLine("Model state is not valid.");
+                //     // If the model state is not valid, return the view with the model to display validation errors
+                //     return View("userProfile");
+                // }
+
+                // Retrieve user ID from local storage
+                var localStorageUserId = HttpContext.Session.GetString("UserID");
+                Console.WriteLine($"Local storage user ID: {localStorageUserId}");
+
+                if (localStorageUserId != null && int.TryParse(localStorageUserId, out int userId))
+                {
+                    Console.WriteLine($"Parsed user ID: {userId}");
+
+                    // Ensure that the user making the request is the same as the one being updated
+                    if (userId != updatedUser.UserId)
+                    {
+                        Console.WriteLine("User ID mismatch. Returning 403 Forbidden.");
+                        return Forbid(); // Return 403 Forbidden if unauthorized
+                    }
+
+                    // Get the existing user details
+                    var existingUser = _context.Users.Find(userId);
+
+                    if (existingUser == null)
+                    {
+                        Console.WriteLine("Existing user not found. Returning NotFound.");
+                        return NotFound();
+                    }
+
+                    // Update the user details
+                    existingUser.Name = updatedUser.Name;
+                    existingUser.MobileNumber = updatedUser.MobileNumber;
+                    existingUser.Address = updatedUser.Address;
+                    existingUser.Image = updatedUser.Image;
+
+                    // Save changes to the database
+                    _context.SaveChanges();
+                    Console.WriteLine("User profile updated successfully!");
+
+                    TempData["SuccessMessage"] = "Profile updated successfully!";
+                    return RedirectToAction("userProfile");
+                }
+
+                Console.WriteLine("User ID not found or invalid. Redirecting to Login.");
+                return RedirectToAction("Login"); // Redirect to login if user ID is not found or invalid
             }
-
-            // Get the existing user details
-            var existingUser = _context.Users.Find(updatedUser.UserId);
-
-            if (existingUser == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                // Log the exception
+                Console.Error.WriteLine($"Exception in UpdateProfile: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
             }
-
-            // Update the user details
-            existingUser.Name = updatedUser.Name;
-            existingUser.MobileNumber = updatedUser.MobileNumber;
-            existingUser.Address = updatedUser.Address;
-
-            // Save changes to the database
-            _context.SaveChanges();
-
-            // Redirect to the user profile page
-            return RedirectToAction("userProfile");
         }
+
     }
 }

@@ -1,5 +1,4 @@
 @model Aircraft_project.Models.Users
-
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
@@ -43,8 +42,7 @@
                     <!-- Display user details as needed -->
                     <div class='col-md-12 rounded d-flex justify-content-center flex-column align-items-center'>
                         <div class=''>
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
-                                class='rounded-circle shadow' alt='Avatar' width='250px' height='250px'
+                            <img src="@user.Image" class='rounded-circle shadow' alt='Avatar' width='250px' height='250px'
                                 style='object-fit: cover;' />
                         </div>
                         <h5 class='text-center mt-3 py-2 px-3 userName text-uppercase font-weight-bolder'>
@@ -83,7 +81,6 @@
 
                         </div>
                         <div>
-
                             <table class='table align-middle mb-0 bg-white table-striped'>
                                 <thead class='bg-light'>
                                     <tr>
@@ -135,21 +132,23 @@
                                     </tr>
                                     } *@
 
-                                    @foreach (var order in ViewBag.Orders as List<Aircraft_project.Models.Orders>)
+                                    @if (ViewBag.Orders != null)
                                     {
-                                        <tr>
-                                            <td>@order.OrderId</td>
-                                            <td>@order.Name</td>
-                                            <td>$ @order.TotalPrice</td>
-                                            <td>@order.CreatedDate.ToString("MM/dd/yyyy")</td>
-                                            <td>
-                                                <p class="badge badge-info px-3 py-2">@order.PaymentStatus</p>
-                                            </td>
-                                            <td><a href="" class='btn btn-primary btn-sm px-4'>View</a></td>
-                                        </tr>
+                                        foreach (var order in ViewBag.Orders as List<Aircraft_project.Models.Orders>)
+                                        {
+                                            <tr>
+                                                <td>@order.OrderId</td>
+                                                <td>@order.Name</td>
+                                                <td>$ @order.TotalPrice</td>
+                                                <td>@order.CreatedDate.ToString("MM/dd/yyyy")</td>
+                                                <td>
+                                                    <p class="badge badge-info px-3 py-2">@order.PaymentStatus</p>
+                                                </td>
+                                                <td><a href="" class='btn btn-primary btn-sm px-4'>View</a></td>
+                                            </tr>
+                                        }
                                     }
-
-                                    @if (ViewBag.Orders.Count == 0)
+                                    else
                                     {
                                         <tr>
                                             <td colspan='6'>
@@ -162,6 +161,20 @@
                                             </td>
                                         </tr>
                                     }
+
+                                    @* @if (ViewBag.Orders.Count == 0)
+                                    {
+                                    <tr>
+                                    <td colspan='6'>
+                                    <p>if order is nothing</p>
+                                    <h4 class='text-center p-3 text-danger font-weight-bolder'>No Orders Here
+                                    </h4>
+                                    <a href='../shop.php'
+                                    class='float-right btn btn-warning p-3 text-dark font-weight-bolder'>Continue
+                                    to Shopping</a>
+                                    </td>
+                                    </tr>
+                                    } *@
                                 </tbody>
                             </table>
 
@@ -177,7 +190,9 @@
                         </div>
                         <div class='container'>
                             <form asp-action="UpdateProfile" asp-controller="Client" method="post">
-                                <input type="hidden" asp-for="UserId" />
+                                <input type="hidden" asp-for="UserId" value="@ViewData["UserId"]" />
+
+                                <div asp-validation-summary="All" class="text-danger"></div>
 
                                 <div class="mb-4">
                                     <label asp-for="Name" class="form-label">Name</label>
@@ -206,14 +221,30 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label asp-for="Address" class="form-label">Image</label>
-                                    <input asp-for="Address" class="form-control" value=""></input>
+                                    <label asp-for="Image" class="form-label">Image URL</label>
+                                    <input asp-for="Image" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.Image)" />
                                 </div>
                                 <!-- Add more fields as needed -->
 
                                 <button type="submit" class="btn btn-primary">Update Profile</button>
                             </form>
-
+                            <br>
+                            <br>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach (var modelState in ViewData.ModelState.Values)
+                                        {
+                                            foreach (var error in modelState.Errors)
+                                            {
+                                                <li>@error.ErrorMessage</li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            }
                         </div>
 
                     </div>
