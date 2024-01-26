@@ -1,0 +1,83 @@
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <img src="~/Images/aircraftlogo.png" alt="Raythos Aerospace Logo" class="logo w-100">
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Indexes">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Interface
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+            aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Aircraft</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Aircraft:</h6>
+                <a class="collapse-item" asp-controller="Dashboard" asp-action="Aircraft">View</a>
+                <a class="collapse-item" asp-controller="Dashboard" asp-action="AddAircraft">Add New</a>
+                <a class="collapse-item" asp-controller="Dashboard" asp-action="Tracking">Tracking</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true"
+            aria-controls="collapseSix">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Create Admin</span>
+        </a>
+        <div id="collapseSix" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="Dashboard" asp-action="Admin">View</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Users">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Users</span></a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Orders">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Orders</span></a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Dashboard" asp-action="Reports">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Genrate Reports</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+</ul>
+<!-- End of Sidebar -->

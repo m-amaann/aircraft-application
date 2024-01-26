@@ -1,0 +1,313 @@
+@model IEnumerable<Aircraft_project.Models.Cart>
+
+@{
+    ViewData["Title"] = "Checkout page";
+}
+
+<div class="container">
+    <form id="checkoutForm">
+        <div class="row align-text-center mt-3 mb-3">
+            <div class="col-md-7 bg-light">
+                <h5 class="text-muted p-2 mt-3">Checkout Details</h5>
+                <hr>
+                <div class="container">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="name">Name</label>
+                                <input type="text" name="name" id="name" value="" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="email">Email address</label>
+                                <input type="email" name="email" value="" id="email" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="phone">Phone number</label>
+                                <input type="tel" name="phone" value="" id="phone" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="pincode">Pin Code</label>
+                                <input type="number" name="pincode" id="pincode" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <div class="form-outline">
+                                <label class="form-label" for="address">Address</label>
+                                <textarea name="address" id="address" cols="50" class="form-control"
+                                    rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2nd column -->
+            <div class="col-md-5 shadow text-muted">
+                <h5 class="text-center text-muted p-2 mt-3">Ordered Details</h5>
+                <hr>
+
+                <div class="product_data">
+                    <!-- Product details section (example) -->
+                    @foreach (var cartItem in Model)
+                    {
+                        <div class="row p-3 product_data align-items-center border">
+                            <!-- image section -->
+                            <div class="col-sm-3 mt-2 mb-2">
+                                <img src="@cartItem.Aircraft.ImagePath" alt="@cartItem.Aircraft.Name" width=""
+                                    class="img-fluid rounded">
+                            </div>
+                            <!-- name -->
+                            <div class="col-sm-3">
+                                <h6>@cartItem.Aircraft.Name</h6>
+                            </div>
+                            <!-- price -->
+                            <div class="col-sm-4">
+                                <h6>@cartItem.Aircraft.Price</h6>
+                            </div>
+                            <!-- qty -->
+                            <div class="col-sm-2">
+                                <h6>x @cartItem.Quantity</h6>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <hr>
+                <!-- Total Price section -->
+                <div class="p-3 text-muted">
+                    <h5>Total Price: <span class="float-right font-weight-bolder" id="totalPrice">$0.00</span></h5>
+                </div>
+
+
+                <!-- Stripe button section -->
+                <div class="p-3">
+                    <button type="button" id="payhere-payment" class="btn btn-outline-primary w-100">PayHere
+                        Pay</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        @* function calculateTotalPrice() {
+        var cartItems = @Html.Raw(Json.Serialize(Model));
+        var totalPrice = 0;
+
+        for (var i = 0; i < cartItems.length; i++) {
+        // Check if the 'aircraft' property is available
+        if (cartItems[i].aircraft && cartItems[i].aircraft.price) {
+        totalPrice += cartItems[i].aircraft.price * cartItems[i].quantity;
+        }
+        }
+
+        return totalPrice;
+        } *@
+
+            function calculateTotalPrice() {
+                var cartItems = @Html.Raw(Json.Serialize(Model));
+                console.log("Cart Items: ", cartItems);
+                var totalPrice = 0;
+
+                for (var i = 0; i < cartItems.length; i++) {
+                    if (cartItems[i].aircraft && cartItems[i].aircraft.price) {
+                        totalPrice += cartItems[i].aircraft.price * cartItems[i].quantity;
+                    }
+                }
+
+                console.log("Calculated Total Price: ", totalPrice);
+                return totalPrice;
+            }
+
+
+        // Function to update the total price in the HTML element
+        function updateTotalPrice() {
+            var totalPrice = calculateTotalPrice();
+            document.getElementById('totalPrice').textContent = "$" + totalPrice.toLocaleString("en-us", { minimumFractionDigits: 2 });
+            return totalPrice;
+        }
+
+        // Calculate and update the total price when the page loads
+        window.onload = updateTotalPrice;
+
+        const totalPrice = calculateTotalPrice();
+
+        console.log(totalPrice)
+
+        const merchantSecret =
+            "NDIyMjA5MjQ3ODM3MDU5MzU3NDIyMzM5MTY5OTk2MTU4NTY4NDU1Ng==";
+        const orderId =
+            Date.now().toString() + Math.random().toString(36).substr(2, 9);
+        const currency = "LKR";
+        const merchantId = "1222723";
+        const hashedSecret = md5(merchantSecret).toString().toUpperCase();
+        let amountFormated = parseFloat(totalPrice)
+            .toLocaleString("en-us", { minimumFractionDigits: 2 })
+            .replaceAll(",", "");
+        const hash = md5(
+            merchantId + orderId + amountFormated + currency + hashedSecret
+        )
+            .toString()
+            .toUpperCase();
+        console.log(hash);
+
+        // Payment completed. It can be a successful failure.
+        payhere.onCompleted = function onCompleted(orderId) {
+            console.log("Payment completed. OrderID:" + orderId);
+
+            // Collect necessary data for the order
+            var orderDetails = {
+                UserId: 1, // Replace with the actual user ID
+                Name: document.getElementById('name').value,
+                Email: document.getElementById('email').value,
+                Phone: document.getElementById('phone').value,
+                Pincode: document.getElementById('pincode').value,
+                Address: document.getElementById('address').value,
+                TotalPrice: calculateTotalPrice(),
+                PaymentStatus: "Completed",
+                OrderStatus: "Order Received", // Added this line
+                LastUpdated: new Date().toISOString(),
+                OrderItems: [] // Update this with the actual structure of your order items
+            };
+
+            // Assuming you have the product name and quantity available in your HTML
+            var productRows = document.querySelectorAll('.product_data');
+            productRows.forEach(function (row) {
+                var productName = row.querySelector('.col-sm-3 h6').innerText;
+                var quantity = parseInt(row.querySelector('.col-sm-2 h6').innerText.split(' ')[1]);
+
+                orderDetails.OrderItems.push({
+                    ProductName: productName,
+                    Price: parseFloat(row.querySelector('.col-sm-4 h6').innerText),
+                    Quantity: quantity
+                });
+            });
+
+            console.log("Sending AJAX request...");
+
+            // Send an AJAX request to place the order
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:5205/api/order/PlaceOrder',
+                contentType: 'application/json',
+                data: JSON.stringify(orderDetails),
+                success: function (response) {
+                    console.log('Order placed successfully. OrderID:', response.orderId);
+                    // other code...
+                },
+                error: function (error) {
+                    console.error('Failed to place the order:', error);
+                    alert('Failed to place the order. Check console for details.');
+                }
+            });
+        @* $.ajax({
+            type: 'POST',
+            url: 'http://localhost:5205/api/order/PlaceOrder',
+            contentType: 'application/json',
+            data: JSON.stringify(orderDetails),
+            success: function (response) {
+            console.log('Order placed successfully. OrderID:', response.orderId);},
+            error: function (error) {
+            console.error('Failed to place the order:', error.responseJSON.error);
+            // Handle the error and show a relevant message to the user
+            }
+            }); *@
+                };
+
+        // Payment window closed
+        payhere.onDismissed = function onDismissed() {
+            console.log("Payment dismissed");
+            alert("Payment dismissed");
+        };
+
+        // Error occurred
+        payhere.onError = function onError(error) {
+            console.log("Error:" + error);
+            alert("Error occurred. Check console for details.");
+        };
+
+        // Put the payment variables here
+        var payment = {
+            "sandbox": true,
+            "merchant_id": "1222723",    // Replace your Merchant ID
+            "return_url": "http://sample.com/return_url",     // Important
+            "cancel_url": "http://sample.com/cancel_url",     // Important
+            "notify_url": "http://sample.com/notify",
+            "order_id": orderId,
+            "items": "Door bell wireles",
+            "amount": totalPrice,
+            "currency": "LKR",
+            "hash": hash, // *Replace with generated hash retrieved from backend
+            "first_name": "Saman",
+            "last_name": "Perera",
+            "email": "samanp@gmail.com",
+            "phone": "0771234567",
+            "address": "No.1, Galle Road",
+            "city": "Colombo",
+            "country": "Sri Lanka",
+            "delivery_address": "No. 46, Galle road, Kalutara South",
+            "delivery_city": "Kalutara",
+            "delivery_country": "Sri Lanka",
+            "custom_1": "",
+            "custom_2": ""
+        };
+
+        // Show the payhere.js popup, when "PayHere Pay" is clicked
+        @* document.getElementById('payhere-payment').onclick = function (e) {
+        var form = document.getElementById("checkoutForm");
+
+        // Check if any required fields are empty
+        var fields = ['name', 'email', 'phone', 'pincode', 'address'];
+
+        for (var i = 0; i < fields.length; i++) {
+        var field = fields[i];
+        var input = form.elements[field];
+
+        if (!input.value.trim()) {
+        alert("Please fill in all required fields.");
+        return;
+        }
+        }
+
+        payhere.startPayment(payment);
+        }; *@
+
+            document.getElementById('payhere-payment').onclick = function (e) {
+                e.preventDefault();  // Prevent default form submission
+                console.log("PayHere Pay button clicked");
+
+                var form = document.getElementById("checkoutForm");
+                var fields = ['name', 'email', 'phone', 'pincode', 'address'];
+
+                for (var i = 0; i < fields.length; i++) {
+                    var field = fields[i];
+                    var input = form.elements[field];
+
+                    if (!input.value.trim()) {
+                        alert("Field " + field + " is empty. Please fill in all required fields.");
+                        console.log("Field " + field + " is empty");
+                        return;
+                    }
+                }
+
+                console.log("All required fields are filled");
+                payhere.startPayment(payment);
+            };
+
+    </script>
+}

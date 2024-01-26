@@ -1,0 +1,164 @@
+@* @model Aircraft_project.Models.Tracking
+
+@{
+ViewData["Title"] = "Tracking";
+}
+
+<div class="container">
+<h1>Update Aircraft Status</h1>
+<form asp-action="UpdateAircraftStatus" method="post">
+<input type="hidden" asp-for="Id" />
+
+<div class="form-group">
+<label asp-for="AircraftId">Aircraft Model</label>
+@if (Model?.AvailableAircraft != null)
+{
+<select asp-for="AircraftId" asp-items="@Model.AvailableAircraft" class="form-control"></select>
+}
+else
+{
+<p>No aircraft available. Please add aircraft before updating status.</p>
+}
+
+<span asp-validation-for="AircraftId" class="text-danger"></span>
+</div>
+
+
+<div class="form-group">
+<label asp-for="Status">Current Status</label>
+<select asp-for="Status" class="form-control">
+<option value="Ordered">Ordered</option>
+<option value="In Production">In Production</option>
+<option value="Final Assembly">Final Assembly</option>
+<option value="Delivered">Delivered</option>
+</select>
+</div>
+
+<div class="form-group">
+<label asp-for="EstimatedDeliveryDate">Estimated Delivery Date</label>
+<input type="date" asp-for="EstimatedDeliveryDate" class="form-control" />
+</div>
+
+<button type="submit" class="btn btn-primary">Update Status</button>
+</form>
+</div> *@
+
+
+@model IEnumerable<Aircraft_project.Models.Tracking>
+
+@{
+    ViewData["Title"] = "Tracking List";
+}
+
+<div class="container">
+    <h2>All Trackings</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Aircraft Name</th>
+                    <th>Status</th>
+                    <th>Estimated Delivery Date</th>
+                    <th>Update</th> 
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tracking in Model)
+                {
+                    <tr>
+                        <td>@(tracking.Id)</td>
+                        <td>@(tracking.Status ?? "N/A")</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="editTracking(@tracking.Id)" data-tracking-id="@tracking.Id">Edit</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No tracking records are available.</p>
+    }
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Tracking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editTrackingForm">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label for="trackingStatus">Status</label>
+                        <select class="form-control" id="trackingStatus" name="status">
+                            <option>Order Received</option>
+                            <option>In Production</option>
+                            <option>Assembled</option>
+                            <option>Out for Delivery</option>
+                            <option>Delivered</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="editTrackingId" name="trackingId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveChanges()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        function editTracking(trackingId) {
+            // Set the hidden trackingId field in the form
+            $('#editTrackingId').val(trackingId); // Make sure this ID matches the actual HTML element.
+
+            // Open the modal
+            $('#editModal').modal('show');
+        }
+
+
+        function saveChanges() {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            var trackingId = $('#editTrackingId').val();
+            console.log("Tracking ID: ", trackingId);
+            var status = $('#trackingStatus').val();
+
+            $.ajax({
+                url: '/Dashboard/UpdateTrackingStatus', // Update with your actual controller name
+                type: 'POST',
+                headers: {
+                    "RequestVerificationToken": token // Include the token in the request headers
+                },
+                data: {
+                    trackingId: trackingId,
+                    status: status
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message); // or update your UI accordingly
+                        // Refresh the data on the page to show the new status
+                        location.reload(); // simple way to refresh the page, or you could update just the affected row
+                    } else {
+                        alert(response.message); // handle error, show message to user
+                    }
+                }
+            });
+
+            // Close the modal
+            $('#editModal').modal('hide');
+        }
+
+    </script>
+}

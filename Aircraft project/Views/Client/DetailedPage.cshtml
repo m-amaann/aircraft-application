@@ -1,0 +1,142 @@
+@model Aircraft_project.Models.Aircraft
+
+@{
+    ViewData["Title"] = "Single Product Page";
+}
+
+<section>
+    <div class="container">
+        <!-- start row  -->
+        <div class="row ">
+            <!-- 1st column  -->
+            <div class="col-sm-7">
+                <div class=" d-flex justify-content-center align-items-center rounded">
+                    <img src="@Model.ImagePath" class="img-fluid shadow m-4 rounded"
+                        alt="product imagae1" />&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class=" d-flex justify-content-center align-items-center rounded">
+                            <img src="@Model.ImagePath" class="img-fluid shadow m-4 rounded"
+                                alt="product imagae1" />&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class=" d-flex justify-content-center align-items-center rounded">
+                            <img src="@Model.ImagePath" class="img-fluid shadow m-4 rounded"
+                                alt="product imagae1" />&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class=" d-flex justify-content-center align-items-center rounded">
+                            <img src="@Model.ImagePath" class="img-fluid shadow m-4 rounded"
+                                alt="product imagae1" />&nbsp;&nbsp;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2nd column  -->
+            <div class="col-sm-5 text-secondary py-4">
+                <h3 class="font-weight-bold">@Model.Name</h3>
+                <small>@Model.Category</small>
+                <div class=" d-flex">
+                    <div class="rating text-warning font-size-12">
+                        <span><i class="fas fa-star"></i></span>
+                        <span><i class="fas fa-star"></i></span>
+                        <span><i class="fas fa-star"></i></span>
+                        <span><i class="fas fa-star"></i></span>
+                        <span><i class="far fa-star"></i></span>
+                    </div>
+                    <a href="#" class="px-2 font-size-14">20,000 rating |1000+ answered</a>
+                </div>
+                <div class="d-flex flex-column text-secondary mt-3 mb-3">
+                    <small>Delivery by : Before 1 Weeks</small>
+                    <small>sold by <a href="#"> NAME HERE</a> 4.5 out of 5 |16,125
+                        rating</small>
+                    <small><i class="fas fa-map-marker-alt color-primary"></i>&nbsp;&nbsp; Delivered to Customer -
+                        25468</small>
+                </div>
+                <hr />
+
+                <div class="mb-3">
+                    <h5 class="font-weight-bold">DESCRIPTION </h5>
+                    <p class="text-justify">@Model.AdditionalInformation
+                    </p>
+                </div>
+
+                @* <div class="d-flex flex-column mt-4 mb-4">
+                <h5 class="font-weight-bold">SHIPPING ADDRESS</h5>
+                <small><i class="fas fa-regular fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IOHN jOHNSON</small>
+                <small><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;134/41 , dubai road, dubai
+                kurukusandhu, Dubai</small>
+                </div> *@
+
+                <!-- product pricing  -->
+                <div class="text-secondary mb-3">
+                    <h5 class="font-weight-bold">PRICE </h5>
+                    <span class="text-info font-weight-bold" style="font-size:25px;">$
+                        @Model.Price
+                    </span>
+                </div>
+                <!-- !product pricing  -->
+                <hr />
+                <div class="mb-3 mt-2">
+                    <h5 class="font-weight-bold">CUSTOMIZATION </h5>
+                    <form method="post" action="/Client/AddToCart" class="mt-3">
+                        <input type="hidden" name="AircraftId" value="@Model.Id" />
+
+                        <div class="mb-3">
+                            <h6 class="font-weight-bold">COLORS</h6>
+                            <input type="color" name="color" class="shadow">
+                        </div>
+
+                        <div class="my-3 d-flex mb-3">
+                            <h6 class="mt-2">Qty: &nbsp; &nbsp;</h6>
+                            <div class="d-flex">
+                                <button class="btn btn-link px-2" type="button"
+                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+
+                                <input name="quantity" value="1" type="number"
+                                    class="form-control input-qty text-center w-50" />
+
+                                <button class="btn btn-link px-2" type="button"
+                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <select name="engine" class="form-control mb-3">
+                            <option value="" disabled selected>CHOOSE ENGINE</option>
+                            <option value="E1548">E1548</option>
+                            <option value="A2548">A2548</option>
+                            <option value="E2489">E2489</option>
+                        </select>
+
+                        <select name="seatsSize" class="form-control mt-2 mb-2">
+                            <option value="" disabled selected>SEATS SIZE</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+
+                        <select name="fanType" class="form-control mt-2 mb-2">
+                            <option value="" disabled selected>CHOOSE FAN TYPE</option>
+                            <option value="E1548">E1548</option>
+                            <option value="A2548">A2548</option>
+                            <option value="E2489">E2489</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-warning form-control fa fa-shopping-cart AddToCart">
+                            ADD TO CART
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

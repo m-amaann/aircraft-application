@@ -1,0 +1,274 @@
+@model Aircraft_project.Models.Users
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "User Profile Dashboard";
+}
+
+@section Scripts {
+    <script>
+        // Function to get items from local storage
+        function getLocalStorageItem(key) {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item).value : null;
+        }
+
+        // Check if user is logged in using local storage
+        const userId2 = getLocalStorageItem('UserID');
+        if (!userId2) {
+            // User is not logged in, redirect to the login page
+            window.location.href = '/Client/Login';
+        }
+        else {
+            // Update the local storage with the session values if not already set
+            const storedUserId = getLocalStorageItem('UserID');
+            const storedUserName = getLocalStorageItem('UserName');
+
+            if (!storedUserId || !storedUserName) {
+                localStorage.setItem('UserID', JSON.stringify({ value: userId }));
+                localStorage.setItem('UserName', JSON.stringify({ value: '@HttpContextAccessor.HttpContext.Session.GetString("UserName")' }));
+            }
+        }
+
+        function fetchOrderDetails(orderId) {
+            $.ajax({
+                url: '/api/order/GetOrderDetails',
+                type: 'GET',
+                data: { orderId: orderId },
+                success: function (orderDetails) {
+                    updateOrderModal(orderDetails);
+                },
+                error: function (error) {
+                    console.error('Error fetching order details:', error);
+                }
+            });
+        }
+
+        function updateOrderModal(orderDetails) {
+            const modalBody = $('#orderDetailsModal .modal-body');
+            modalBody.empty(); // Clear previous details
+
+            // Display basic order details
+            modalBody.append(`
+                <p>Order ID: ${orderDetails.orderId}</p>
+                <p>Total Price: $${orderDetails.totalPrice}</p>
+                <p>Order Status: ${orderDetails.orderStatus}</p>
+                <p>Payment Status: ${orderDetails.paymentStatus}</p>
+                <hr>
+            `);
+
+            // Check if there are order items
+            if (orderDetails.orderItems && orderDetails.orderItems.length > 0) {
+                // Header for the order items section
+                modalBody.append('<h5>Items in this Order:</h5>');
+
+                // Loop through each item and display details
+                orderDetails.orderItems.forEach(item => {
+                    modalBody.append(`
+                        <div class="order-item">
+                            <p>Product Name: ${item.productName}</p>
+                            <p>Price: $${item.price}</p>
+                            <p>Quantity: ${item.quantity}</p>
+                        </div>
+                    `);
+                });
+            } else {
+                // Message if there are no items
+                modalBody.append('<p>No items found for this order.</p>');
+            }
+        }
+
+
+        $(document).on('click', '.view-button', function () {
+            const orderId = $(this).data('order-id');
+            fetchOrderDetails(orderId);
+        });
+
+
+    </script>
+}
+
+
+
+<section>
+    <div class='container'>
+        <div class='row shadow mb-2'>
+            <!-- left side bar section  -->
+            <div class='col-md-3 py-4 shadow'>
+                @if (ViewData["UserDetails"] is Aircraft_project.Models.Users user)
+                {
+                    <!-- Display user details as needed -->
+                    <div class='col-md-12 rounded d-flex justify-content-center flex-column align-items-center'>
+                        <div class=''>
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D"
+                                class='rounded-circle shadow' alt='Avatar' width='250px' height='250px'
+                                style='object-fit: cover;' />
+                        </div>
+                        <h5 class='text-center mt-3 py-2 px-3 userName text-uppercase font-weight-bolder'>
+                            @user.Name
+                        </h5>
+                        <p>@user.Email</p>
+                        <!-- Display other user details as needed -->
+                    </div>
+                }
+                <ul class='nav flex-column' id='myTab' role='tablist'>
+                    <li class='nav-item py-1' role='presentation'>
+                        <a class='nav-link active btn btn-outline-primary ' id='home-tab' data-bs-toggle='tab'
+                            data-bs-target='#home-tab-pane' type='button' role='tab' aria-controls='home-tab-pane'
+                            aria-selected='true'>Ordered Items</a>
+                    </li>
+
+                    <li class='nav-item py-1' role='presentation'>
+                        <a class='nav-link btn btn-outline-primary' id='profile-tab' data-bs-toggle='tab'
+                            data-bs-target='#profile-tab-pane' type='button' role='tab' aria-controls='profile-tab-pane'
+                            aria-selected='false'>Profile Edit</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- right side bar section  -->
+            <!-- ----------------------------------------------------------------------------------------------------- -->
+            <div class='col-md-9'>
+                <div class='tab-content py-4' id='myTabContent'>
+                    <!-- ----------------------------------------------------------------------------------------------------- -->
+
+                    <!-- Order Sections -->
+                    <div class='tab-pane fade show active' id='home-tab-pane' role='tabpanel' aria-labelledby='home-tab'
+                        tabindex='0'>
+                        <div class='text-center'>
+                            <h5 class='mb-3'>Your all orders in one place.</h5>
+
+                        </div>
+                        <div>
+
+                            <table class='table align-middle mb-0 bg-white table-striped'>
+                                <thead class='bg-light'>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tracking No</th>
+                                        <th>Price</th>
+                                        <th>Date</th>
+                                        <th>Payment Status</th>
+                                        <th>Order Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    @foreach (var order in ViewBag.Orders as List<Aircraft_project.Models.Orders>)
+                                    {
+                                        <tr>
+                                            <td>@order.OrderId</td>
+                                            <td>@order.Name</td>
+                                            <td>$ @order.TotalPrice</td>
+                                            <td>@order.CreatedDate.ToString("MM/dd/yyyy")</td>
+                                            <td>
+                                                <p class="badge badge-info px-3 py-2">@order.PaymentStatus</p>
+                                            </td>
+                                            <td>
+                                                <p class="badge badge-warning px-3 py-2">@order.OrderStatus</p>
+                                            </td>
+
+                                            <td><button type="button" class='btn btn-primary btn-sm px-4 view-button'
+                                                    data-order-id="@order.OrderId" data-bs-toggle="modal"
+                                                    data-bs-target="#orderDetailsModal">View</button></td>
+
+
+                                        </tr>
+                                    }
+
+                                    @if (ViewBag.Orders.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan='6'>
+                                                <p>if order is nothing</p>
+                                                <h4 class='text-center p-3 text-danger font-weight-bolder'>No Orders Here
+                                                </h4>
+                                                <a href='../shop.php'
+                                                    class='float-right btn btn-warning p-3 text-dark font-weight-bolder'>Continue
+                                                    to Shopping</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <!-- ----------------------------------------------------------------------------------------------------- -->
+                    <!-- Edit account sections  -->
+                    <div class='tab-pane fade py-4' id='profile-tab-pane' role='tabpanel' aria-labelledby='profile-tab'
+                        tabindex='0'>
+                        <div class='mb-5'>
+                            <h4 class='text-center'>Edit Your Account</h4>
+                        </div>
+                        <div class='container'>
+                            <form asp-action="UpdateProfile" asp-controller="Client" method="post">
+                                <input type="hidden" asp-for="UserId" />
+
+                                <div class="mb-4">
+                                    <label asp-for="Name" class="form-label">Name</label>
+                                    <input asp-for="Name" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.Name)" />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                    <input asp-for="Email" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.Email)"
+                                        disabled />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="MobileNumber" class="form-label">Mobile Number</label>
+                                    <input asp-for="MobileNumber" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.MobileNumber)" />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="Address" class="form-label">Address</label>
+                                    <input asp-for="Address" class="form-control"
+                                        value="@((ViewData["UserDetails"] as Aircraft_project.Models.Users)?.Address)"
+                                        style="height: 100px;"></input>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="Address" class="form-label">Image</label>
+                                    <input asp-for="Address" class="form-control" value=""></input>
+                                </div>
+                                <!-- Add more fields as needed -->
+
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Order details go here -->
+                    <p>Details of the selected order will be displayed here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

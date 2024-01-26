@@ -1,0 +1,112 @@
+@model IEnumerable<dynamic> // You can use `IEnumerable<object>` or `List<dynamic>` for flexibility
+
+@{
+    ViewData["Title"] = "Generate Report";
+}
+
+<div id="content">
+    <!-- Topbar -->
+    @Html.Partial("~/Views/Shared/_DashboardTopNavbar.cshtml")
+    <!-- End of Topbar -->
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Generate Report</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <label for="reportType">Select Model:</label>
+                <select class="form-control" id="reportType">
+                    <option value="Aircraft">Aircraft</option>
+                    <option value="Orders">Orders</option>
+                    <option value="Users">Users</option>
+                    <!-- Add more options for other models -->
+                </select>
+            </div>
+            <div class="col-md-3 mb-4">
+                <label for="fromDate">From Date:</label>
+                <input type="date" class="form-control" id="fromDate">
+            </div>
+            <div class="col-md-3 mb-4">
+                <label for="toDate">To Date:</label>
+                <input type="date" class="form-control" id="toDate">
+            </div>
+            <div class="col-md-3 mb-4">
+                <button class="btn btn-primary" onclick="loadReportData()">Generate Report</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="card shadow mb-4 w-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary" id="reportTitle">Report Table</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <!-- Table headers will be dynamically populated -->
+                            </thead>
+                            <tbody>
+                                <!-- Table body will be dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Main Content -->
+</div>
+
+<script>
+    function loadReportData() {
+        var modelType = document.getElementById("reportType").value;
+        var fromDate = document.getElementById("fromDate").value;
+        var toDate = document.getElementById("toDate").value;
+        var reportTitle = document.getElementById("reportTitle");
+        var dataTableBody = document.querySelector("#dataTable tbody");
+
+        // Clear existing table data
+        dataTableBody.innerHTML = "";
+
+        // Update the table title based on the selected model
+        reportTitle.innerText = modelType + " Report";
+
+        // Fetch and load data based on the selected model
+        $.ajax({
+            url: '/Dashboard/GetReportData', // Adjust the URL based on your controller and action
+            type: 'GET',
+            data: { modelType: modelType, fromDate: fromDate, toDate: toDate },
+            success: function (data) {
+                // Populate the table headers dynamically
+                var headers = Object.keys(data[0]);
+                var thead = document.querySelector("#dataTable thead");
+                var headerRow = document.createElement("tr");
+                headers.forEach(function (header) {
+                    var th = document.createElement("th");
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+
+                // Populate the table body dynamically
+                var tbody = document.querySelector("#dataTable tbody");
+                data.forEach(function (row) {
+                    var tr = document.createElement("tr");
+                    headers.forEach(function (header) {
+                        var td = document.createElement("td");
+                        td.textContent = row[header];
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+            },
+            error: function () {
+                alert("Error loading report data.");
+            }
+        });
+    }
+</script>

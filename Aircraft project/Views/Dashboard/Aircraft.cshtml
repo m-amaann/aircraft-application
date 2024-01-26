@@ -1,0 +1,82 @@
+@model IEnumerable<Aircraft_project.Models.Aircraft>
+
+@{
+    ViewData["Title"] = "Aircraft";
+}
+
+<!-- Main Content -->
+<div id="content">
+    <!-- Topbar -->
+    @Html.Partial("~/Views/Shared/_DashboardTopNavbar.cshtml")
+    <!-- End of Topbar -->
+
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Add Aircraft</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        </div>
+        <div class="row">
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4 w-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Aircraft Records</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        @if (Model != null)
+                        {
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Manufacturer</th>
+                                        <th>Color</th>
+                                        <th>Passenger Capacity</th>
+                                        <th>Max Speed</th>
+                                        <th>Fuel Capacity</th>
+                                        <th>Engine Type</th>
+                                        <th>Range</th>
+                                        <th>Manufacturing Date</th>
+                                        <th>Additional Information</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var aircraft in Model)
+                                    {
+                                        <tr>
+                                            <td>@aircraft.Name</td>
+                                            <td>@aircraft.Manufacturer</td>
+                                            <td>@aircraft.Color</td>
+                                            <td>@aircraft.PassengerCapacity</td>
+                                            <td>@aircraft.MaxSpeed</td>
+                                            <td>@aircraft.FuelCapacity</td>
+                                            <td>@aircraft.EngineType</td>
+                                            <td>@aircraft.Range</td>
+                                            <td>@aircraft.ManufacturingDate</td>
+                                            <td>@aircraft.AdditionalInformation</td>
+                                            <td>@aircraft.Category</td>
+                                            <td>@aircraft.Price</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <p>No aircraft data available.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- /.container-fluid -->
+    </div>
+    <!-- End of Main Content -->

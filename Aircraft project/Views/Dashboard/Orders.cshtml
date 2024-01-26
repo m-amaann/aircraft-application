@@ -1,0 +1,299 @@
+@* @model IEnumerable<Aircraft_project.Models.Orders>
+
+
+@{
+ViewData["Title"] = "Orders";
+}
+
+
+<div id="content">
+<!-- Topbar -->
+@Html.Partial("~/Views/Shared/_DashboardTopNavbar.cshtml")
+<!-- End of Topbar -->
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<h1 class="h3 mb-0 text-gray-800">Orders Information</h1>
+<div>
+<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-3">
+<i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+</a>
+</div>
+</div>
+
+
+<div class="row">
+<div class="card shadow mb-4 w-100">
+<div class="card-header py-3">
+<h6 class="m-0 font-weight-bold text-primary">Orders Table</h6>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+<thead>
+<tr>
+<th>Order ID</th>
+<th>User ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Pincode</th>
+<th>Address</th>
+<th>Total Price</th>
+<th>Created Date</th>
+<th>Payment Status</th>
+</tr>
+</thead>
+<tbody>
+@foreach (var order in Model)
+{
+<tr>
+<td>@order.OrderId</td>
+<td>@order.UserId</td>
+<td>@order.Name</td>
+<td>@order.Email</td>
+<td>@order.Phone</td>
+<td>@order.Pincode</td>
+<td>@order.Address</td>
+<td>@order.TotalPrice</td>
+<td>@order.CreatedDate.ToString("yyyy-MM-dd")</td>
+<td>
+@order.PaymentStatus
+<button class="btn btn-primary btn-sm"
+onclick="openUpdateStatusModal(@order.OrderId)">Update Status</button>
+</td>
+
+</tr>
+}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- End of Main Content --> *@
+
+
+@model IEnumerable<Aircraft_project.Models.Orders>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<div id="content">
+    <!-- Topbar -->
+    @Html.Partial("~/Views/Shared/_DashboardTopNavbar.cshtml")
+    <!-- End of Topbar -->
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Orders Information</h1>
+            <div>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-3">
+                    <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="card shadow mb-4 w-100">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Orders Table</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Pincode</th>
+                                    <th>Address</th>
+                                    <th>Total Price</th>
+                                    <th>Created Date</th>
+                                    <th>Payment Status</th>
+                                    <th>Order Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model)
+                                {
+                                    <tr>
+                                        <td>@order.OrderId</td>
+                                        <td>@order.UserId</td>
+                                        <td>@order.Name</td>
+                                        <td>@order.Email</td>
+                                        <td>@order.Phone</td>
+                                        <td>@order.Pincode</td>
+                                        <td>@order.Address</td>
+                                        <td>@order.TotalPrice</td>
+                                        <td>@order.CreatedDate.ToString("yyyy-MM-dd")</td>
+                                        <td>
+                                            @order.PaymentStatus
+                                        </td>
+                                        <td>
+                                            @order.OrderStatus
+                                            <form method="post" action="/api/order/UpdateOrderStatus"
+                                                enctype="application/x-www-form-urlencoded" onsubmit="return false;"
+                                                class="updateOrderStatusForm">
+                                                <input type="hidden" name="orderId" value="@order.OrderId" />
+                                                <select name="newStatus" class="form-control">
+                                                    <option value="Order Received">Order Received</option>
+                                                    <option value="In Production">In Production</option>
+                                                    <option value="Assembled">Assembled</option>
+                                                    <option value="Out for Delivery">Out for Delivery</option>
+                                                    <option value="Delivered">Delivered</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm mt-1">Update
+                                                    Status</button>
+                                            </form>
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Modal for Updating Payment Status -->
+    @* <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="statusModalLabel">Update Order Status</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+    <form id="statusForm">
+    <div class="mb-3">
+    <label for="orderStatus" class="col-form-label">Order Status:</label>
+    <select class="form-select" id="orderStatus" name="orderStatus">
+    <option>Order Received</option>
+    <option>In Production</option>
+    <option>Assembled</option>
+    <option>Out for Delivery</option>
+    <option>Delivered</option>
+    </select>
+    </div>
+    <input type="hidden" id="orderId" name="orderId">
+    <div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Update Status</button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div> *@
+    @* <div class="modal fade" id="updatePaymentStatusModal" tabindex="-1" role="dialog"
+    aria-labelledby="updatePaymentStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h5 class="modal-title" id="updatePaymentStatusModalLabel">Update Payment Status</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+    <form id="updatePaymentStatusForm">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+    <label for="newPaymentStatus">New Payment Status</label>
+    <select class="form-control" id="newPaymentStatus" name="newPaymentStatus">
+    <option>Pending</option>
+    <option>Completed</option>
+    <option>Failed</option>ƒ
+    </select>
+    </div>
+    <input type="hidden" id="orderIdForUpdate" name="orderId">
+    </form>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" onclick="savePaymentStatusChanges()">Save
+    Changes</button>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div> *@
+
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('.updateOrderStatusForm').on('submit', function (e) {
+                    e.preventDefault(); // prevent the form from submitting normally
+
+                    // Get the form data
+                    var formData = $(this).serialize();
+
+                    // Send the data using AJAX
+                    $.ajax({
+                        type: 'POST',
+                        url: $(this).attr('action'),
+                        data: formData,
+                        success: function (response) {
+                            // Handle success
+                            @* alert(response.message); // or update the UI in some other way *@
+                            location.reload(); // Optionally reload the page or part of it
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle failure
+                            var errorMessage = xhr.status + ': ' + xhr.statusText;
+                            alert('Error - ' + errorMessage);
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+
+
+    @* @section Scripts {
+    <script>
+    function openUpdateStatusModal(orderId) {
+    $('#orderId').val(orderId); // Set the orderId in the hidden field of the modal form
+    $('#statusModal').modal('show'); // Show the modal
+    }
+
+    function savePaymentStatusChanges() {
+    console.log("savePaymentStatusChanges called");
+    var orderId = $('#orderId').val(); // Get the orderId from the hidden input
+    var newStatus = $('#orderStatus').val(); // Get the new status from the select input
+
+    console.log("OrderId: ", orderId, "New Status: ", newStatus);
+
+    // AJAX call to update the order status
+    $.ajax({
+    url: '/api/Order/UpdateOrderStatus', // URL to your API endpoint
+    type: 'POST',
+    contentType: 'application/json', // Specify the content type
+    data: JSON.stringify({
+    OrderId: orderId, // Ensure this is an integer
+    OrderStatus: newStatus // Ensure this is a string
+    }), // Convert the data to JSON
+    success: function (response) {
+    // success handling
+    },
+    error: function (error) {
+    // error handling
+    }
+    });
+
+    }
+    </script>
+    } *@
