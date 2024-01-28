@@ -20,7 +20,7 @@
     @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css"
     integrity="sha512-1N7HQbPbZ/sFI1qoI3q6XpZZeljPMU0J4l/9FO4jRv1OKnTnJQS8+fZpC3/XwfLXzFJrZro5HIfjQrZJ/M/SVg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" /> *@
-    
+
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
@@ -176,44 +176,6 @@
                         }
                     </script>
                 </div>
-
-                @* <div class="ms-auto d-flex align-items-center" style="gap: 2px;">
-                @if (HttpContextAccessor.HttpContext.Session.GetString("UserID") != null)
-                {
-                <!-- User is logged in -->
-                <div>
-                <a asp-controller="Client" asp-action="Cart" class="cart-icon-href">
-                <div class="cart-icon">
-                <img src="/Images/Icons/shopping-bag.png" alt="Cart">
-                <!-- Dynamic cart count can be implemented here -->
-                <div class="cart-count">1</div>
-                </div>
-                </a>
-                </div>
-                <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <i class='bx bxs-user-circle' style='font-size: 24px; color: grey;'></i>&nbsp;
-                @HttpContextAccessor.HttpContext.Session.GetString("UserName")
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="nav-link" asp-controller="Client" asp-action="userProfile">User Dashboards</a>
-                </li>
-                <li>
-                <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" asp-controller="Client" asp-action="Logout">Logout</a></li>
-                </ul>
-                </div>
-                }
-                else
-                {
-                <!-- User is not logged in -->
-                <button class="button rounded-button-02">
-                <a class="text-decoration-none" asp-controller="Client" asp-action="Login">LOGIN</a>
-                </button>
-                }
-                </div> *@
             </div>
         </nav>
     </header>

@@ -1,7 +1,35 @@
 @model Aircraft_project.Models.Aircraft
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "AddAircraft";
+}
+
+@section Scripts {
+    <script>
+        // Function to get items from local storage
+        function getLocalStorageItem(key) {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item).value : null;
+        }
+
+        // Check if user is logged in using local storage
+        const AdminId = getLocalStorageItem('AdminId');
+        if (!AdminId) {
+            // User is not logged in, redirect to the login page
+            window.location.href = '/Dashboard/AdminLogin';
+        }
+        else {
+            // Update the local storage with the session values if not already set
+            const storedAdminId = getLocalStorageItem('AdminId');
+            const storedUserName = getLocalStorageItem('AdminName');
+
+            if (!storedAdminId || !storedAdminName) {
+                localStorage.setItem('AdminId', JSON.stringify({ value: AdminId }));
+                localStorage.setItem('AdminName', JSON.stringify({ value: '@HttpContextAccessor.HttpContext.Session.GetString("AdminName")' }));
+            }
+        }
+    </script>
 }
 
 <!-- Main Content -->
@@ -15,8 +43,8 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Add Aircraft</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            @* <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> *@
         </div>
         <div class="row">
             <div class="col-md-12 mb-4">

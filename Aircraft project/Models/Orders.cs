@@ -19,8 +19,8 @@ namespace Aircraft_project.Models
         public decimal TotalPrice { get; set; }
         public DateTime CreatedDate { get; set; }
         public string PaymentStatus { get; set; }
-
-        public string TrackingStatus { get; set; }
+         public string OrderStatus { get; set; } = "Order Received";
+        public DateTime LastUpdated { get; set; }
 
         // public virtual Users Users { get; set; }
 

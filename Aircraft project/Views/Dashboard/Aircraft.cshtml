@@ -1,8 +1,174 @@
 @model IEnumerable<Aircraft_project.Models.Aircraft>
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Aircraft";
 }
+
+@section Scripts {
+    @* <script>
+// Function to get items from local storage
+function getLocalStorageItem(key) {
+const item = localStorage.getItem(key);
+return item ? JSON.parse(item).value : null;
+}
+
+// Check if user is logged in using local storage
+const AdminId = getLocalStorageItem('AdminId');
+if (!AdminId) {
+// User is not logged in, redirect to the login page
+window.location.href = '/Dashboard/AdminLogin';
+}
+else {
+// Update the local storage with the session values if not already set
+const storedAdminId = getLocalStorageItem('AdminId');
+const storedUserName = getLocalStorageItem('AdminName');
+
+if (!storedAdminId || !storedAdminName) {
+localStorage.setItem('AdminId', JSON.stringify({ value: AdminId }));
+localStorage.setItem('AdminName', JSON.stringify({ value:
+'@HttpContextAccessor.HttpContext.Session.GetString("AdminName")' }));
+}
+}
+</script> *@
+
+    <script>
+        function getLocalStorageItem(key) {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item).value : null;
+        }
+
+        // Check if user is logged in using local storage
+        const AdminId = getLocalStorageItem('AdminId');
+        if (!AdminId) {
+            // User is not logged in, redirect to the login page
+            window.location.href = '/Dashboard/AdminLogin';
+        }
+        else {
+            // Update the local storage with the session values if not already set
+            const storedAdminId = getLocalStorageItem('AdminId');
+            const storedAdminName = getLocalStorageItem('AdminName');
+
+            if (!storedAdminId || !storedAdminName) {
+                localStorage.setItem('AdminId', JSON.stringify({ value: AdminId }));
+                localStorage.setItem('AdminName', JSON.stringify({
+                    value:
+                        '@HttpContextAccessor.HttpContext.Session.GetString("AdminName")'
+                }));
+            }
+        }
+
+        // Function to open the update modal
+        function openUpdateModal(aircraftId) {
+            // Use AJAX to fetch the details of the selected aircraft by ID
+            $.ajax({
+                url: '/Dashboard/GetAircraftDetails',
+                type: 'GET',
+                data: { id: aircraftId },
+                success: function (data) {
+                    // Log the fetched data to the console for debugging
+                    console.log('Fetched Data:', data);
+
+                    // Populate the modal form with the fetched data
+                    $('#updateModal #Id').val(data.id);
+                    $('#updateModal #Name').val(data.name);
+                    $('#updateModal #Manufacturer').val(data.manufacturer);
+                    $('#updateModal #Color').val(data.color);
+                    $('#updateModal #PassengerCapacity').val(data.passengerCapacity);
+                    $('#updateModal #MaxSpeed').val(data.maxSpeed);
+                    $('#updateModal #FuelCapacity').val(data.fuelCapacity);
+                    $('#updateModal #EngineType').val(data.engineType);
+                    $('#updateModal #Range').val(data.range);
+                    $('#updateModal #ManufacturingDate').val(data.manufacturingDate);
+                    $('#updateModal #AdditionalInformation').val(data.additionalInformation);
+                    $('#updateModal #ImagePath').val(data.imagePath);
+                    $('#updateModal #Category').val(data.category);
+                    $('#updateModal #Price').val(data.price);
+
+                    // Show the modal
+                    $('#updateModal').modal('show');
+                },
+                error: function () {
+                    console.error('Failed to fetch aircraft details.');
+                }
+            });
+        }
+
+        function updateAircraft() {
+            // Get the updated data from the modal form
+            var updatedData = {
+                Id: $('#Id').val(),
+                Name: $('#Name').val(),
+                Manufacturer: $('#Manufacturer').val(),
+                Color: $('#Color').val(),
+                PassengerCapacity: $('#PassengerCapacity').val(),
+                MaxSpeed: $('#MaxSpeed').val(),
+                FuelCapacity: $('#FuelCapacity').val(),
+                EngineType: $('#EngineType').val(),
+                Range: $('#Range').val(),
+                ManufacturingDate: $('#ManufacturingDate').val(),
+                AdditionalInformation: $('#AdditionalInformation').val(),
+                ImagePath: $('#ImagePath').val(),
+                Category: $('#Category').val(),
+                Price: $('#Price').val()
+                // Include all other properties from your Aircraft model
+            };
+
+            // Use AJAX to send the updated data to the server
+            $.ajax({
+                url: '/Dashboard/UpdateAircraft',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    Id: parseInt($('#Id').val()),
+                    Name: $('#Name').val(),
+                    Manufacturer: $('#Manufacturer').val(),
+                    Color: $('#Color').val(),
+                    PassengerCapacity: parseInt($('#PassengerCapacity').val()),
+                    MaxSpeed: parseInt($('#MaxSpeed').val()),
+                    FuelCapacity: parseInt($('#FuelCapacity').val()),
+                    EngineType: $('#EngineType').val(),
+                    Range: parseInt($('#Range').val()),
+        @* ManufacturingDate: $('#ManufacturingDate').val(), *@
+                    AdditionalInformation: $('#AdditionalInformation').val(),
+                    ImagePath: $('#ImagePath').val(),
+                    Category: $('#Category').val(),
+        @* Price: parseInt($('#Price').val()) *@
+                            }),
+                success: function () {
+                    // Handle success (e.g., close the modal, refresh the table)
+                    $('#updateModal').modal('hide');
+                    location.reload(); // Refresh the page (you can use a more specific update method)
+                },
+            error: function () {
+                console.error('Failed to update aircraft.');
+            }
+        });
+                    }
+
+        function deleteAircraft(aircraftId) {
+            if (confirm("Are you sure you want to delete this aircraft?")) {
+                $.ajax({
+                    url: '/Dashboard/DeleteAircraft',
+                    type: 'POST',
+                    data: { id: aircraftId },
+                    success: function (result) {
+                        if (result.success) {
+                            // Reload the page or update the table as needed
+                            location.reload();
+                        } else {
+                            alert(result.message);
+                        }
+                    },
+                    error: function () {
+                        console.error('Failed to delete aircraft.');
+                    }
+                });
+            }
+        }
+    </script>
+}
+
 
 <!-- Main Content -->
 <div id="content">
@@ -15,8 +181,9 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Add Aircraft</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <button id="exportButton1" class="btn btn-primary btn-sm">
+                <i class="fas fa-download"></i> Generate Report
+            </button>
         </div>
         <div class="row">
             <!-- DataTales Example -->
@@ -28,7 +195,7 @@
                     <div class="table-responsive">
                         @if (Model != null)
                         {
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="aircraftTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -43,6 +210,7 @@
                                         <th>Additional Information</th>
                                         <th>Category</th>
                                         <th>Price</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
 
@@ -62,6 +230,13 @@
                                             <td>@aircraft.AdditionalInformation</td>
                                             <td>@aircraft.Category</td>
                                             <td>@aircraft.Price</td>
+                                            <td>
+                                                <button class="btn btn-primary" data-toggle="modal" data-target="#updateModal"
+                                                    onclick="openUpdateModal('@aircraft.Id')">Edit</button>
+                                                <br><br>
+                                                <button class="btn btn-danger"
+                                                    onclick="deleteAircraft('@aircraft.Id')">Delete</button>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -75,8 +250,130 @@
                 </div>
             </div>
         </div>
-
-
         <!-- /.container-fluid -->
     </div>
     <!-- End of Main Content -->
+
+    <!-- Update Modal -->
+    <!-- Update Aircraft Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Aircraft</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for updating Aircraft details -->
+                    <form id="updateAircraftForm">
+                        <input type="hidden" id="Id" name="Id" />
+
+                        <div class="form-group">
+                            <label for="Name">Name</label>
+                            <input type="text" id="Name" name="Name" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Manufacturer">Manufacturer</label>
+                            <input type="text" id="Manufacturer" name="Manufacturer" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Color">Color</label>
+                            <input type="text" id="Color" name="Color" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="PassengerCapacity">Passenger Capacity</label>
+                            <input type="number" id="PassengerCapacity" name="PassengerCapacity" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="MaxSpeed">Max Speed</label>
+                            <input type="number" id="MaxSpeed" name="MaxSpeed" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="FuelCapacity">Fuel Capacity</label>
+                            <input type="number" id="FuelCapacity" name="FuelCapacity" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="EngineType">Engine Type</label>
+                            <input type="text" id="EngineType" name="EngineType" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Range">Range</label>
+                            <input type="number" id="Range" name="Range" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ManufacturingDate">Manufacturing Date</label>
+                            <input type="date" id="ManufacturingDate" name="ManufacturingDate" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="AdditionalInformation">Additional Information</label>
+                            <textarea id="AdditionalInformation" name="AdditionalInformation"
+                                class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ImagePath">Image Path</label>
+                            <input type="text" id="ImagePath" name="ImagePath" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Category">Category</label>
+                            <input type="text" id="Category" name="Category" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Price">Price</label>
+                            <input type="text" id="Price" name="Price" class="form-control" />
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updateAircraft()">Update
+                                Aircraft</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+
+    <script>
+        document.getElementById('exportButton1').addEventListener('click', exportToExcel);
+
+        function exportToExcel() {
+            var table = document.getElementById('aircraftTable');
+            var tableData = Array.from(table.rows).map(function (row) {
+                return Array.from(row.cells).map(function (cell) {
+                    return cell.innerText;
+                });
+            });
+
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.aoa_to_sheet(tableData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            var fileName = 'AircraftTableExport.xlsx';
+            XLSX.writeFile(wb, fileName);
+
+            displaySuccessMessage();
+        }
+
+        function displaySuccessMessage() {
+            // Adjust this part if you want to display a success message
+            console.log('Export successful');
+        }
+    </script>

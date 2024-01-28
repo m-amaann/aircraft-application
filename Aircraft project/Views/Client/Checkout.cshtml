@@ -105,29 +105,27 @@
 
 @section Scripts {
     <script>
+        var userIdd = localStorage.getItem("UserID");
+        var userIdObject = JSON.parse(userIdd);
+        var userIdValue = userIdObject.value;
         // Function to calculate the total price based on cart items
         function calculateTotalPrice() {
-            // Replace this with your logic to calculate the total based on cart items
-            var cartItems = @Html.Raw(Json.Serialize(Model)); // Assuming you're using Razor syntax
-        @* console.log(cartItems); *@
+            var cartItems = @Html.Raw(Json.Serialize(Model));
             var totalPrice = 0;
 
             for (var i = 0; i < cartItems.length; i++) {
-                // Check if the 'aircraft' property is available
                 if (cartItems[i].aircraft && cartItems[i].aircraft.price) {
                     totalPrice += cartItems[i].aircraft.price * cartItems[i].quantity;
                 }
             }
 
-        @* console.log(totalPrice) *@
             return totalPrice;
         }
 
         // Function to update the total price in the HTML element
         function updateTotalPrice() {
             var totalPrice = calculateTotalPrice();
-        @* console.log(totalPrice); *@
-                document.getElementById('totalPrice').textContent = "$" + totalPrice.toLocaleString("en-us", { minimumFractionDigits: 2 });
+            document.getElementById('totalPrice').textContent = "$" + totalPrice.toLocaleString("en-us", { minimumFractionDigits: 2 });
             return totalPrice;
         }
 
@@ -161,7 +159,7 @@
 
             // Collect necessary data for the order
             var orderDetails = {
-                UserId: 1, // Replace with the actual user ID
+                UserId: userIdValue, // Replace with the actual user ID
                 Name: document.getElementById('name').value,
                 Email: document.getElementById('email').value,
                 Phone: document.getElementById('phone').value,
@@ -261,5 +259,7 @@
 
             payhere.startPayment(payment);
         };
+
+
     </script>
 }

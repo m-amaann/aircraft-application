@@ -1,0 +1,145 @@
+@model IEnumerable<Aircraft_project.Models.Tracking>
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Tracking List";
+}
+
+@section Scripts {
+    <script>
+        // Function to get items from local storage
+        function getLocalStorageItem(key) {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item).value : null;
+        }
+
+        // Check if user is logged in using local storage
+        const AdminId = getLocalStorageItem('AdminId');
+        if (!AdminId) {
+            // User is not logged in, redirect to the login page
+            window.location.href = '/Dashboard/AdminLogin';
+        }
+        else {
+            // Update the local storage with the session values if not already set
+            const storedAdminId = getLocalStorageItem('AdminId');
+            const storedUserName = getLocalStorageItem('AdminName');
+
+            if (!storedAdminId || !storedAdminName) {
+                localStorage.setItem('AdminId', JSON.stringify({ value: AdminId }));
+                localStorage.setItem('AdminName', JSON.stringify({ value: '@HttpContextAccessor.HttpContext.Session.GetString("AdminName")' }));
+            }
+        }
+    </script>
+}
+
+<div class="container">
+    <h2>All Trackings</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Aircraft Name</th>
+                    <th>Status</th>
+                    <th>Estimated Delivery Date</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tracking in Model)
+                {
+                    <tr>
+                        <td>@(tracking.Id)</td>
+                        <td>@(tracking.Status ?? "N/A")</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="editTracking(@tracking.Id)"
+                                data-tracking-id="@tracking.Id">Edit</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No tracking records are available.</p>
+    }
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Tracking</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editTrackingForm">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label for="trackingStatus">Status</label>
+                        <select class="form-control" id="trackingStatus" name="status">
+                            <option>Order Received</option>
+                            <option>In Production</option>
+                            <option>Assembled</option>
+                            <option>Out for Delivery</option>
+                            <option>Delivered</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="editTrackingId" name="trackingId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveChanges()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        function editTracking(trackingId) {
+            $('#editTrackingId').val(trackingId);
+
+            // Open the modal
+            $('#editModal').modal('show');
+        }
+
+
+        function saveChanges() {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            var trackingId = $('#editTrackingId').val();
+            console.log("Tracking ID: ", trackingId);
+            var status = $('#trackingStatus').val();
+
+            $.ajax({
+                url: '/Dashboard/UpdateTrackingStatus',
+                type: 'POST',
+                headers: {
+                    "RequestVerificationToken": token
+                },
+                data: {
+                    trackingId: trackingId,
+                    status: status
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+
+            $('#editModal').modal('hide');
+        }
+
+    </script>
+}

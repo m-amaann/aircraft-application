@@ -54,12 +54,12 @@ namespace Aircraft_project.Controllers
             if (user != null)
             {
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Email, email)
-            // Add additional claims as needed
-        };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Email, email)
+                    // Add additional claims as needed
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -126,7 +126,6 @@ namespace Aircraft_project.Controllers
             return View();
         }
 
-
         public IActionResult Shopping()
         {
             // return View("Shopping");
@@ -147,7 +146,6 @@ namespace Aircraft_project.Controllers
         }
 
         // -----------------------------------------------------------------------
-
         public IActionResult Cart()
         {
             // return View("Cart");
@@ -265,9 +263,7 @@ namespace Aircraft_project.Controllers
             try
             {
                 // Check if any required fields are empty
-                if (model.AircraftId == 0 || model.Quantity <= 0 || string.IsNullOrEmpty(model.Color)
-            || string.IsNullOrEmpty(model.Engine)
-            || string.IsNullOrEmpty(model.FanType))
+                if (model.AircraftId == 0 || model.Quantity <= 0 || string.IsNullOrEmpty(model.Color) || string.IsNullOrEmpty(model.Engine) || string.IsNullOrEmpty(model.FanType))
                 {
                     TempData["ErrorMessage"] = "Aircraft, Quantity, Color, Engine, SeatsSize, and FanType are required fields.";
                     return RedirectToAction("Shopping");
@@ -277,7 +273,7 @@ namespace Aircraft_project.Controllers
 
                 var cartItem = new Cart
                 {
-                    UserId = 1,  // You need to implement a method to get the user ID
+                    UserId = model.UserId,  // You need to implement a method to get the user ID
                     AircraftId = model.AircraftId,
                     Quantity = model.Quantity,
                     Color = model.Color,

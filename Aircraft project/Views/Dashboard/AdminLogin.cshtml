@@ -2,6 +2,10 @@
 
 @{
 	ViewData["Title"] = "AdminLogin";
+
+	// Check if login was successful
+	bool loginSuccess = TempData["SuccessMessage"] != null;
+
 }
 
 <style>
@@ -37,3 +41,36 @@
 		</div>
 	</div>
 </section>
+
+
+@section Scripts {
+	@if (loginSuccess)
+	{
+		<script>
+			// Function to set items in local storage with expiration time
+			function setLocalStorageItem(key, value, expirationDays) {
+				const expirationDate = new Date();
+				expirationDate.setDate(expirationDate.getDate() + expirationDays);
+				const item = {
+					value: value,
+					expirationDate: expirationDate.toISOString()
+				};
+				localStorage.setItem(key, JSON.stringify(item));
+			}
+
+			// Get user ID and username from ViewData
+			const AdminId = '@ViewData["AdminId"]';
+			const AdminName = '@ViewData["AdminName"]';
+
+			// Debugging: Log the values to the console
+			console.log('AdminId:', AdminId);
+			console.log('AdminName:', AdminName);
+
+			// Set user ID and username in local storage
+			setLocalStorageItem('AdminId', AdminId, 14);
+			setLocalStorageItem('AdminName', AdminName, 14);
+
+			window.location.href = '/Dashboard';
+		</script>
+	}
+}

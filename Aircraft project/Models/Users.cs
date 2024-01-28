@@ -29,7 +29,7 @@ namespace Aircraft_project.Models
         [Required]
         public string Password { get; set; }
 
-        public string Image { get; set; }
+        public string Image { get; set; } = "https://www.its.ac.id/international/wp-content/uploads/sites/66/2020/02/blank-profile-picture-973460_1280-300x300.jpg";
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

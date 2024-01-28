@@ -13,10 +13,8 @@ namespace Aircraft_project.Models
         public int Range { get; set; }
         public DateTime ManufacturingDate { get; set; }
         public string AdditionalInformation { get; set; }
-
         public string ImagePath { get; set; }
         public string Category { get; set; }
         public string Price { get; set; }
-
     }
 }

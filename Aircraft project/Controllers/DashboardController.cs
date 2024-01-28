@@ -11,7 +11,6 @@ using System;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 
-
 namespace Aircraft_project.Controllers
 {
     public class DashboardController : Controller
@@ -35,11 +34,20 @@ namespace Aircraft_project.Controllers
                 return RedirectToAction("AdminLogin");
             }
 
-            // User is authenticated, display the dashboard
+            // Fetch counts for various entities
+            var usersCount = _context.Users.Count();
+            var aircraftCount = _context.Aircraft.Count();
+            var adminsCount = _context.Admins.Count();
+            var ordersCount = _context.Orders.Count();
+
+            // Add these counts to ViewData
+            ViewData["TotalUsersCount"] = usersCount;
+            ViewData["TotalAircraftCount"] = aircraftCount;
+            ViewData["TotalAdminsCount"] = adminsCount;
+            ViewData["TotalOrdersCount"] = ordersCount;
+
             return View("dashboard");
         }
-
-
 
         // Admin Create Function of POST Method
         [HttpPost]
@@ -63,7 +71,6 @@ namespace Aircraft_project.Controllers
 
             return View(admin);
         }
-
 
         // HASH Password Function
         public static string HashPassword(string password)
@@ -94,7 +101,14 @@ namespace Aircraft_project.Controllers
                 HttpContext.Session.SetString("AdminEmail", adminInDb.Email);
                 HttpContext.Session.SetString("AdminName", adminInDb.Name);
 
-                return RedirectToAction("Indexes");
+                TempData["SuccessMessage"] = "You are logged in successfully!";
+
+                // Directly set user ID and username in local storage using ViewData
+                ViewData["AdminId"] = adminInDb.AdminId.ToString();
+                ViewData["AdminName"] = adminInDb.Name;
+
+                // return RedirectToAction("Indexes");
+                return View();
             }
 
             // Authentication failed
@@ -214,5 +228,126 @@ namespace Aircraft_project.Controllers
 
             return Json(filteredData);
         }
+
+
+        public IActionResult Inventory()
+        {
+            var inventory = _context.Inventory.ToList();
+            return View(inventory);
+        }
+
+        public IActionResult Tracking()
+        {
+            // return View("Aircraft");
+            var tracking = _context.Trackings.ToList();
+            return View(tracking);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateTrackingStatus(int trackingId, string status)
+        {
+            // _logger.LogInformation($"Attempting to update tracking ID {trackingId} with status {status}.");
+            var tracking = _context.Trackings.FirstOrDefault(t => t.Id == trackingId);
+            if (tracking != null)
+            {
+                tracking.Status = status;
+
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Tracking status updated successfully." });
+            }
+            else
+            {
+                // _logger.LogWarning($"No tracking record found for ID {trackingId}.");
+                return Json(new { success = false, message = "Tracking record not found." });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AddToInventory(Inventory inventory)
+        {
+            if (ModelState.IsValid)
+            {
+                // Additional logic, if needed, before adding to the inventory
+
+                _context.Inventory.Add(inventory);
+                _context.SaveChanges();
+
+                return RedirectToAction("Inventory");
+            }
+
+            // If the model state is not valid, return to the view with the current inventory
+            return View("Inventory", _context.Inventory.ToList());
+        }
+
+        [HttpGet]
+        public IActionResult GetAircraftDetails(int id)
+        {
+            // Fetch the aircraft record by ID
+            var aircraft = _context.Aircraft.Find(id);
+            return Json(aircraft);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateAircraft([FromBody] Aircraft model)
+        {
+            try
+            {
+                if (model == null)
+                {
+                    return BadRequest("Invalid data. The provided model is null.");
+                }
+
+                // Ensure the aircraft with the given ID exists
+                var existingAircraft = _context.Aircraft.Find(model.Id);
+                if (existingAircraft == null)
+                {
+                    return NotFound($"Aircraft with ID {model.Id} not found.");
+                }
+
+                // Update the properties of the existing aircraft with the new data
+                existingAircraft.Name = model.Name;
+                existingAircraft.Manufacturer = model.Manufacturer;
+                existingAircraft.Color = model.Color;
+                existingAircraft.PassengerCapacity = model.PassengerCapacity;
+                existingAircraft.MaxSpeed = model.MaxSpeed;
+                existingAircraft.FuelCapacity = model.FuelCapacity;
+                existingAircraft.EngineType = model.EngineType;
+                existingAircraft.Range = model.Range;
+                // existingAircraft.ManufacturingDate = model.ManufacturingDate;
+                existingAircraft.AdditionalInformation = model.AdditionalInformation;
+                existingAircraft.ImagePath = model.ImagePath;
+                existingAircraft.Category = model.Category;
+                // existingAircraft.Price = model.Price;
+
+                _context.SaveChanges();
+
+                return Ok(); // You can return a success status or other data if needed
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Exception in UpdateAircraft: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAircraft(int id)
+        {
+            var aircraft = _context.Aircraft.Find(id);
+
+            if (aircraft != null)
+            {
+                _context.Aircraft.Remove(aircraft);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Aircraft deleted successfully." });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Aircraft not found." });
+            }
+        }
+
     }
 }

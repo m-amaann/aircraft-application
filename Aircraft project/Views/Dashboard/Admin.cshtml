@@ -1,10 +1,35 @@
-﻿@* @model Admin *@
-
-@model IEnumerable<Aircraft_project.Models.Admin>
-
+﻿@model IEnumerable<Aircraft_project.Models.Admin>
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Admin";
+}
+
+@section Scripts {
+    <script>
+        // Function to get items from local storage
+        function getLocalStorageItem(key) {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item).value : null;
+        }
+
+        // Check if user is logged in using local storage
+        const AdminId = getLocalStorageItem('AdminId');
+        if (!AdminId) {
+            // User is not logged in, redirect to the login page
+            window.location.href = '/Dashboard/AdminLogin';
+        }
+        else {
+            // Update the local storage with the session values if not already set
+            const storedAdminId = getLocalStorageItem('AdminId');
+            const storedUserName = getLocalStorageItem('AdminName');
+
+            if (!storedAdminId || !storedAdminName) {
+                localStorage.setItem('AdminId', JSON.stringify({ value: AdminId }));
+                localStorage.setItem('AdminName', JSON.stringify({ value: '@HttpContextAccessor.HttpContext.Session.GetString("AdminName")' }));
+            }
+        }
+    </script>
 }
 
 <div id="content">
@@ -17,19 +42,16 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Create Admin</h1>
             <div>
-                <a href="@Url.Action("GenerateAdminReport", "Report")" class="btn btn-primary">
+                <button id="exportButton" class="btn btn-primary btn-sm">
                     <i class="fas fa-download"></i> Generate Report
-               </a>
-
-
-                <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm" data-toggle="modal" data-target="#newAdminModal">
+                </button>
+                <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
+                    data-toggle="modal" data-target="#newAdminModal">
                     <i class="fas fa-user-plus fa-sm text-white-50"></i> New Admin
                 </button>
-
             </div>
         </div>
 
-        
         <div class="row">
             <div class="card shadow mb-4 w-100">
                 <div class="card-header py-3">
@@ -37,7 +59,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="adminTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -63,7 +85,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- Modal -->
         <div class="modal" id="newAdminModal">
@@ -96,6 +117,34 @@
                 </div>
             </div>
         </div>
-        
     </div>
     <!-- End of Main Content -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+
+    <script>
+        document.getElementById('exportButton').addEventListener('click', exportToExcel);
+
+        function exportToExcel() {
+            var table = document.getElementById('adminTable');
+            var tableData = Array.from(table.rows).map(function (row) {
+                return Array.from(row.cells).map(function (cell) {
+                    return cell.innerText;
+                });
+            });
+
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.aoa_to_sheet(tableData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            var fileName = 'AdminTableExport.xlsx';
+            XLSX.writeFile(wb, fileName);
+
+            displaySuccessMessage();
+        }
+
+        function displaySuccessMessage() {
+            // Adjust this part if you want to display a success message
+            console.log('Export successful');
+        }
+    </script>

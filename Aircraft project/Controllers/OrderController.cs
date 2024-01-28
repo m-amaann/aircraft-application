@@ -1,6 +1,7 @@
 ﻿using Aircraft_project.Data;
 using Aircraft_project.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aircraft_project.Controllers
 {
@@ -41,7 +42,9 @@ namespace Aircraft_project.Controllers
                     Address = orderDetails.Address,
                     TotalPrice = orderDetails.TotalPrice,
                     CreatedDate = DateTime.Now,
-                    PaymentStatus = orderDetails.PaymentStatus
+                    PaymentStatus = orderDetails.PaymentStatus,
+                    OrderStatus = "Order Received",
+                    LastUpdated = DateTime.Now
                 };
 
                 Console.WriteLine("Created order:", order);
@@ -82,24 +85,40 @@ namespace Aircraft_project.Controllers
             }
         }
 
-        // Add this method in your ClientController
-        // public IActionResult UserProfile()
-        // {
-        //     try
-        //     {
-        //         // Assuming you have a method to get the user's orders based on UserId
-        //         var orders = _context.Orders.Where(o => o.UserId == 1).ToList(); // Change UserId as needed
+        [HttpPost("UpdateOrderStatus")]
+        public IActionResult UpdateOrderStatus([FromForm] int orderId, [FromForm] string newStatus)
+        {
+            try
+            {
+                var order = _context.Orders.FirstOrDefault(o => o.OrderId == orderId);
+                if (order == null)
+                {
+                    return NotFound(new { message = "Order not found." });
+                }
 
-        //         // Pass the orders to the view
-        //         return View("userProfile", orders);
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         // Handle exceptions appropriately
-        //         Console.Error.WriteLine($"Exception in UserProfile: {ex.Message}");
-        //         return StatusCode(500, "Internal Server Error");
-        //     }
-        // }
+                order.OrderStatus = newStatus;
+                order.LastUpdated = DateTime.Now;
+                _context.SaveChanges();
 
+                return Ok(new { message = "Order status updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error updating order status:", ex.Message);
+                return BadRequest(new { error = "Failed to update the order status." });
+            }
+        }
+
+        [HttpGet("GetOrderDetails")]
+        public IActionResult GetOrderDetails(int orderId)
+        {
+            var order = _context.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.OrderId == orderId);
+            if (order == null)
+            {
+                return NotFound(new { message = "Order not found." });
+            }
+
+            return Ok(order);
+        }
     }
 }

@@ -1,10 +1,7 @@
 @model IEnumerable<Aircraft_project.Models.Orders>
-
-
 @{
     ViewData["Title"] = "Orders";
 }
-
 
 <div id="content">
     <!-- Topbar -->
@@ -12,16 +9,15 @@
     <!-- End of Topbar -->
     <!-- Begin Page Content -->
     <div class="container-fluid">
-
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Orders Information</h1>
             <div>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-3">
-                    <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+                    <i class="fas fa-download fa-sm text-white-50"></i> Generate
+                    Report
                 </a>
             </div>
         </div>
-
 
         <div class="row">
             <div class="card shadow mb-4 w-100">
@@ -43,7 +39,7 @@
                                     <th>Total Price</th>
                                     <th>Created Date</th>
                                     <th>Payment Status</th>
-                                    <th>Tracking Status</th>
+                                    <th>Order Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,18 +57,28 @@
                                         <td>@order.CreatedDate.ToString("yyyy-MM-dd")</td>
                                         <td>@order.PaymentStatus</td>
                                         <td>
-                                            <select class="form-control" id="trackingStatus_@order.OrderId">
-                                                @* <option value="Pending" @(order.TrackingStatus == "Pending" ? "selected" :
-                                                "")>Pending</option>
-                                                <option value="Shipped" @(order.TrackingStatus == "Shipped" ? "selected" :
-                                                "")>Shipped</option>
-                                                <option value="Delivered" @(order.TrackingStatus == "Delivered" ? "selected"
-                                                : "")>Delivered</option>
-                                                <option value="Returned" @(order.TrackingStatus == "Returned" ? "selected" :
-                                                "")>Returned</option> *@
-                                            </select>
-                                            <button class="btn btn-primary"
-                                                onclick="updateTrackingStatus(@order.OrderId)">Update</button>
+                                            @order.OrderStatus
+                                            <form method="post" action="/api/order/UpdateOrderStatus"
+                                                enctype="application/x-www-form-urlencoded" onsubmit="return false;"
+                                                class="updateOrderStatusForm">
+                                                <input type="hidden" name="orderId" value="@order.OrderId" />
+                                                <select name="newStatus" class="form-control">
+                                                    <option value="Order Received">
+                                                        Order Received
+                                                    </option>
+                                                    <option value="In Production">
+                                                        In Production
+                                                    </option>
+                                                    <option value="Assembled">Assembled</option>
+                                                    <option value="Out for Delivery">
+                                                        Out for Delivery
+                                                    </option>
+                                                    <option value="Delivered">Delivered</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm mt-1">
+                                                    Update Status
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 }
@@ -84,3 +90,36 @@
         </div>
     </div>
     <!-- End of Main Content -->
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('.updateOrderStatusForm').on('submit', function (e) {
+                    e.preventDefault(); // prevent the form from submitting normally
+
+                    // Get the form data
+                    var formData = $(this).serialize();
+
+                    // Send the data using AJAX
+                    $.ajax({
+                        type: 'POST',
+                        url: $(this).attr('action'),
+                        data: formData,
+                        success: function (response) {
+                            // Handle success
+            @* alert(response.message); // or update the UI in some other way *@
+                                location.reload(); // Optionally reload the page or part of it
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle failure
+                            var errorMessage = xhr.status + ': ' + xhr.statusText;
+                            alert('Error - ' + errorMessage);
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+    </Aircraft_project.Models.Orders>
+</div>
+</Aircraft_project.Models.Orders>
